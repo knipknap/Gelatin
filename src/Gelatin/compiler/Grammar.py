@@ -29,12 +29,13 @@ class Grammar(Token):
 
         matched = True
         while matched:
+            if context._eof():
+                break
             matched = False
-            context._msg(self.name)
+            #context._msg(self.name)
             for statement in inherited + self.statements:
                 if statement.parse(context) != 0:
                     matched = True
-                    print "MATCH", statement.__class__.__name__
                     break
         return 0
 

@@ -13,17 +13,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-def out_add(context, *args):
-    print "out.add():", args
+def t2x_fail(context, message = 'No matching statement found'):
+    context._error(message)
+
+def out_add(context, path, data = None):
+    print "out.add():", path, data
 
 class Context(object):
     def __init__(self):
-        self.functions = {'out.add': out_add}
+        self.functions = {'t2x.fail': t2x_fail,
+                          'out.add':  out_add}
         self.lexicon   = {}
         self.grammars  = {}
         self.input     = None
         self.output    = None
         self.start     = 0
+        self.end       = 0
         self.re_stack  = []
 
     def _get_lineno(self):
@@ -62,9 +67,13 @@ class Context(object):
     def _error(self, error):
         raise Exception(self._format(error))
 
+    def _eof(self):
+        return self.start >= self.end
+
     def parse(self, input):
-        self.start = 0
         self.input = input
+        self.start = 0
+        self.end   = len(input)
         self.grammars['input'].parse(self)
 
     def dump(self):
