@@ -34,10 +34,8 @@ class Function(Token):
         # Other functions are utilities.
         func = context.functions.get(self.name)
         if not func:
-            print "MISSING FUNC", self.name
-            return 0 #FIXME raise Exception('unknown function ' + self.name)
-        func(context, *[a.value() for a in self.args])
-        return 0
+            raise Exception('unknown function ' + self.name)
+        return func(context, *[a.value() for a in self.args])
 
     def dump(self, indent = 0):
         args = ', '.join(a.dump() for a in self.args)

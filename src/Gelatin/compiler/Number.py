@@ -17,13 +17,13 @@ from Token   import Token
 
 class Number(Token):
     def __init__(self, number):
-        self.value = number
+        self.data = number
 
     def value(self):
-        return self.value
+        return self.data
 
     def re_value(self):
-        return str(self.value)
+        return str(self.data)
 
     def dump(self, indent = 0):
-        return INDENT * indent + str(self.value)
+        return INDENT * indent + str(self.data)

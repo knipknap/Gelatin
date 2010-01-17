@@ -21,23 +21,28 @@ class Grammar(Token):
         self.inherit    = None
         self.statements = None
 
-    def parse(self, context):
-        if self.inherit:
-            inherited = context.grammars[self.inherit].statements
-        else:
-            inherited = []
+    def get_statements(self, context):
+        if not self.inherit:
+            return self.statements
+        inherited = context.grammars[self.inherit].get_statements(context)
+        return inherited + self.statements
 
-        matched = True
+    def parse(self, context):
+        statements = self.get_statements(context)
+        matched    = True
         while matched:
             if context._eof():
-                break
+                return
             matched = False
             #context._msg(self.name)
-            for statement in inherited + self.statements:
-                if statement.parse(context) != 0:
+            for statement in statements:
+                result = statement.parse(context)
+                if result == 1:
                     matched = True
                     break
-        return 0
+                elif result < 0:
+                    return result + 1
+        context._error('no match found, context was ' + self.name)
 
     def dump(self, indent = 0):
         res = INDENT * indent + 'grammar ' + self.name

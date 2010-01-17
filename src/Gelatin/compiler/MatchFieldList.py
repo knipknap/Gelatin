@@ -25,12 +25,10 @@ class MatchFieldList(Token):
         if not self.regex:
             regex      = ''.join(e.re_value() for e in self.expressions)
             self.regex = re.compile(regex)
-            print "COMPILED:", regex
 
         match = self.regex.match(context.input, context.start)
         if not match:
             return None
-        print "MATCH", self.regex.pattern
         context.start += len(match.group(0))
         return match
 

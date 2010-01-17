@@ -19,6 +19,8 @@ from Token                       import Token
 
 class Dedent(Token):
     def __call__(self, buffer, start, end):
+        if start > end:
+            return start + 1
         after_indent = eat_indent(buffer, start, end)
         self.processor.indent = count_indent(buffer, after_indent)
         return after_indent + 1  # +1/-1 hack

@@ -26,7 +26,12 @@ class MatchStatement(Token):
             return 0
         context.re_stack.append(match)
         for statement in self.statements:
-            statement.parse(context)
+            result = statement.parse(context)
+            if result == 1:
+                break
+            elif result < 0:
+                context.re_stack.pop()
+                return result
         context.re_stack.pop()
         return 1
 

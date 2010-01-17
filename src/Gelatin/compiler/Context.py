@@ -13,16 +13,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+def t2x_skip(context):
+    return 0
+
 def t2x_fail(context, message = 'No matching statement found'):
     context._error(message)
 
+def t2x_return(context, levels = 1):
+    #print "t2x.return():", -levels
+    return -levels
+
 def out_add(context, path, data = None):
-    print "out.add():", path, data
+    #print "out.add():", path, data
+    return 0
+
+def out_enter(context, path):
+    #print "out.enter():", path
+    return 0
 
 class Context(object):
     def __init__(self):
-        self.functions = {'t2x.fail': t2x_fail,
-                          'out.add':  out_add}
+        self.functions = {'t2x.fail':   t2x_fail,
+                          't2x.return': t2x_return,
+                          't2x.skip':   t2x_skip,
+                          'out.add':    out_add,
+                          'out.enter':  out_enter}
         self.lexicon   = {}
         self.grammars  = {}
         self.input     = None
@@ -71,9 +86,11 @@ class Context(object):
         return self.start >= self.end
 
     def parse(self, input):
-        self.input = input
-        self.start = 0
-        self.end   = len(input)
+        self.input    = input
+        self.output   = None
+        self.start    = 0
+        self.end      = len(input)
+        self.re_stack = []
         self.grammars['input'].parse(self)
 
     def dump(self):
