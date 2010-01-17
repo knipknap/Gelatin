@@ -1,0 +1,18 @@
+#!/usr/bin/python
+import sys
+sys.path.insert(0, 'src')
+from Gelatin.compiler    import SyntaxCompiler
+from Gelatin.parser      import Parser
+from Gelatin.parser.util import error
+
+if __name__ == '__main__':
+    try:
+        conf_file = sys.argv[1]
+    except:
+        print 'Syntax: %s conf_file' % sys.argv[0]
+        sys.exit(1)
+
+    input   = open(conf_file).read()
+    parser  = Parser()
+    grammar = parser.parse(input, SyntaxCompiler())
+    print grammar.dump()

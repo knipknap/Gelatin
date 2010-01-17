@@ -1,0 +1,12 @@
+= Gelatine =
+
+Gelatine is a parser generator for converting text to a structured
+format such as XML, JSON or YAML.
+
+= Installation =
+
+    sudo python setup.py install --prefix /usr/local
+
+= Dependencies =
+
+* Python 2.6 or greater

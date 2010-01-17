@@ -1,0 +1,47 @@
+# Common tokens.
+<ws>    := [ \t\n]+
+number  := [0-9]+
+<word>  := [a-zA-Z0-9_]+
+varname := word
+
+# Comments.
+<comment> := "#", -NEWLINE*, NEWLINE
+
+# Strings.
+<string_char>     := -"'"
+<string_esc_char> := "\\'"
+string_data       := (string_esc_char / string_char)+
+string            := "'", string_data, "'"
+
+# Regular expressions.
+<re_char>     := -"/"
+<re_esc_char> := "\\/"
+re_data       := (re_esc_char / re_char)+
+regex         := "/", re_data, "/"
+
+# Function calls.
+func_name   := word, (".", word)?
+arg_list    := expression, (",", ws, expression)*
+<func_args> := "(", arg_list?, ")"
+function    := func_name, func_args
+
+# Expressions.
+>expression< := string / regex / number / varname
+
+# Match statement.
+match_field_list := expression, (ws, expression)*
+match_list       := match_field_list, (ws, "|", ws, match_field_list)*
+match_stmt       := "match", ws, match_list, ':', suite
+
+# "define" statement.
+define_stmt := "define", ws, varname, ws, expression, NEWLINE
+
+# "in" statement.
+>simple_stmt<   := comment / function
+>compound_stmt< := match_stmt
+>stmt<          := ((simple_stmt, NEWLINE) / compound_stmt)+
+inherit         := '(', varname, ')'
+suite           := NEWLINE, INDENT, stmt+, DEDENT
+in_stmt         := "in", ws, varname, inherit?, ":", suite
+
+root := (comment / define_stmt / in_stmt / NEWLINE)+
