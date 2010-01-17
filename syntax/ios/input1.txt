@@ -1,0 +1,9 @@
+version 12.1
+boot system flash:ios.bin
+hostname Testrouter-1
+interface Serial1/0
+ ip address 10.10.10.1 255.255.255.252
+!
+line vty 0 4
+ access-group 10 in
+end

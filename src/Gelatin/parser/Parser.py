@@ -25,7 +25,7 @@ _ebnf      = open(_ebnf_file).read()
 class Parser(parser.Parser):
     def __init__(self):
         self.indent = 0
-        offside = (
+        offside     = (
             ("NEWLINE", Newline(self).table()),
             ("INDENT",  Indent(self).table()),
             ("DEDENT",  Dedent(self).table()),
@@ -36,4 +36,6 @@ class Parser(parser.Parser):
         start, _, end = parser.Parser.parse(self, input, processor = compiler)
         if end < len(input):
             error(input, end)
-        return compiler.grammars['input']
+        if not compiler.context.grammars.has_key('input'):
+            error(input, end, 'Required grammar "input" not found.')
+        return compiler.context

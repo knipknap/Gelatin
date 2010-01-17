@@ -18,5 +18,11 @@ from Token   import Token
 class String(Token):
     data = None
 
+    def value(self):
+        return self.data
+
+    def re_value(self):
+        return self.data #FIXME: escape the string
+
     def dump(self, indent = 0):
         return INDENT * indent + '\'' + self.data + '\''

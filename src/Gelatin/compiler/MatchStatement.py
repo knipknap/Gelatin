@@ -20,6 +20,16 @@ class MatchStatement(Token):
         self.matchlist  = None
         self.statements = None
 
+    def parse(self, context):
+        match = self.matchlist.match(context)
+        if not match:
+            return 0
+        context.re_stack.append(match)
+        for statement in self.statements:
+            statement.parse(context)
+        context.re_stack.pop()
+        return 1
+
     def dump(self, indent = 0):
         res  = INDENT * indent + 'match:\n'
         res += self.matchlist.dump(indent + 1)

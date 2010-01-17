@@ -18,5 +18,8 @@ from Token   import Token
 class Regex(Token):
     data = None
 
+    def re_value(self):
+        return self.data
+
     def dump(self, indent = 0):
         return INDENT * indent + '/' + self.data + '/'

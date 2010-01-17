@@ -7,12 +7,15 @@ from Gelatin.parser.util import error
 
 if __name__ == '__main__':
     try:
-        conf_file = sys.argv[1]
+        gel_file   = sys.argv[1]
+        input_file = sys.argv[2]
     except:
-        print 'Syntax: %s conf_file' % sys.argv[0]
+        print 'Syntax: %s gel_file input_file' % sys.argv[0]
         sys.exit(1)
 
-    input   = open(conf_file).read()
+    gel     = open(gel_file).read()
+    input   = open(input_file).read()
     parser  = Parser()
-    grammar = parser.parse(input, SyntaxCompiler())
-    print grammar.dump()
+    context = parser.parse(gel, SyntaxCompiler())
+    #context.dump()
+    context.parse(input)

@@ -12,12 +12,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import re
 from Gelatin import INDENT
 from Token   import Token
 
 class MatchFieldList(Token):
     def __init__(self):
         self.expressions = []
+        self.regex       = None
+
+    def match(self, context):
+        if not self.regex:
+            regex      = ''.join(e.re_value() for e in self.expressions)
+            self.regex = re.compile(regex)
+            print "COMPILED:", regex
+
+        match = self.regex.match(context.input, context.start)
+        if not match:
+            return None
+        print "MATCH", self.regex.pattern
+        context.start += len(match.group(0))
+        return match
 
     def dump(self, indent = 0):
         res = INDENT * indent

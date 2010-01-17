@@ -15,8 +15,5 @@
 from Gelatin import INDENT
 
 class Token(object):
-    def __str__(self):
-        return self.dump()
-
     def dump(self, indent = 0):
         return INDENT * indent, self.__class__.__name__

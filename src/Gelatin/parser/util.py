@@ -18,10 +18,10 @@ from Gelatin import INDENT_WIDTH
 whitespace_re = re.compile(' *')
 
 def _format(buffer, end, msg):
-    line_start = input.rfind('\n', 0, end) + 1
-    line_end   = input.find('\n', line_start)
-    line_no    = input.count('\n', 0, end) + 1
-    line       = input[line_start:line_end]
+    line_start = buffer.rfind('\n', 0, end) + 1
+    line_end   = buffer.find('\n', line_start)
+    line_no    = buffer.count('\n', 0, end) + 1
+    line       = buffer[line_start:line_end]
     offset     = end - line_start
     mark       = ' ' + ' ' * offset + '^'
     return '%s in line %d:\n%s\n%s' % (msg, line_no, repr(line), mark)
@@ -42,7 +42,7 @@ def eat_indent(buffer, start, end, expected_indent = None):
     indent         = whitespace_len / INDENT_WIDTH
     if whitespace_len % INDENT_WIDTH != 0:
         msg = 'indent must be a multiple of %d' % INDENT_WIDTH
-        _error(buffer, start, msg)
+        error(buffer, start, msg)
     if expected_indent is None or expected_indent == indent:
         return start + whitespace_len
     return start
@@ -51,5 +51,8 @@ def count_indent(buffer, start):
     indent = start - buffer.rfind('\n', 0, start) - 1
     if indent % INDENT_WIDTH != 0:
         msg = 'indent must be a multiple of %d' % INDENT_WIDTH
-        _error(buffer, start, msg)
+        error(buffer, start, msg)
+    if indent / INDENT_WIDTH > 2:
+        msg = 'maximum indent (2 levels) exceeded.'
+        error(buffer, start, msg)
     return indent / INDENT_WIDTH

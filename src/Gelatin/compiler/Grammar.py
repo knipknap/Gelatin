@@ -16,9 +16,27 @@ from Gelatin import INDENT
 from Token   import Token
 
 class Grammar(Token):
-    name       = None
-    inherit    = None
-    statements = None
+    def __init__(self):
+        self.name       = None
+        self.inherit    = None
+        self.statements = None
+
+    def parse(self, context):
+        if self.inherit:
+            inherited = context.grammars[self.inherit].statements
+        else:
+            inherited = []
+
+        matched = True
+        while matched:
+            matched = False
+            context._msg(self.name)
+            for statement in inherited + self.statements:
+                if statement.parse(context) != 0:
+                    matched = True
+                    print "MATCH", statement.__class__.__name__
+                    break
+        return 0
 
     def dump(self, indent = 0):
         res = INDENT * indent + 'grammar ' + self.name

@@ -20,6 +20,25 @@ class Function(Token):
         self.name = None
         self.args = []
 
+    def parse(self, context):
+        # Function names that have NO dot in them are references to another
+        # grammar.
+        if '.' not in self.name:
+            start   = context.start
+            grammar = context.grammars.get(self.name)
+            grammar.parse(context)
+            if context.start != start:
+                return 1
+            return 0
+
+        # Other functions are utilities.
+        func = context.functions.get(self.name)
+        if not func:
+            print "MISSING FUNC", self.name
+            return 0 #FIXME raise Exception('unknown function ' + self.name)
+        func(context, *[a.value() for a in self.args])
+        return 0
+
     def dump(self, indent = 0):
         args = ', '.join(a.dump() for a in self.args)
         return INDENT * indent + self.name + '(' + args + ')'

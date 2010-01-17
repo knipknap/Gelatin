@@ -21,6 +21,7 @@ from MatchList                     import MatchList
 from Number                        import Number
 from Regex                         import Regex
 from String                        import String
+from Context                       import Context
 
 """
 Indent handling:
@@ -39,8 +40,7 @@ class SyntaxCompiler(DispatchProcessor):
     Processor sub-class defining processing functions for the productions.
     """
     def __init__(self):
-        self.lexicon  = {}
-        self.grammars = {}
+        self.context = Context()
 
     def _regex(self, (tag, left, right, sublist), buffer):
         regex      = Regex()
@@ -54,7 +54,7 @@ class SyntaxCompiler(DispatchProcessor):
 
     def _varname(self, token, buffer):
         varname = getString(token, buffer)
-        return self.lexicon[varname]
+        return self.context.lexicon[varname]
 
     def _number(self, token, buffer):
         number = getString(token, buffer)
@@ -127,12 +127,12 @@ class SyntaxCompiler(DispatchProcessor):
         if value_tag == 'regex':
             value = self._regex(value_tup, buffer)
         elif value_tag == 'varname':
-            if not self.lexicon.has_key(value):
+            if not self.context.lexicon.has_key(value):
                 _error(buffer, value_tup[1], 'no such variable')
-            value = self.lexicon[value]
+            value = self.context.lexicon[value]
         else:
             raise Exception('BUG: invalid token %s' % value_tag)
-        self.lexicon[name] = value
+        self.context.lexicon[name] = value
 
     def in_stmt(self, (tag, left, right, sublist), buffer):
         map                = singleMap(sublist)
@@ -141,4 +141,4 @@ class SyntaxCompiler(DispatchProcessor):
         grammar.statements = self._suite(map['suite'], buffer)
         if map.has_key('inherit'):
             grammar.inherit = self._inherit(map['inherit'], buffer)
-        self.grammars[grammar.name] = grammar
+        self.context.grammars[grammar.name] = grammar

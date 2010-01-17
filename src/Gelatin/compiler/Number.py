@@ -19,5 +19,11 @@ class Number(Token):
     def __init__(self, number):
         self.value = number
 
+    def value(self):
+        return self.value
+
+    def re_value(self):
+        return str(self.value)
+
     def dump(self, indent = 0):
         return INDENT * indent + str(self.value)
