@@ -1,9 +1,10 @@
 #!/usr/bin/python
 import sys
 sys.path.insert(0, 'src')
-from Gelatin.compiler    import SyntaxCompiler
 from Gelatin.parser      import Parser
 from Gelatin.parser.util import error
+from Gelatin.compiler    import SyntaxCompiler
+from Gelatin.generator   import XmlBuilder
 
 if __name__ == '__main__':
     try:
@@ -16,6 +17,8 @@ if __name__ == '__main__':
     gel     = open(gel_file).read()
     input   = open(input_file).read()
     parser  = Parser()
+    builder = XmlBuilder()
     context = parser.parse(gel, SyntaxCompiler())
     #context.dump()
-    context.parse(input)
+    context.parse(input, builder)
+    builder.dump()

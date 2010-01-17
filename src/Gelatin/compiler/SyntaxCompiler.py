@@ -48,9 +48,8 @@ class SyntaxCompiler(DispatchProcessor):
         return regex
 
     def _string(self, (tag, left, right, sublist), buffer):
-        string      = String()
-        string.data = getString(sublist[0], buffer)
-        return string
+        string = getString(sublist[0], buffer)
+        return String(self.context, string)
 
     def _varname(self, token, buffer):
         varname = getString(token, buffer)

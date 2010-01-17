@@ -25,10 +25,12 @@ def t2x_return(context, levels = 1):
 
 def out_add(context, path, data = None):
     #print "out.add():", path, data
+    context.builder.add(path, data)
     return 0
 
 def out_enter(context, path):
     #print "out.enter():", path
+    context.builder.enter(path)
     return 0
 
 class Context(object):
@@ -41,7 +43,7 @@ class Context(object):
         self.lexicon   = {}
         self.grammars  = {}
         self.input     = None
-        self.output    = None
+        self.builder   = None
         self.start     = 0
         self.end       = 0
         self.re_stack  = []
@@ -85,9 +87,9 @@ class Context(object):
     def _eof(self):
         return self.start >= self.end
 
-    def parse(self, input):
+    def parse(self, input, builder):
         self.input    = input
-        self.output   = None
+        self.builder  = builder
         self.start    = 0
         self.end      = len(input)
         self.re_stack = []

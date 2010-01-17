@@ -23,8 +23,8 @@ class MatchFieldList(Token):
 
     def match(self, context):
         if not self.regex:
-            regex      = ''.join(e.re_value() for e in self.expressions)
-            self.regex = re.compile(regex)
+            regex      = ')('.join(e.re_value() for e in self.expressions)
+            self.regex = re.compile('(' + regex + ')')
 
         match = self.regex.match(context.input, context.start)
         if not match:
