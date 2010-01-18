@@ -1,6 +1,6 @@
-= Gelatine =
+= Gelatin =
 
-Gelatine is a parser generator for converting text to a structured
+Gelatin is a parser generator for converting text to a structured
 format such as XML, JSON or YAML.
 
 = Installation =
