@@ -25,6 +25,9 @@ class Builder(object):
     def __init__(self):
         raise NotImplementedError('abstract method')
 
+    def serialize(self):
+        raise NotImplementedError('abstract method')
+
     def dump(self):
         raise NotImplementedError('abstract method')
 

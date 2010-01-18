@@ -21,8 +21,11 @@ class XmlBuilder(Builder):
         self.current = [self.etree]
         self.stack   = []
 
+    def serialize(self):
+        return etree.tostring(self.etree, pretty_print = True)
+
     def dump(self):
-        print etree.tostring(self.etree, pretty_print = True)
+        print self.serialize()
 
     def _tag2xpath(self, tag, attribs):
         tag = tag.replace(' ', '-')
