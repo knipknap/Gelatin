@@ -20,6 +20,7 @@ class Grammar(Token):
         self.name       = None
         self.inherit    = None
         self.statements = None
+        self.on_leave   = []
 
     def get_statements(self, context):
         if not self.inherit:
@@ -27,11 +28,24 @@ class Grammar(Token):
         inherited = context.grammars[self.inherit].get_statements(context)
         return inherited + self.statements
 
+    def _enter(self, context):
+        context.stack.append(self)
+        #print "ENTER", self.__class__.__name__
+
+    def _leave(self, context):
+        for func, args in self.on_leave:
+            func(*args)
+        self.on_leave = []
+        context.stack.pop()
+        #print "LEAVE", self.__class__.__name__
+
     def parse(self, context):
+        self._enter(context)
         statements = self.get_statements(context)
         matched    = True
         while matched:
             if context._eof():
+                self._leave(context)
                 return
             matched = False
             #context._msg(self.name)
@@ -41,6 +55,7 @@ class Grammar(Token):
                     matched = True
                     break
                 elif result < 0:
+                    self._leave(context)
                     return result + 1
         context._error('no match found, context was ' + self.name)
 

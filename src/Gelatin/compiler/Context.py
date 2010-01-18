@@ -31,6 +31,7 @@ def out_add(context, path, data = None):
 def out_enter(context, path):
     #print "out.enter():", path
     context.builder.enter(path)
+    context.stack[-1].on_leave.append((context.builder.leave, ()))
     return 0
 
 class Context(object):
@@ -40,13 +41,17 @@ class Context(object):
                           't2x.skip':   t2x_skip,
                           'out.add':    out_add,
                           'out.enter':  out_enter}
-        self.lexicon   = {}
-        self.grammars  = {}
-        self.input     = None
-        self.builder   = None
-        self.start     = 0
-        self.end       = 0
-        self.re_stack  = []
+        self.lexicon  = {}
+        self.grammars = {}
+        self.input    = None
+        self.builder  = None
+        self.end      = 0
+        self._init()
+
+    def _init(self):
+        self.start    = 0
+        self.re_stack = []
+        self.stack    = []
 
     def _get_lineno(self):
         return self.input.count('\n', 0, self.start) + 1
@@ -88,11 +93,10 @@ class Context(object):
         return self.start >= self.end
 
     def parse(self, input, builder):
-        self.input    = input
-        self.builder  = builder
-        self.start    = 0
-        self.end      = len(input)
-        self.re_stack = []
+        self._init()
+        self.input   = input
+        self.builder = builder
+        self.end     = len(input)
         self.grammars['input'].parse(self)
 
     def dump(self):

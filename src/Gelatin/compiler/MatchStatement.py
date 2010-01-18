@@ -19,11 +19,22 @@ class MatchStatement(Token):
     def __init__(self):
         self.matchlist  = None
         self.statements = None
+        self.on_leave   = []
+
+    def _enter(self, context):
+        context.stack.append(self)
+
+    def _leave(self, context):
+        for func, args in self.on_leave:
+            func(*args)
+        self.on_leave = []
+        context.stack.pop()
 
     def parse(self, context):
         match = self.matchlist.match(context)
         if not match:
             return 0
+        self._enter(context)
         context.re_stack.append(match)
         for statement in self.statements:
             result = statement.parse(context)
@@ -31,8 +42,10 @@ class MatchStatement(Token):
                 break
             elif result < 0:
                 context.re_stack.pop()
+                self._leave(context)
                 return result
         context.re_stack.pop()
+        self._leave(context)
         return 1
 
     def dump(self, indent = 0):
