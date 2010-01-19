@@ -28,7 +28,7 @@ define version_number /[0-9\.]+/
 define async_line_name name
 
 # Define grammar.
-in default:
+grammar default:
     match ws
         | comment:
         t2x.skip()
@@ -36,32 +36,32 @@ in default:
         out.enqueue_on_add(nl, 'disable')
         t2x.next()
 
-in aaa(default):
+grammar aaa(default):
     match 'aaa' fs 'new-model' nl:
         out.add('aaa/$2')
     match 'aaa' fs nonl nl:
         out.add('aaa/option?string="$2"')
     t2x.return()
 
-in acl_statements(default):
+grammar acl_statements(default):
     match number fs 'remark' fs nonl nl:
         out.add('$2?seq="$0"&remark="$4"')
     match number fs acl_action fs nonl nl:
         out.add('$2?seq="$0"&condition="$4"')
     t2x.return()
 
-in acl(default):
+grammar acl(default):
     match 'ipv4 access-list' fs name nl:
         out.enter('acl?name="$2"&protocol="ipv4"')
         acl_statements()
     t2x.return()
 
-in as_path_set_statements(default):
+grammar as_path_set_statements(default):
     match 'ios-regex' fs '\'' /[^']*/ '\'' nl:
         out.add('as-path?regex="$0"')
     t2x.return()
 
-in as_path_set(default):
+grammar as_path_set(default):
     match 'as-path-set' fs nows nl:
         out.enter('$0?name="$2"')
         as_path_set_statements()
@@ -69,7 +69,7 @@ in as_path_set(default):
         t2x.skip()
     t2x.return()
 
-in async_line_statements(default):
+grammar async_line_statements(default):
     match /access-(?:group|class)/ fs acl_direction fs acl_name nl:
         out.add('$0?name=$2/direction', '$4')
     match 'authorization exec' fs nows nl:
@@ -87,7 +87,7 @@ in async_line_statements(default):
         out.add('$0/$2', '$4')
     t2x.return()
 
-in async_line(default):
+grammar async_line(default):
     match 'line' fs async_line_name nl:
         out.enter('async-line?name="$2"')
         async_line_statements()
@@ -96,7 +96,7 @@ in async_line(default):
         async_line_statements()
     t2x.return()
 
-in redistribute_statements:
+grammar redistribute_statements:
     match ws:
         t2x.skip()
     match 'metric' fs number:
@@ -107,7 +107,7 @@ in redistribute_statements:
         t2x.return()
     t2x.return()
 
-in bgp_af_statements(default):
+grammar bgp_af_statements(default):
     match 'as-override' nl:
         out.add('$0')
     match 'allocate-label' fs word nl:
@@ -149,7 +149,7 @@ in bgp_af_statements(default):
         out.add('$0?direction="$2"/$4')
     t2x.return()
 
-in bgp_neighbor_statements(default):
+grammar bgp_neighbor_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         bgp_af_statements()
@@ -173,7 +173,7 @@ in bgp_neighbor_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in bgp_vrf_statements(default):
+grammar bgp_vrf_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         bgp_af_statements()
@@ -181,7 +181,7 @@ in bgp_vrf_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in bgp_statements(default):
+grammar bgp_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         bgp_af_statements()
@@ -205,21 +205,21 @@ in bgp_statements(default):
         bgp_vrf_statements()
     t2x.return()
 
-in class_map_statements(default):
+grammar class_map_statements(default):
     match 'match' fs nonl nl:
         out.add('$0?condition="$2"')
     match 'end-class-map' nl:
         t2x.return()
     t2x.return()
 
-in class_maps(default):
+grammar class_maps(default):
     match 'class-map' fs /match-(?:any|all)/ fs nonl nl:
         out.add('qos/$0?name="$4"/mode/$2')
         out.enter('qos/$0?name="$4"')
         class_map_statements()
     t2x.return()
 
-in client_statements(default):
+grammar client_statements(default):
     match 'password' fs 'encrypted' fs nows nl:
         out.add('$0?type="$2"', '$4')
         t2x.return()
@@ -231,25 +231,25 @@ in client_statements(default):
         t2x.return()
     t2x.return()
 
-in clients(default):
+grammar clients(default):
     match /(?:t?ftp|rcp) client/ fs:
         out.enter('$0')
         client_statements()
     t2x.return()
 
-in clock(default):
+grammar clock(default):
     match 'clock' fs 'timezone' fs nonl nl:
         out.add('clock/timezone', '$4')
     match 'clock' fs 'summer-time' fs nonl nl:
         out.add('clock/summer-time', '$4')
     t2x.return()
 
-in community_set_statements(default):
+grammar community_set_statements(default):
     match nows ',?' nl:
         out.add('community?name="$0"', '$2')
     t2x.return()
 
-in community_set(default):
+grammar community_set(default):
     match 'community-set' fs nows nl:
         out.enter('$0?name="$2"')
         community_set_statements()
@@ -257,7 +257,7 @@ in community_set(default):
         t2x.skip()
     t2x.return()
 
-in controller_path_statements(default):
+grammar controller_path_statements(default):
     match 'ais-shut' nl:
         out.add('$0')
     match 'delay trigger' fs number nl:
@@ -270,12 +270,12 @@ in controller_path_statements(default):
         out.add('$0/$2')
     t2x.return()
 
-in controller_au_tug_statements(default):
+grammar controller_au_tug_statements(default):
     match 'mode' fs nows nl:
         out.add('$0', '$2')
     t2x.return()
 
-in controller_au_statements(default):
+grammar controller_au_statements(default):
     match 'mode' fs nows nl:
         out.add('$0', '$2')
     match 'tug3' fs number nl:
@@ -285,21 +285,21 @@ in controller_au_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in controller_channel_group_statements(default):
+grammar controller_channel_group_statements(default):
     match 'speed' fs number nl:
         out.add('$0', '$2')
     match 'timeslots' fs nows nl:
         out.add('$0', '$2')
     t2x.return()
 
-in controller_dsu_statements(default):
+grammar controller_dsu_statements(default):
     match 'mode' fs nows nl:
         out.add('$0', '$2')
     match 'bandwidth' fs number nl:
         out.add('$0', '$2')
     t2x.return()
 
-in controller_statements(default):
+grammar controller_statements(default):
     match 'au' fs number nl:
         out.enter('$0?number="$2"')
         controller_au_statements()
@@ -347,13 +347,13 @@ in controller_statements(default):
     controller_path_statements()
     t2x.return()
 
-in controller(default):
+grammar controller(default):
     match 'controller' fs nonl nl:
         out.enter('controllers/$0?name="$2"')
         controller_statements()
     t2x.return()
 
-in event(default):
+grammar event(default):
     match 'event manager' fs 'environment' fs nonl nl:
         out.add('$0/$2', '$4')
     match 'event manager' fs 'directory' fs nonl nl:
@@ -362,12 +362,12 @@ in event(default):
         out.add('$0/$2?name="$4"/$6', '$9')
     t2x.return()
 
-in flow_version_statements(default):
+grammar flow_version_statements(default):
     match 'options' fs nonl nl:
         out.add('options/option?name="$2"')
     t2x.return()
 
-in flow_statements(default):
+grammar flow_statements(default):
     match 'record' fs 'ipv4' nl:
         out.add('$0/$2')
     match 'cache' fs 'entries' fs nows nl:
@@ -388,13 +388,13 @@ in flow_statements(default):
         flow_version_statements()
     t2x.return()
 
-in flow(default):
+grammar flow(default):
     match 'flow' fs /(?:monitor|exporter)-map/ fs name nl:
         out.enter('$0/$2?name="$4"')
         flow_statements()
     t2x.return()
 
-in hw_module(default):
+grammar hw_module(default):
     match 'hw-module' fs 'subslot' fs nows fs 'cardtype' fs nows nl:
         out.add('$0?$2="$4"/$6', '$8')
     match 'hw-module' fs 'subslot' fs nows fs 'shutdown powered' nl:
@@ -405,12 +405,12 @@ in hw_module(default):
         out.add('$0/$2/$4/$10?name="$12"/$6/$8')
     t2x.return()
 
-in interface_l2transport_statements(default):
+grammar interface_l2transport_statements(default):
     match 'service-policy' fs /(?:in|out)put/ fs nows nl:
         out.add('$0?name="$4"&direction="$2"', '$4')
     t2x.return()
 
-in interface_pos_statements(default):
+grammar interface_pos_statements(default):
     match 'crc' fs number nl:
         out.add('$0', '$2')
     match 'framing' fs nonl nl:
@@ -419,14 +419,14 @@ in interface_pos_statements(default):
         out.add('$0', '$0')
     t2x.return()
 
-in interface_pvc_statements(default):
+grammar interface_pvc_statements(default):
     match 'service-policy' fs /(?:in|out)put/ fs nows nl:
         out.add('$0?name="$4"&direction="$2"', '$4')
     match 'encap' fs nows nl:
         out.add('$0', '$2')
     t2x.return()
 
-in interface_serial_statements(default):
+grammar interface_serial_statements(default):
     match 'crc' fs number nl:
         out.add('$0', '$2')
     match 'invert' nl:
@@ -435,7 +435,7 @@ in interface_serial_statements(default):
         out.add('$0')
     t2x.return()
 
-in interface_statements(default):
+grammar interface_statements(default):
     match 'bandwidth' fs number nl:
         out.add('$0', '$2')
     match 'carrier-delay' fs 'up' fs number fs 'down' fs number nl:
@@ -522,7 +522,7 @@ in interface_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in interface(default):
+grammar interface(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         interface_statements()
@@ -539,7 +539,7 @@ in interface(default):
         interface_statements()
     t2x.return()
 
-in l2vpn_pwclass_encap_statements(default):
+grammar l2vpn_pwclass_encap_statements(default):
     match 'control-word' nl:
         out.add('$0')
     match 'protocol' fs nows nl:
@@ -548,13 +548,13 @@ in l2vpn_pwclass_encap_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in l2vpn_pwclass_statements(default):
+grammar l2vpn_pwclass_statements(default):
     match 'encapsulation' fs nows nl:
         out.enter('$0?name="$2"')
         l2vpn_pwclass_encap_statements()
     t2x.return()
 
-in l2vpn_xconnect_group_p2p_neighbor_statements(default):
+grammar l2vpn_xconnect_group_p2p_neighbor_statements(default):
     match 'pw-class' fs nows nl:
         out.add('$0', '$2')
     match 'control-word' fs 'disable' nl:
@@ -563,7 +563,7 @@ in l2vpn_xconnect_group_p2p_neighbor_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in l2vpn_xconnect_group_p2p_statements(default):
+grammar l2vpn_xconnect_group_p2p_statements(default):
     match 'interface' fs nows nl:
         out.add('$0', '$2')
     match 'neighbor' fs ipv4_ip fs 'pw-id' fs nows nl:
@@ -572,13 +572,13 @@ in l2vpn_xconnect_group_p2p_statements(default):
         l2vpn_xconnect_group_p2p_neighbor_statements()
     t2x.return()
 
-in l2vpn_xconnect_group_statements(default):
+grammar l2vpn_xconnect_group_statements(default):
     match 'p2p' fs nows nl:
         out.enter('$0?name="$2"')
         l2vpn_xconnect_group_p2p_statements()
     t2x.return()
 
-in l2vpn_statements(default):
+grammar l2vpn_statements(default):
     match 'pw-class' fs nows nl:
         out.enter('$0?name="$2"')
         l2vpn_pwclass_statements()
@@ -587,13 +587,13 @@ in l2vpn_statements(default):
         l2vpn_xconnect_group_statements()
     t2x.return()
 
-in l2vpn(default):
+grammar l2vpn(default):
     match 'l2vpn' nl:
         out.enter('$0')
         l2vpn_statements()
     t2x.return()
 
-in logging_statements(default):
+grammar logging_statements(default):
     match 'archive-size' fs number nl:
         out.add('$0', '$2')
     match 'archive-length' fs number nl:
@@ -608,7 +608,7 @@ in logging_statements(default):
         out.add('$0')
     t2x.return()
 
-in logging(default):
+grammar logging(default):
     match 'logging archive' nl:
         out.enter('logging/option?string="archive"')
         logging_statements()
@@ -616,23 +616,23 @@ in logging(default):
         out.add('logging/option?string="$2"')
     t2x.return()
 
-in sampler_map_statements(default):
+grammar sampler_map_statements(default):
     match 'random' fs nonl nl:
         out.add('$0', '$2')
     t2x.return()
 
-in sampler_map(default):
+grammar sampler_map(default):
     match 'sampler-map' fs name nl:
         out.enter('$0?name="$2"')
         sampler_map_statements()
     t2x.return()
 
-in service_commands(default):
+grammar service_commands(default):
     match 'service' fs nonl nl:
         out.add('$0/$2')
     t2x.return()
 
-in snmp_statements(default):
+grammar snmp_statements(default):
     match 'community' fs nows fs nonl nl:
         out.add('community?name="$2"', '$4')
     match 'engineID local' fs nows nl:
@@ -663,59 +663,59 @@ in snmp_statements(default):
         out.add('view?name="$2"/allow?name="$4"', '$6')
     t2x.return()
 
-in snmp(default):
+grammar snmp(default):
     match 'snmp-server' fs:
         out.enter('snmp')
         snmp_statements()
     t2x.return()
 
-in taskgroup_statements(default):
+grammar taskgroup_statements(default):
     match 'description' fs nonl nl:
         out.add('$0', '$2')
     match 'task' fs /(?:read|write|execute|debug)/ fs nonl nl:
         out.add('$2?action="$4"')
     t2x.return()
 
-in taskgroup(default):
+grammar taskgroup(default):
     match 'taskgroup' fs name nl:
         out.enter('$0?name="$2"')
         taskgroup_statements()
     t2x.return()
 
-in usergroup_statements(default):
+grammar usergroup_statements(default):
     match 'description' fs nonl nl:
         out.add('$0', '$2')
     match 'taskgroup' fs name nl:
         out.add('$0?name="$2"')
     t2x.return()
 
-in usergroup(default):
+grammar usergroup(default):
     match 'usergroup' fs name nl:
         out.enter('$0?name="$2"')
         usergroup_statements()
     t2x.return()
 
-in username_statements(default):
+grammar username_statements(default):
     match 'group' fs name nl:
         out.add('$0', '$2')
     match 'password' fs number fs nows nl:
         out.add('$0?type="$2"', '$4')
     t2x.return()
 
-in username(default):
+grammar username(default):
     match 'username' fs name nl:
         out.enter('user?name="$2"')
         username_statements()
     t2x.return()
 
-in ntp_interface_statements(default):
+grammar ntp_interface_statements(default):
     match 'broadcast' nl:
         out.add('$0')
     match 'broadcast' fs 'version' fs number nl:
         out.add('$0/$2', '$4')
     t2x.return()
 
-in ntp_statements(default):
+grammar ntp_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         ntp_interface_statements()
@@ -727,18 +727,18 @@ in ntp_statements(default):
         out.add('$0')
     t2x.return()
 
-in ntp(default):
+grammar ntp(default):
     match 'ntp' nl:
         out.enter('ntp')
         ntp_statements()
     t2x.return()
 
-in policy_map_class_police_statements(default):
+grammar policy_map_class_police_statements(default):
     match /[a-z]+-action/ fs nows nl:
         out.add('$0', '$2')
     t2x.return()
 
-in policy_map_class_statements(default):
+grammar policy_map_class_statements(default):
     match 'bandwidth' fs nonl nl:
         out.add('$0', '$2')
     match 'end-policy-map' nl:
@@ -778,19 +778,19 @@ in policy_map_class_statements(default):
         out.add('$0?unit="$4"', '$2')
     t2x.return()
 
-in policy_map_statements(default):
+grammar policy_map_statements(default):
     match 'class' fs nonl nl:
         out.enter('$0?name="$2"')
         policy_map_class_statements()
     t2x.return()
 
-in policy_maps(default):
+grammar policy_maps(default):
     match 'policy-map' fs nonl nl:
         out.enter('qos/$0?name="$2"')
         policy_map_statements()
     t2x.return()
 
-in prefix_set_statements(default):
+grammar prefix_set_statements(default):
     match ipv4_ip '/' number ',?' nl:
         out.add('entry?prefix="$0/$2"', '$4')
     match ipv4_ip '/' number fs /[lg]e/ fs number ',?' nl:
@@ -799,7 +799,7 @@ in prefix_set_statements(default):
         out.add('entry?prefix="$0/$2"&$4="$6"&$8="$10"', '$12')
     t2x.return()
 
-in prefix_set(default):
+grammar prefix_set(default):
     match 'prefix-set' fs nows nl:
         out.enter('$0?name="$2"')
         prefix_set_statements()
@@ -807,7 +807,7 @@ in prefix_set(default):
         t2x.skip()
     t2x.return()
 
-in router_static_af_route_statements:
+grammar router_static_af_route_statements:
     match ws:
         t2x.skip()
     match 'description' fs nonl nl:
@@ -822,7 +822,7 @@ in router_static_af_route_statements:
         t2x.return()
     t2x.return()
 
-in router_static_af_statements(default):
+grammar router_static_af_statements(default):
     match ipv4_ip '/' number fs ipv4_ip:
         out.enter('static-route?ip="$0"&pfxlen="$2"/destination?ip="$4"')
         router_static_af_route_statements()
@@ -837,13 +837,13 @@ in router_static_af_statements(default):
         router_static_af_route_statements()
     t2x.return()
 
-in router_static_vrf_statements(default):
+grammar router_static_vrf_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         router_static_af_statements()
     t2x.return()
 
-in router_static_statements(default):
+grammar router_static_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         router_static_af_statements()
@@ -852,31 +852,31 @@ in router_static_statements(default):
         router_static_vrf_statements()
     t2x.return()
 
-in route_policy_statements(default):
+grammar route_policy_statements(default):
     match 'end-policy' nl:
         t2x.return()
     match nonl nl:
         t2x.skip()
     t2x.return()
 
-in route_policy(default):
+grammar route_policy(default):
     match 'route-policy' fs nows nl:
         out.enter('$0?name="$2"')
         route_policy_statements()
     t2x.return()
 
-in switch_fabric_statements(default):
+grammar switch_fabric_statements(default):
     match 'service-policy' fs nows nl:
         out.add('$0?name="$2"')
     t2x.return()
 
-in switch_fabric(default):
+grammar switch_fabric(default):
     match 'switch-fabric' nl:
         out.enter('switch-fabric')
         switch_fabric_statements()
     t2x.return()
 
-in hsrp_interface_group_statements(default):
+grammar hsrp_interface_group_statements(default):
     match 'authentication' fs nows nl:
         out.add('$0', '$2')
     match 'ipv4' fs nows nl:
@@ -887,19 +887,19 @@ in hsrp_interface_group_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in hsrp_interface_statements(default):
+grammar hsrp_interface_statements(default):
     match 'hsrp' fs number fs:
         out.enter('hsrp-group?name="$2"')
         hsrp_interface_group_statements()
     t2x.return()
 
-in hsrp_statements(default):
+grammar hsrp_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         hsrp_interface_statements()
     t2x.return()
 
-in isis_interface_af_statements(default):
+grammar isis_interface_af_statements(default):
     match 'metric' fs nows nl:
         out.add('$0?level="$5"', '$2')
     match 'metric' fs nows fs 'level' fs number nl:
@@ -908,7 +908,7 @@ in isis_interface_af_statements(default):
         out.add('$0?$2="$4"')
     t2x.return()
 
-in isis_interface_statements(default):
+grammar isis_interface_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('address-family?name="$2"')
         isis_interface_af_statements()
@@ -924,7 +924,7 @@ in isis_interface_statements(default):
         out.add('$0')
     t2x.return()
 
-in isis_af_statements(default):
+grammar isis_af_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         isis_interface_statements()
@@ -951,7 +951,7 @@ in isis_af_statements(default):
         redistribute_statements()
     t2x.return()
 
-in isis_statements(default):
+grammar isis_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         isis_af_statements()
@@ -971,10 +971,10 @@ in isis_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in ospf_af_statements(default):
+grammar ospf_af_statements(default):
     t2x.return()
 
-in ospf_area_interface_statements(default):
+grammar ospf_area_interface_statements(default):
     match 'cost' fs number nl:
         out.add('$0', '$2')
     match 'network' fs 'broadcast' nl:
@@ -983,13 +983,13 @@ in ospf_area_interface_statements(default):
         out.add('$0/$2')
     t2x.return()
 
-in ospf_area_statements(default):
+grammar ospf_area_statements(default):
     match 'interface' fs nows nl:
         out.enter('$0?name="$2"')
         ospf_area_interface_statements()
     t2x.return()
 
-in ospf_statements(default):
+grammar ospf_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         ospf_af_statements()
@@ -1009,7 +1009,7 @@ in ospf_statements(default):
         out.add('$0/$4', '$6')
     t2x.return()
 
-in rsvp_interface_statements(default):
+grammar rsvp_interface_statements(default):
     match 'bandwidth' fs number nl:
         out.add('$0/average', '$2')
     match 'bandwidth' fs number fs number nl:
@@ -1017,30 +1017,30 @@ in rsvp_interface_statements(default):
         out.add('$0/burst', '$4')
     t2x.return()
 
-in rsvp_statements(default):
+grammar rsvp_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         rsvp_interface_statements()
     t2x.return()
 
-in mpls_traffic_eng_interface_statements(default):
+grammar mpls_traffic_eng_interface_statements(default):
     t2x.return()
 
-in mpls_traffic_eng_statements(default):
+grammar mpls_traffic_eng_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         mpls_traffic_eng_interface_statements()
     t2x.return()
 
-in mpls_ldp_interface_statements(default):
+grammar mpls_ldp_interface_statements(default):
     t2x.return()
 
-in mpls_ldp_log_statements(default):
+grammar mpls_ldp_log_statements(default):
     match 'neighbor' nl:
         out.add('$0')
     t2x.return()
 
-in mpls_ldp_statements(default):
+grammar mpls_ldp_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         mpls_ldp_interface_statements()
@@ -1059,19 +1059,19 @@ in mpls_ldp_statements(default):
         out.add('$0')
     t2x.return()
 
-in router_pim_statements(default):
+grammar router_pim_statements(default):
     match 'rp-address' fs ipv4_ip fs name fs 'override' nl:
         out.add('$0?acl="$4"&override="1"')
     match 'accept-register' fs nows nl:
         out.add('$0', '$2')
     t2x.return()
 
-in multicast_routing_interface_statements(default):
+grammar multicast_routing_interface_statements(default):
     match 'enable' nl:
         out.add('$0')
     t2x.return()
 
-in multicast_routing_af_statements(default):
+grammar multicast_routing_af_statements(default):
     match 'accounting' fs 'per-prefix' nl:
         out.add('$0/$2')
     match 'interface' fs if_name nl:
@@ -1083,13 +1083,13 @@ in multicast_routing_af_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in multicast_routing_statements(default):
+grammar multicast_routing_statements(default):
     match 'address-family' fs nows nl:
         out.enter('$0?name="$2"')
         multicast_routing_af_statements()
     t2x.return()
 
-in vrrp_interface_vrrp_statements(default):
+grammar vrrp_interface_vrrp_statements(default):
     match 'ipv4' fs ipv4_ip nl:
         out.add('$0?address="$2"', '$2')
         t2x.return()
@@ -1107,13 +1107,13 @@ in vrrp_interface_vrrp_statements(default):
         t2x.return()
     t2x.return()
 
-in vrrp_interface_statements(default):
+grammar vrrp_interface_statements(default):
     match 'vrrp' fs name fs:
         out.enter('$0?name="$2"')
         vrrp_interface_vrrp_statements()
     t2x.return()
 
-in msdp_peer_statements(default):
+grammar msdp_peer_statements(default):
     match 'connect-source' fs nows nl:
         out.add('$0', '$2')
     match 'description' fs nonl nl:
@@ -1122,7 +1122,7 @@ in msdp_peer_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in msdp_statements(default):
+grammar msdp_statements(default):
     match 'originator-id' fs name nl:
         out.add('$0', '$2')
     match 'peer' fs ipv4_ip nl:
@@ -1130,7 +1130,7 @@ in msdp_statements(default):
         msdp_peer_statements()
     t2x.return()
 
-in vrrp_statements(default):
+grammar vrrp_statements(default):
     match 'interface' fs if_name nl:
         out.enter('$0?name="$2"')
         vrrp_interface_statements()
@@ -1138,7 +1138,7 @@ in vrrp_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in protocols(default):
+grammar protocols(default):
     match 'router bgp' fs number nl:
         out.enter('bgp?as="$2"')
         bgp_statements()
@@ -1189,12 +1189,12 @@ in protocols(default):
         multicast_routing_statements()
     t2x.return()
 
-in vrf_af_import_statements(default):
+grammar vrf_af_import_statements(default):
     match ipv4_ip ':' number nl:
         out.add('target?address="$0:$2"')
     t2x.return()
 
-in vrf_af_statements(default):
+grammar vrf_af_statements(default):
     match /(?:im|ex)port route-policy/ fs nows nl:
         out.add('$0', '$2')
     match /(?:im|ex)port route-target/ nl:
@@ -1204,7 +1204,7 @@ in vrf_af_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in vrf_statements(default):
+grammar vrf_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         vrf_af_statements()
@@ -1212,13 +1212,13 @@ in vrf_statements(default):
         out.add('$0', '$2')
     t2x.return()
 
-in vrf(default):
+grammar vrf(default):
     match 'vrf' fs nonl nl:
         out.enter('vrf-list/vrf?name=$2')
         vrf_statements()
     t2x.return()
 
-in banner_statements:
+grammar banner_statements:
     match multi_line_str_end:
         t2x.return()
     match nl:
@@ -1227,7 +1227,7 @@ in banner_statements:
         out.add('.', '$0')
     t2x.return()
 
-in input(default):
+grammar input(default):
     match 'Building configuration...' nl
         | 'Current configuration : \d+ bytes' nl
         | '.* (?:UTC|MET) ?' nl:

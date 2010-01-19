@@ -133,7 +133,7 @@ class SyntaxCompiler(DispatchProcessor):
             raise Exception('BUG: invalid token %s' % value_tag)
         self.context.lexicon[name] = value
 
-    def in_stmt(self, (tag, left, right, sublist), buffer):
+    def grammar_stmt(self, (tag, left, right, sublist), buffer):
         map                = singleMap(sublist)
         grammar            = Grammar()
         grammar.name       = getString(map['varname'], buffer)

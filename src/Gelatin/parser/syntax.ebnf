@@ -36,12 +36,12 @@ match_stmt       := "match", ws, match_list, ':', suite
 # "define" statement.
 define_stmt := "define", ws, varname, ws, expression, NEWLINE
 
-# "in" statement.
+# "grammar" statement.
 >simple_stmt<   := comment / function
 >compound_stmt< := match_stmt
 >stmt<          := ((simple_stmt, NEWLINE) / compound_stmt)+
 inherit         := '(', varname, ')'
 suite           := NEWLINE, INDENT, stmt+, DEDENT
-in_stmt         := "in", ws, varname, inherit?, ":", suite
+grammar_stmt    := "grammar", ws, varname, inherit?, ":", suite
 
-root := (comment / define_stmt / in_stmt / NEWLINE)+
+root := (comment / define_stmt / grammar_stmt / NEWLINE)+
