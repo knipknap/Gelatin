@@ -35,7 +35,7 @@ parser.add_option('--format', '-f',
                   default = 'xml',
                   metavar = 'FORMAT',
                   help    = '''
-The output format. Valid values are: xml json. Default is xml.
+The output format. Valid values are: xml json yaml none. Default is xml.
 ''')
 
 if __name__ == '__main__':
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     except:
         parser.error('missing input file')
 
-    if options.format == 'xml':
+    if options.format == 'xml' or options.format == 'none':
         builder = generator.Xml()
     elif options.format == 'json':
         builder = generator.Json()
@@ -69,4 +69,5 @@ if __name__ == '__main__':
     parser  = Parser()
     context = parser.parse(gel, SyntaxCompiler())
     context.parse(input, builder)
-    print builder.serialize()
+    if options.format != 'none':
+        print builder.serialize()
