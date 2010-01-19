@@ -67,7 +67,8 @@ class JsonBuilder(Builder):
                 node = next_node
             else:
                 node = node.add(Node(tag, attribs))
-        node.text = data
+        if data:
+            node.text = data
         return node
 
     def enter(self, path):

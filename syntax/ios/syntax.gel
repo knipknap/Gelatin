@@ -14,7 +14,7 @@ define ipv4_mask ipv4_ip
 define ipv4_umask ipv4_ip
 define ipv6_ip /[a-zA-Z0-9]+:[a-zA-Z0-9:]+/
 define ipvx_ip /[a-zA-Z0-9:\.]+[\.:][a-zA-Z0-9:\.]+/
-define if_name /[a-zA-Z\-]+[0-9][0-9\/\.:]+/
+define if_name /[a-zA-Z\-]+[0-9][0-9\/\.:]*/
 define if_type /\S+/
 define multi_line_str_start /\^CC?[\r\n]?/
 define multi_line_str_end /\^C[\r\n]/
@@ -33,7 +33,7 @@ in default:
         | comment:
         t2x.skip()
     match 'no' fs:
-        out.enqueue(nl, 'disable')
+        out.enqueue_on_add(nl, 'disable')
         t2x.next()
 
 in archive_log_statements(default):
@@ -68,6 +68,7 @@ in acl_extended_statements(default):
 in acl_statements(default):
     match acl_action fs nonl nl:
         out.add('$0?condition="$2"')
+        t2x.return()
     t2x.return()
 
 in acl(default):
@@ -297,13 +298,11 @@ in bgp_neighbor_group_statements(default):
     match 'update-source' fs if_name nl:
         out.add('update-source', '$2')
         t2x.return()
-    t2x.return()
 
 in bgp_neighbor_statements(bgp_neighbor_group_statements):
-    match fs 'peer-group' fs nows nl:
-        out.add('group', '$3')
+    match 'peer-group' fs nows nl:
+        out.add('group', '$2')
         t2x.return()
-    t2x.return()
 
 in bgp_statements(default):
     match 'auto-summary' nl:
@@ -339,18 +338,15 @@ in bgp_statements(default):
     match 'maximum-paths' fs number nl:
         out.add('$0', '$2')
     match 'neighbor' fs ipv4_ip fs 'peer-group' fs nows nl:
-        out.enter('$0?address="$2"')
-        out.add('group', '$6')
-        bgp_neighbor_statements()
+        out.add('$0?address="$2"/group', '$6')
     match 'neighbor' fs ipv4_ip:
         out.enter('$0?address="$2"')
         bgp_neighbor_statements()
     match 'neighbor' fs ipv6_ip:
         out.enter('$0?address="$2"')
         bgp_neighbor_statements()
-    match 'neighbor' fs nows 'peer-group':
-        out.enter('neighbor-group?name="$2"')
-        bgp_neighbor_group_statements()
+    match 'neighbor' fs nows fs 'peer-group' nl:
+        out.add('neighbor-group?name="$2"')
     match 'neighbor' fs nows:
         out.enter('neighbor-group?name="$2"')
         bgp_neighbor_group_statements()
@@ -896,20 +892,23 @@ in ip_route(default):
 in ipv6_statements(default):
     match 'cef' nl:
         out.add('$0')
+        t2x.return()
     match 'source-route' nl:
         out.add('$0')
+        t2x.return()
     match 'unicast-routing' nl:
         out.add('$0')
+        t2x.return()
     match 'prefix-list' fs nows fs:
         out.enter('prefix-list?name="$2"')
         prefix_list_statements()
+        t2x.return()
     t2x.return()
 
 in ipv6(default):
     match 'ipv6 route' fs ipv6_ip '/' number fs:
         out.enter('static-route?ip="$2"&prefixlen="$4"')
         ip_route_statements()
-        t2x.return()
     match 'ipv6' fs:
         out.enter('ipv6')
         ipv6_statements()
@@ -918,11 +917,13 @@ in ipv6(default):
 in community_list_standard_permit_statements(default):
     match nows:
         out.add('permit?community="$0"')
+        t2x.return()
     t2x.return()
 
 in community_list_standard_deny_statements(default):
     match nows:
         out.add('deny?community="$0"')
+        t2x.return()
     t2x.return()
 
 in community_list_standard_statements(default):
@@ -1284,6 +1285,7 @@ in policy_map_class_statements(default):
 in policy_map_statements(default):
     match 'class' fs nonl nl:
         out.enter('$0?name="$2"')
+        policy_map_class_statements()
     t2x.return()
 
 in policy_maps(default):
@@ -1431,7 +1433,7 @@ in input(default):
         out.add('$0?ip_address="$2"/type', '$6')
     match 'banner' fs word fs multi_line_str_start:
         out.enter('banner/$2')
-        banner_exec_statements()
+        banner_statements()
     match 'bridge' fs nonl nl:
         out.add('$0', '$2')
     match 'call rsvp-sync' nl:
@@ -1597,4 +1599,4 @@ in input(default):
     users()
     vc_class()
     match 'end' nl:
-        t2x.return()
+        t2x.next()

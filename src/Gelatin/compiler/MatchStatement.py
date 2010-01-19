@@ -35,16 +35,16 @@ class MatchStatement(Token):
         if not match:
             return 0
         self._enter(context)
-        context.re_stack.append(match)
+        context._match_before_notify(match)
         for statement in self.statements:
             result = statement.parse(context)
             if result == 1:
                 break
             elif result < 0:
-                context.re_stack.pop()
+                context._match_after_notify(match)
                 self._leave(context)
                 return result
-        context.re_stack.pop()
+        context._match_after_notify(match)
         self._leave(context)
         return 1
 

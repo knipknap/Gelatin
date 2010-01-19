@@ -17,7 +17,7 @@ from lxml    import etree
 
 class XmlBuilder(Builder):
     def __init__(self):
-        self.etree   = etree.Element('root')
+        self.etree   = etree.Element('xml')
         self.current = [self.etree]
         self.stack   = []
 
@@ -35,7 +35,6 @@ class XmlBuilder(Builder):
         return './' + tag + '[' + attribs + ']'
 
     def add(self, path, data = None):
-        print "ADD:", path, data
         node = self.current[-1]
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
@@ -45,18 +44,19 @@ class XmlBuilder(Builder):
                 node = next_node[0]
             else:
                 node = etree.SubElement(node, tag, **dict(attribs))
-        node.text = data
+        if data:
+            node.text = data
         return node
 
     def enter(self, path):
-        print "ENTER", path
+        #print "ENTER", path
         node = self.add(path)
         self.stack.append(self.current[-1])
         self.current.append(node)
         return node
 
     def leave(self):
-        print "LEAVE"
+        #print "LEAVE"
         node = self.stack.pop()
         while self.current[-1] != node:
             self.current.pop()

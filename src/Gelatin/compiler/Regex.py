@@ -12,14 +12,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import re
 from Gelatin import INDENT
 from Token   import Token
 
 class Regex(Token):
-    data = None
+    data   = None
+    re_obj = None
 
     def re_value(self):
         return self.data
+
+    def value(self):
+        if not self.re_obj:
+            self.re_obj = re.compile(self.data)
+        return self.re_obj
 
     def dump(self, indent = 0):
         return INDENT * indent + '/' + self.data + '/'

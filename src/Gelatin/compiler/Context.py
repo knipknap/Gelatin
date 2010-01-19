@@ -13,11 +13,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-def t2x_skip(context):
+def t2x_next(context):
     return 0
+
+def t2x_skip(context):
+    return 1
 
 def t2x_fail(context, message = 'No matching statement found'):
     context._error(message)
+
+def t2x_say(context, message):
+    context._msg(message)
+    return 0
 
 def t2x_return(context, levels = 1):
     #print "t2x.return():", -levels
@@ -26,21 +33,45 @@ def t2x_return(context, levels = 1):
 def out_add(context, path, data = None):
     #print "out.add():", path, data
     context.builder.add(path, data)
+    context.builder.enter(path)
+    context._trigger(context.on_add, context.re_stack[-1])
+    context.builder.leave()
     return 0
 
 def out_enter(context, path):
     #print "out.enter():", path
     context.builder.enter(path)
+    context._trigger(context.on_add, context.re_stack[-1])
     context.stack[-1].on_leave.append((context.builder.leave, ()))
+    return 0
+
+def out_enqueue_before(context, regex, path, data = None):
+    #print "ENQ BEFORE", regex.pattern, path, data
+    context.on_match_before.append((regex, out_add, (context, path, data)))
+    return 0
+
+def out_enqueue_after(context, regex, path, data = None):
+    #print "ENQ AFTER", regex.pattern, path, data
+    context.on_match_after.append((regex, out_add, (context, path, data)))
+    return 0
+
+def out_enqueue_on_add(context, regex, path, data = None):
+    #print "ENQ ON ADD", regex.pattern, path, data
+    context.on_add.append((regex, out_add, (context, path, data)))
     return 0
 
 class Context(object):
     def __init__(self):
-        self.functions = {'t2x.fail':   t2x_fail,
-                          't2x.return': t2x_return,
-                          't2x.skip':   t2x_skip,
-                          'out.add':    out_add,
-                          'out.enter':  out_enter}
+        self.functions = {'t2x.fail':           t2x_fail,
+                          't2x.return':         t2x_return,
+                          't2x.next':           t2x_next,
+                          't2x.skip':           t2x_skip,
+                          't2x.say':            t2x_say,
+                          'out.add':            out_add,
+                          'out.enter':          out_enter,
+                          'out.enqueue_before': out_enqueue_before,
+                          'out.enqueue_after':  out_enqueue_after,
+                          'out.enqueue_on_add': out_enqueue_on_add}
         self.lexicon  = {}
         self.grammars = {}
         self.input    = None
@@ -49,9 +80,35 @@ class Context(object):
         self._init()
 
     def _init(self):
-        self.start    = 0
-        self.re_stack = []
-        self.stack    = []
+        self.start           = 0
+        self.re_stack        = []
+        self.stack           = []
+        self.on_match_before = []
+        self.on_match_after  = []
+        self.on_add          = []
+
+    def _trigger(self, triggers, match):
+        matching = []
+        for trigger in triggers:
+            regex, func, args = trigger
+            print "TRIGGER TEST", regex.pattern, match.group(0)
+            if regex.search(match.group(0)) is not None:
+                "TRIGGER MATCH", func, args
+                matching.append(trigger)
+        for trigger in matching:
+            print "REMOVE", trigger
+            triggers.remove(trigger)
+        for trigger in matching:
+            regex, func, args = trigger
+            func(*args)
+
+    def _match_before_notify(self, match):
+        self.re_stack.append(match)
+        self._trigger(self.on_match_before, match)
+
+    def _match_after_notify(self, match):
+        self._trigger(self.on_match_after, match)
+        self.re_stack.pop()
 
     def _get_lineno(self):
         return self.input.count('\n', 0, self.start) + 1
@@ -98,6 +155,8 @@ class Context(object):
         self.builder = builder
         self.end     = len(input)
         self.grammars['input'].parse(self)
+        if self.start < self.end:
+            self._error('parser returned, but did not complete')
 
     def dump(self):
         for grammar in self.grammars.itervalues():

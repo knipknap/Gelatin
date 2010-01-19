@@ -26,6 +26,8 @@ class Function(Token):
         if '.' not in self.name:
             start   = context.start
             grammar = context.grammars.get(self.name)
+            if not grammar:
+                raise Exception('call to undefined grammar ' + self.name)
             grammar.parse(context)
             if context.start != start:
                 return 1
