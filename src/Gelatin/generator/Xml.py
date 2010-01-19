@@ -15,7 +15,7 @@
 from Builder import Builder
 from lxml    import etree
 
-class XmlBuilder(Builder):
+class Xml(Builder):
     def __init__(self):
         self.etree   = etree.Element('xml')
         self.current = [self.etree]

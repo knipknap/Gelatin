@@ -12,6 +12,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-from Xml  import Xml
+import yaml
 from Json import Json
-from Yaml import Yaml
+
+class Yaml(Json):  # Steal most of the implementation from JSON
+    """
+    Abstract base class for all generators.
+    """
+    def serialize(self):
+        return yaml.dump(self.tree.to_dict())

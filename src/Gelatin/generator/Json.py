@@ -19,7 +19,7 @@ from pprint  import PrettyPrinter
 class Node:
     def __init__(self, name, attribs = None):
         self.name     = name
-        self.attribs  = attribs and dict(attribs) or {}
+        self.attribs  = attribs and attribs or []
         self.children = []
         self.text     = None
 
@@ -36,14 +36,20 @@ class Node:
         return None
 
     def to_dict(self):
-        nodes    = dict(('@' + k, v) for (k, v) in self.attribs.iteritems())
+        nodes    = dict(('@' + k, v) for (k, v) in self.attribs)
         children = dict((c.name, c.to_dict()) for c in self.children)
         nodes.update(children)
         if self.text is not None:
             nodes['#text'] = self.text
         return nodes
 
-class JsonBuilder(Builder):
+    def dump(self, indent = 0):
+        print '  ' * indent + self.name + str(self.attribs) + ':'
+        print '  ' * (indent + 1) + '#text: ' + str(self.text)
+        for child in self.children:
+            child.dump(indent + 1)
+
+class Json(Builder):
     """
     Abstract base class for all generators.
     """
@@ -55,8 +61,9 @@ class JsonBuilder(Builder):
         return json.dumps(self.tree.to_dict(), indent = 4)
 
     def dump(self):
-        pp = PrettyPrinter(indent = 4)
-        pp.pprint(self.tree.to_dict())
+        #pp = PrettyPrinter(indent = 4)
+        #pp.pprint(self.tree.to_dict())
+        self.tree.dump()
 
     def add(self, path, data = None):
         node = self.current[-1]
