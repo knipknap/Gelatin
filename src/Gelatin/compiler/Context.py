@@ -91,12 +91,9 @@ class Context(object):
         matching = []
         for trigger in triggers:
             regex, func, args = trigger
-            print "TRIGGER TEST", regex.pattern, match.group(0)
             if regex.search(match.group(0)) is not None:
-                "TRIGGER MATCH", func, args
                 matching.append(trigger)
         for trigger in matching:
-            print "REMOVE", trigger
             triggers.remove(trigger)
         for trigger in matching:
             regex, func, args = trigger
