@@ -1,0 +1,11 @@
+User
+----
+Name: John, Lastname: Doe
+Office: 1st Ave
+Birth date: 1978-01-01
+
+User
+----
+Name: Jane, Lastname: Foo
+Office: 2nd Ave
+Birth date: 1970-01-01

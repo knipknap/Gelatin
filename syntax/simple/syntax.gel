@@ -1,0 +1,22 @@
+# Define commonly used data types. This is optional, but
+# makes your life a litte easier by allowing to reuse regular
+# expressions in the grammar.
+define nl /[\r\n]/
+define ws /\s+/
+define fieldname /\w+/
+define value /[^\r\n,]/
+define field_end /[\r\n,]/
+
+grammar user:
+    match nl:
+        do.return()
+    match ws:
+        do.next()
+    match fieldname ':' ws value field_end:
+        out.add('$0', '$3')
+
+# The grammar named "input" is the entry point for the converter.
+grammar input:
+    match 'User' nl '----':
+        out.enter('user')
+        user()

@@ -43,9 +43,51 @@ We offer the following contact options: \\
 \newpage
 \section{Overview}
 
-\product does not yet have any documentation - sorry!
+\product is a combined lexer, parser, and output generator. It is a simple
+language for converting text into a structured formats.
+
+\section{Example}
+
+Suppose you want to convert the following text file to XML:
 
 \begin{lstlisting}
+User
+----
+Name: John, Lastname: Doe
+Office: 1st Ave
+Birth date: 1978-01-01
+
+User
+----
+Name: Jane, Lastname: Foo
+Office: 2nd Ave
+Birth date: 1970-01-01
 \end{lstlisting}
 
+The following Gelatin syntax does the job:
+
+\begin{lstlisting}
+# Define commonly used data types. This is optional, but
+# makes your life a litte easier by allowing to reuse regular
+# expressions in the grammar.
+define nl /[\r\n]/
+define ws /\s+/
+define fieldname /\w+/
+define value /[^\r\n,]/
+define field_end /[\r\n,]/
+
+grammar user:
+    match nl:
+        do.return()
+    match ws:
+        do.next()
+    match fieldname ':' ws value field_end:
+        out.add('$0', '$3')
+
+# The grammar named "input" is the entry point for the converter.
+grammar input:
+    match 'User' nl '----':
+        out.enter('user')
+        user()
+\end{lstlisting}
 \end{document}
