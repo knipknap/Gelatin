@@ -48,8 +48,8 @@ class Builder(object):
             value = value[0]
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
-            attribs.append((key, value))
-        return url.path.replace(' ', '-'), attribs
+            attribs.append((key.lower(), value))
+        return url.path.replace(' ', '-').lower(), attribs
 
     def add(self, path, data = None):
         """
