@@ -1,0 +1,15 @@
+define ws   /\s+/
+define nows /\S+/
+define fs   /[\t ]+/
+define nl   /[\r\n]+/
+define nonl /[^\r\n]+/
+
+grammar input(default):
+    match ws:
+        do.next()
+    match /IOS [^\r\n]+ Version / /[^,]+/ nonl nl:
+        out.add('version', $1)
+    match 'cisco ' /\d+\S+/ nonl nl:
+        out.add('model', $1)
+    nonl nl:
+        do.skip()
