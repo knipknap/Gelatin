@@ -9,9 +9,9 @@ grammar default:
         do.next()
 
 grammar input(default):
-    match /Cisco IOS XR [^\r\n]+ Version / /[^\r\n\[]+/' /\[*\S*/ nl:
-        out.add('version', $1)
+    match /Cisco IOS XR [^\r\n]+ Version / /[^\r\n\[]+/ /\[*\S*/ nl:
+        out.add('version', '$1')
     match 'cisco ' /\S+/ nonl nl:
-        out.add('model', $1)
+        out.add('model', '$1')
     match nonl nl:
         do.skip()

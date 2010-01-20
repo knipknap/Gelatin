@@ -7,16 +7,16 @@ define number   /\d+/
 define state    /\S+\s?\S*/
 
 grammar slot:
-    match ws /state = / state ws nonl nl
+    match ws 'state = ' state ws nonl nl:
         out.add('rp-state', '$2')
         do.return()
     do.return()
 
 grammar input:
-    match /===/ nonl nl:
+    match '===' nonl nl:
         do.skip()
     match nl:
         do.skip()
-    match /Slot/ ws number ws nonl nl:
+    match 'Slot' ws number ws nonl nl:
         out.enter('slot?number="$2"')
         slot()

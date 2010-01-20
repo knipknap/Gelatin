@@ -13,9 +13,10 @@ grammar default:
 
 grammar node_package_statements(default):
     match nows nl:
-        do.add('package?name="$0"')
+        out.add('package?name="$0"')
     match nl:
         do.return()
+    do.return()
 
 grammar node_statements(default):
     match /Active Packages:/ fs nl:
