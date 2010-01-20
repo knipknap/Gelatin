@@ -21,7 +21,7 @@ from Gelatin.parser      import Parser
 from Gelatin.parser.util import error
 from Gelatin.compiler    import SyntaxCompiler
 
-usage  = '''%prog [options]'''
+usage  = '''%prog [options] filename'''
 parser = OptionParser(usage = usage, version = __version__)
 parser.add_option('--syntax', '-s',
                   dest    = 'syntax',
