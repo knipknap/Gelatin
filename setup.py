@@ -15,7 +15,7 @@ descr  = readme[start:end].strip()
 # Run the setup.
 setup(name             = 'Gelatin',
       version          = __version__,
-      description      = 'Script and template language for Telnet and SSH',
+      description      = 'Transform text files to XML, JSON, or YAML',
       long_description = descr,
       author           = 'Samuel Abels',
       author_email     = 'knipknap@gmail.com',

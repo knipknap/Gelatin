@@ -49,8 +49,8 @@ tarbz:
 
 deb:
 	./version.sh
-	debuild -S -sa
-	cd ..; sudo pbuilder build $(NAME)_$(VERSION)-0ubuntu1.dsc; cd -
+	#debuild -S -sa
+	#cd ..; sudo pbuilder build $(NAME)_$(VERSION)-0ubuntu1.dsc; cd -
 	./version.sh --reset
 
 dist: targz tarbz deb
@@ -59,6 +59,7 @@ dist: targz tarbz deb
 # Publishers.
 ###################################################################
 dist-publish: dist
+	python setup.py sdist register upload
 	mkdir -p $(DISTDIR)/
 	for i in dist/*; do \
 		mv $$i $(DISTDIR)/`basename $$i | tr '[:upper:]' '[:lower:]'`; \
