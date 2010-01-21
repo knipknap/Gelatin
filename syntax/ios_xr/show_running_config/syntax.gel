@@ -177,6 +177,8 @@ grammar bgp_vrf_statements(default):
     match 'address-family' fs nonl nl:
         out.enter('$0?name="$2"')
         bgp_af_statements()
+    match 'label-allocation-mode' fs nows nl:
+        out.add('$0', '$2')
     match 'rd' fs nows nl:
         out.add('$0', '$2')
     do.return()
@@ -791,8 +793,8 @@ grammar policy_maps(default):
     do.return()
 
 grammar prefix_set_statements(default):
-    match ipv4_ip '/' number ',?' nl:
-        out.add('entry?prefix="$0/$2"', '$4')
+    match ipv4_ip '/' number /,?/ nl:
+        out.add('entry?prefix="$0/$2"')
     match ipv4_ip '/' number fs /[lg]e/ fs number ',?' nl:
         out.add('entry?prefix="$0/$2"&$4="$6"', '$8')
     match ipv4_ip '/' number fs /[lg]e/ fs number fs /[lg]e/ fs number ',?' nl:
@@ -810,6 +812,8 @@ grammar prefix_set(default):
 grammar router_static_af_route_statements:
     match ws:
         do.skip()
+    match 'bfd fast-detect' fs nonl nl:
+        out.add('$0', '$2')
     match 'description' fs nonl nl:
         out.add('$0', '$2')
     match 'tag' fs number:
@@ -901,7 +905,7 @@ grammar hsrp_statements(default):
 
 grammar isis_interface_af_statements(default):
     match 'metric' fs nows nl:
-        out.add('$0?level="$5"', '$2')
+        out.add('$0', '$2')
     match 'metric' fs nows fs 'level' fs number nl:
         out.add('$0?level="$5"', '$2')
     match 'mpls ldp sync' fs 'level' fs number nl:
@@ -957,6 +961,8 @@ grammar isis_statements(default):
         isis_af_statements()
     match 'ignore-attached-bit' nl:
         out.add('$0')
+    match 'is-type' ws nows nl:
+        out.add('$0')
     match 'log adjacency changes' nl:
         out.add('$0')
     match 'lsp-refresh-interval' fs number nl:
@@ -987,6 +993,8 @@ grammar ospf_area_statements(default):
     match 'interface' fs nows nl:
         out.enter('$0?name="$2"')
         ospf_area_interface_statements()
+    match 'passive' fs /(?:en|dis)able/ nl:
+        out.add('$0/$2')
     do.return()
 
 grammar ospf_statements(default):
@@ -996,6 +1004,8 @@ grammar ospf_statements(default):
     match 'area' fs number nl:
         out.enter('$0?number="$2"')
         ospf_area_statements()
+    match 'cost' fs number nl:
+        out.add('$0')
     match 'log adjacency changes' nl:
         out.add('$0')
     match 'router-id' fs nows nl:

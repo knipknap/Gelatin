@@ -71,6 +71,11 @@ grammar acl_statements(default):
         do.return()
     do.return()
 
+grammar ipv6_acl_statements(default):
+    match acl_action fs nonl nl:
+        out.add('$0?condition="$2"')
+    do.return()
+
 grammar acl(default):
     match 'access-list hardware psa' nl:
         out.add('$0')
@@ -82,7 +87,7 @@ grammar acl(default):
         acl_statements()
     match 'ipv6 access-list' fs acl_name nl:
         out.enter('access-list?name="$2"&protocol="ipv6"')
-        acl_statements()
+        ipv6_acl_statements()
     do.return()
 
 grammar cos_queue_group_statements(default):
@@ -672,6 +677,8 @@ grammar interface_statements(default):
         out.add('$0')
     match 'ipv6' fs 'nd' fs /(?:suppress-ra|other-config-flag)/ nl:
         out.add('$0/$2/$4')
+    match 'isdn' fs 'not-end-to-end' fs nows nl:
+        out.add('$0/$2', '$4')
     match 'isdn' fs 'point-to-point-setup' nl:
         out.add('$0/$2')
     match 'isdn' fs /send[a-z\-]*/ nl:
@@ -915,15 +922,19 @@ grammar ipv6(default):
     do.return()
 
 grammar community_list_standard_permit_statements(default):
-    match nows:
+    match nows nl:
         out.add('permit?community="$0"')
         do.return()
+    match nows ws:
+        out.add('permit?community="$0"')
     do.return()
 
 grammar community_list_standard_deny_statements(default):
-    match nows:
+    match nows nl:
         out.add('deny?community="$0"')
         do.return()
+    match nows ws:
+        out.add('deny?community="$0"')
     do.return()
 
 grammar community_list_standard_statements(default):
