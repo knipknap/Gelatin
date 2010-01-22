@@ -18,7 +18,7 @@ clean:
 
 .PHONY : dist-clean
 dist-clean: clean
-	rm -Rf dist $(PACKAGE)*
+	rm -Rf dist $(PACKAGE)* src/*.egg-info
 
 .PHONY : doc
 doc:
