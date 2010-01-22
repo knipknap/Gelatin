@@ -14,3 +14,6 @@ For documentation please refer to
 = Dependencies =
 
 * Python 2.6 or greater
+* python-lxml
+* python-json
+* python-yaml

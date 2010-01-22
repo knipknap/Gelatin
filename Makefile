@@ -1,5 +1,5 @@
 NAME=Gelatin
-VERSION=`grep version setup.py | cut -d"'" -f2`
+VERSION=`python setup.py --version | sed s/^v//`
 PACKAGE=$(NAME)-$(VERSION)-1
 PREFIX=/usr/local/
 DISTDIR=/pub/code/releases/$(NAME)
@@ -49,8 +49,8 @@ tarbz:
 
 deb:
 	./version.sh
-	#debuild -S -sa
-	#cd ..; sudo pbuilder build $(NAME)_$(VERSION)-0ubuntu1.dsc; cd -
+	dpkg-buildpackage -S -sa -tc -i'\.git.*'
+	lintian ../gelatin_$(VERSION)-0ubuntu1_all.deb
 	./version.sh --reset
 
 dist: targz tarbz deb
