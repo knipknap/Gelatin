@@ -488,6 +488,42 @@ grammar controller(default):
         controller_statements()
     do.return()
 
+grammar crypto_pki_statements(default):
+    match 'enrollment' fs nows nl:
+        out.add('$0', '$2')
+    match 'subject-name' fs nows nl:
+        out.add('$0', '$2')
+    match 'revocation-check' fs nows nl:
+        out.add('$0', '$2')
+    match 'rsakeypair' fs nows nl:
+        out.add('$0', '$2')
+    do.return()
+
+grammar crypto_ca_certificate_statements(default):
+    match 'quit' nl:
+        do.return()
+    match /[A-F0-9]+[ \n]/:
+        out.add('.', '$0')
+    do.return()
+
+grammar crypto_ca_statements(default):
+    match 'certificate' fs number nl:
+        out.enter('$0?serial="$2"')
+        crypto_ca_certificate_statements()
+    match 'certificate' fs 'self-signed' fs number nl:
+        out.enter('$0?type="$2"&serial="$4"')
+        crypto_ca_certificate_statements()
+    do.return()
+
+grammar crypto(default):
+    match 'crypto' fs 'pki trustpoint' fs nows nl:
+        out.enter('$0/$2?name="$4"')
+        crypto_pki_statements()
+    match 'crypto' fs 'ca' fs 'certificate chain' fs nows nl:
+        out.enter('$0/$2/$4?name="$6"')
+        crypto_ca_statements()
+    do.return()
+
 grammar gatekeeper_statements(default):
     match 'shutdown' nl:
         out.add('$0')
@@ -1591,6 +1627,7 @@ grammar input(default):
     clock()
     controller()
     cos()
+    crypto()
     eigrp()
     gatekeeper()
     hw_module()

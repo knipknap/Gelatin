@@ -45,7 +45,8 @@ class Xml(Builder):
             else:
                 node = etree.SubElement(node, tag, **dict(attribs))
         if data:
-            node.text = data
+            node.text  = node.text is not None and node.text or ''
+            node.text += data
         return node
 
     def enter(self, path):
