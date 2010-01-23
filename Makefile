@@ -49,7 +49,7 @@ tarbz:
 
 deb:
 	./version.sh
-	debuild -S -sa -tc
+	debuild -S -sa -tc -i -I
 	./version.sh --reset
 
 dist: targz tarbz deb
