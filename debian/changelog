@@ -1,4 +1,10 @@
-gelatin (0.1.6-gc898d6d-0ubuntu1) unstable; urgency=low
+gelatin (0.1.7-gaa12c77) unstable; urgency=low
+
+  * Fix nonsensical Lintian messages.
+
+ -- Samuel Abels <knipknap@gmail.com>  Fri, 22 Jan 2010 23:15:08 +0100
+
+gelatin (0.1.6-gc898d6d) unstable; urgency=low
 
   * Initial release.
 

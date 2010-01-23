@@ -49,8 +49,7 @@ tarbz:
 
 deb:
 	./version.sh
-	dpkg-buildpackage -S -sa -tc -i'\.git.*'
-	lintian ../gelatin_$(VERSION)-0ubuntu1_all.deb
+	debuild -S -sa -tc
 	./version.sh --reset
 
 dist: targz tarbz deb
