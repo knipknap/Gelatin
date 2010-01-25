@@ -57,7 +57,7 @@ grammar acl(default):
     do.return()
 
 grammar as_path_set_statements(default):
-    match 'ios-regex' fs '\'' /[^']*/ '\'' nl:
+    match 'ios-regex' fs /\'/ /[^']*/ /\'/ nl:
         out.add('as-path?regex="$0"')
     do.return()
 
