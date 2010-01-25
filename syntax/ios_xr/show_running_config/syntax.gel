@@ -247,7 +247,7 @@ grammar clock(default):
     do.return()
 
 grammar community_set_statements(default):
-    match nows ',?' nl:
+    match nows /,?/ nl:
         out.add('community?name="$0"', '$2')
     do.return()
 
@@ -639,7 +639,7 @@ grammar snmp_statements(default):
         out.add('community?name="$2"', '$4')
     match 'engineID local' fs nows nl:
         out.add('engine-id', '$2')
-    match 'group' fs nows fs 'v2|v3' fs nonl nl:
+    match 'group' fs nows fs /v2|v3/ fs nonl nl:
         out.add('group?name="$2"/version', '$4')
         out.add('group?name="$2"/options', '$6')
     match 'host' fs nows fs 'traps' fs nows nl:
@@ -674,7 +674,7 @@ grammar snmp(default):
 grammar taskgroup_statements(default):
     match 'description' fs nonl nl:
         out.add('$0', '$2')
-    match 'task' fs /(?:read|write|execute|debug)/ fs nonl nl:
+    match 'task' fs /read|write|execute|debug/ fs nonl nl:
         out.add('$2?action="$4"')
     do.return()
 
@@ -795,9 +795,9 @@ grammar policy_maps(default):
 grammar prefix_set_statements(default):
     match ipv4_ip '/' number /,?/ nl:
         out.add('entry?prefix="$0/$2"')
-    match ipv4_ip '/' number fs /[lg]e/ fs number ',?' nl:
+    match ipv4_ip '/' number fs /[lg]e/ fs number /,?/ nl:
         out.add('entry?prefix="$0/$2"&$4="$6"', '$8')
-    match ipv4_ip '/' number fs /[lg]e/ fs number fs /[lg]e/ fs number ',?' nl:
+    match ipv4_ip '/' number fs /[lg]e/ fs number fs /[lg]e/ fs number /,?/ nl:
         out.add('entry?prefix="$0/$2"&$4="$6"&$8="$10"', '$12')
     do.return()
 
@@ -938,7 +938,7 @@ grammar isis_af_statements(default):
         out.add('$0?$4="$6"', '$2')
     match 'mpls traffic-eng' fs 'router-id' fs nows nl:
         out.add('$0/$2', '$4')
-    match 'mpls traffic-eng' fs /(?:level-[12]-only|multicast-intact)/ nl:
+    match 'mpls traffic-eng' fs /level-[12]-only|multicast-intact/ nl:
         out.add('$0/$2')
     match /(?:prc|spf|lsp-gen)-interval/ fs 'maximum-wait' fs number fs 'initial-wait' fs number fs 'secondary-wait' fs number nl:
         out.add('$0/maximum-wait', '$4')
@@ -948,9 +948,9 @@ grammar isis_af_statements(default):
         out.add('$0?address="$2"&pfxlen="$4"')
     match 'summary-prefix' fs ipv4_ip '/' number fs 'level' fs number nl:
         out.add('$0?address="$2"&pfxlen="$4"/level', '$8')
-    match 'propagate' fs 'level \d+' fs 'into' fs 'level \d+' fs /(?:distribute-list|route-policy)/ fs name nl:
+    match 'propagate' fs /level \d+/ fs 'into' fs /level \d+/ fs /distribute-list|route-policy/ fs name nl:
         out.add('propagate?source="$2"&destination="$6"/$8', '$10')
-    match 'redistribute' fs /(?:connected|static|ospf \d+)/ fs nows fs:
+    match 'redistribute' fs /connected|static|ospf \d+/ fs nows fs:
         out.enter('redistribute/source?name="$2"&destination="$4"')
         redistribute_statements()
     do.return()
@@ -1239,8 +1239,8 @@ grammar banner_statements:
 
 grammar input(default):
     match 'Building configuration...' nl
-        | 'Current configuration : \d+ bytes' nl
-        | '.* (?:UTC|MET) ?' nl:
+        | /Current configuration : \d+ bytes/ nl
+        | /.* (?:UTC|MET) ?/ nl:
         do.skip()
     match 'alias' fs name fs nonl nl:
         out.add('aliases/alias?name="$2"', '$4')

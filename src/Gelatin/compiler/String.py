@@ -46,7 +46,7 @@ class String(Token):
         return _string_re.sub(self._expand_string, self.data)
 
     def re_value(self):
-        return self.data #FIXME: escape the string
+        return re.escape(self.data)
 
     def dump(self, indent = 0):
         return INDENT * indent + '\'' + self.data + '\''

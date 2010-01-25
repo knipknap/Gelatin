@@ -3,20 +3,27 @@
 # expressions in the grammar.
 define nl /[\r\n]/
 define ws /\s+/
-define fieldname /\w+/
-define value /[^\r\n,]/
+define fieldname /[\w ]+/
+define value /[^\r\n,]+/
 define field_end /[\r\n,]/
 
-grammar user:
+grammar user_statements:
     match nl:
-        do.return()
+        do.next()
     match ws:
         do.next()
     match fieldname ':' ws value field_end:
         out.add('$0', '$3')
+    do.return()
+
+grammar user:
+    match 'Name:' ws value field_end
+       ws 'Lastname:' ws value nl:
+        out.enter('user?firstname="$2"&lastname="$7"')
+        user_statements()
+    do.return()
 
 # The grammar named "input" is the entry point for the converter.
 grammar input:
-    match 'User' nl '----':
-        out.enter('user')
+    match 'User' nl '----' nl:
         user()

@@ -159,9 +159,9 @@ grammar prefix_list_statements(default):
     do.return()
 
 grammar async_line_statements(default):
-    match 'access-(?:group|class)' fs acl_name fs acl_direction nl:
+    match /access-(?:group|class)/ fs acl_name fs acl_direction nl:
         out.add('$0?name=$2/direction', '$4')
-    match 'access-(?:group|class)' fs acl_name fs acl_direction fs nows nl:
+    match /access-(?:group|class)/ fs acl_name fs acl_direction fs nows nl:
         out.add('$0?name=$2/direction', '$4')
         out.add('$0?name=$2/option', '$6')
     match 'activation-character' fs number nl:
@@ -181,7 +181,7 @@ grammar async_line_statements(default):
         out.add('$0?type="$2"', '$4')
     match 'privilege level' fs number nl:
         out.add('$0', '$2')
-    match 'session-timeout' fs number ' *' nl:
+    match 'session-timeout' fs number / */ nl:
         out.add('$0', '$2')
     match 'speed' fs number nl:
         out.add('$0', '$2')
@@ -254,7 +254,7 @@ grammar bgp_neighbor_group_statements(default):
     match 'password' fs number fs nonl nl:
         out.add('$0?type="$2"', '$4')
         do.return()
-    match '(?:filter|prefix)-list' fs name fs /(?:in|out)/ nl:
+    match /(?:filter|prefix)-list/ fs name fs /(?:in|out)/ nl:
         out.add('$0?name="$2"&direction="$4"', '$4')
         do.return()
     match 'maximum-prefix' fs number nl:
@@ -276,7 +276,7 @@ grammar bgp_neighbor_group_statements(default):
     match 'remote-as' fs number nl:
         out.add('$0', '$2')
         do.return()
-    match 'remove-private-(?:as|AS)' nl:
+    match /remove-private-(?:as|AS)/ nl:
         out.add('$0')
         do.return()
     match 'route-map' fs nows fs word nl:
@@ -399,7 +399,7 @@ grammar boot_system_commands(default):
     match 'boot system' fs word fs file nl:
         out.add('$0?device="$2"')
         out.add('$0?device="$2"/file?name="$4"')
-    match 'boot-(?:start|end)-marker' nl:
+    match /boot-(?:start|end)-marker/ nl:
         do.skip()
     do.return()
 
@@ -414,7 +414,7 @@ grammar class_map_statements(default):
     do.return()
 
 grammar class_maps(default):
-    match 'class-map' fs 'match-(?:any|all)' fs nonl nl:
+    match 'class-map' fs /match-(?:any|all)/ fs nonl nl:
         out.add('qos/$0?name="$4"/mode/$2')
         out.enter('qos/$0?name="$4"')
         class_map_statements()
@@ -474,7 +474,7 @@ grammar controller_statements(default):
         out.add('$0', '$2')
     match 'pri-group' fs 'timeslots' fs nows nl:
         out.add('$0/$2', '$4')
-    match 'yellow (?:detection|generation)' nl:
+    match /yellow (?:detection|generation)/ nl:
         out.add('$0')
     match 'sensitivity' fs nows nl:
         out.add('$0', '$2')
@@ -636,7 +636,7 @@ grammar interface_statements(default):
         out.add('$0', '$2')
     match 'duplex' fs word nl:
         out.add('$0', '$2')
-    match /(?:half|full)/ '-duplex' nl:
+    match /half|full/ '-duplex' nl:
         out.add('duplex', '$0')
     match 'encapsulation' fs nonl nl:
         out.add('$0', '$2')
@@ -646,13 +646,13 @@ grammar interface_statements(default):
         out.add('$0?option="$2"')
     match 'frame-relay' fs 'interface-dlci' fs nonl nl:
         out.add('$0/$2', '$4')
-    match 'frame-relay' fs '(?:lmi|intf)-type' fs nows nl:
+    match 'frame-relay' fs /(?:lmi|intf)-type/ fs nows nl:
         out.add('$0/$2', '$4')
     match 'framing' fs nows nl:
         out.add('$0', '$2')
     match 'hold-queue' fs number fs nows nl:
         out.add('$0?direction="$4"', '$2')
-    match 'ip access-group' fs nows fs 'in|out' nl:
+    match 'ip access-group' fs nows fs /in|out/ nl:
         out.add('access-group?name="$2"&direction="$4"')
     match 'ip' fs 'accounting' fs 'mac-address' fs /(?:input|output)/ nl:
         out.add('$2/$4?direction="$6"')
@@ -668,9 +668,9 @@ grammar interface_statements(default):
         out.add('directed-broadcast')
     match 'ip' fs 'load-sharing' fs nows nl:
         out.add('$2', '$4')
-    match 'ip' fs 'm?route-cache' nl:
+    match 'ip' fs /m?route-cache/ nl:
         out.add('$2')
-    match 'ip' fs 'm?route-cache' fs nonl nl:
+    match 'ip' fs /m?route-cache/ fs nonl nl:
         out.add('$2', '$4')
     match 'ip' fs 'mtu' fs number nl:
         out.add('$2', '$4')
@@ -688,9 +688,9 @@ grammar interface_statements(default):
         out.add('$0/$2', '$4')
     match 'ip proxy-arp' nl:
         out.add('proxy-arp')
-    match 'ip redirects?' nl:
+    match /ip redirects?/ nl:
         out.add('redirects')
-    match 'ip router isis *' nl:
+    match /ip router isis */ nl:
         out.add('isis')
     match 'ip rsvp bandwidth' fs number fs number nl:
         out.add('$0/reservable', '$2')
@@ -727,9 +727,9 @@ grammar interface_statements(default):
         out.add('$0/$2', '$4')
     match 'isis' fs 'metric' fs nows fs 'level-' number nl:
         out.add('$0/$2?level="$7"', '$4')
-    match 'isis' fs 'network' fs nows ' *' nl:
+    match 'isis' fs 'network' fs nows / */ nl:
         out.add('$0/$2', '$4')
-    match 'isis' fs '(?:lsp|csnp)-interval' fs number nl:
+    match 'isis' fs /(?:lsp|csnp)-interval/ fs number nl:
         out.add('$0/$2', '$4')
     match 'isis' fs 'csnp-interval' fs number fs 'level-' number nl:
         out.add('$0/$2?level="$6"', '$7')
@@ -809,7 +809,7 @@ grammar interface_statements(default):
     match 'pvc' fs nows fs:
         out.enter('$0?number="$2"')
         interface_pvc_statements()
-    match 'rate-limit' fs '(?:in|out)put' fs:
+    match 'rate-limit' fs /(?:in|out)put/ fs:
         out.enter('$0?direction="$2"')
         interface_rate_limit_statements()
     match 'sar vc' fs number fs 'txpool' fs number nl:
@@ -824,7 +824,7 @@ grammar interface_statements(default):
         out.add('$0', '$2')
     match /serial restart[_-]delay/ fs number nl:
         out.add('$0', '$2')
-    match 'service-policy' fs '(?:in|out)put' fs nows nl:
+    match 'service-policy' fs /(?:in|out)put/ fs nows nl:
         out.add('$0?name="$4"&direction="$2"')
     match 'shutdown' nl:
         out.add('disable')
@@ -852,7 +852,7 @@ grammar interface_statements(default):
         out.add('$0?vlan="$4"')
     match 'switchport mode' fs nonl nl:
         out.add('$0', '$2')
-    match 'switchport (?:nonegotiate|protected|port-security)' nl:
+    match /switchport (?:nonegotiate|protected|port-security)/ nl:
         out.add('$0')
     match 'switchport port-security' fs /(?:maximum|aging time)/ fs number nl:
         out.add('$0/$2', '$4')
@@ -993,7 +993,7 @@ grammar ip_vrf_statements(default):
         out.add('export?map="$2"', '$2')
     match 'rd' fs nonl nl:
         out.add('route-distinguisher', '$2')
-    match 'route-target' fs '(?:im|ex)port' fs nonl nl:
+    match 'route-target' fs /(?:im|ex)port/ fs nonl nl:
         out.add('$0/$2?rd="$4"')
     match 'maximum routes' fs nonl nl:
         out.add('$0', '$2')
@@ -1125,13 +1125,13 @@ grammar ip_statements(default):
         out.add('$0')
     match 'spd' fs 'mode' fs nows nl:
         out.add('$0/$2', '$4')
-    match 'spd' fs 'queue (?:min|max)-threshold' fs number nl:
+    match 'spd' fs /queue (?:min|max)-threshold/ fs number nl:
         out.add('$0/$2', '$4')
     match 'tacacs' fs 'source-interface' fs if_name nl:
         out.add('tacacs/$2', '$4')
     match 'tcp path-mtu-discovery' nl:
         out.add('$0')
-    match 'telnet|t?ftp|http|rcmd' fs 'source-interface' fs nonl nl:
+    match /telnet|t?ftp|http|rcmd/ fs 'source-interface' fs nonl nl:
         out.add('$0/source-interface', '$4')
     do.return()
 
@@ -1154,7 +1154,7 @@ grammar isis_statements(default):
     match 'distance' fs number fs ipv4_ip fs ipv4_mask fs nows nl:
         out.add('administrative-$0?address="$4"&mask="$6"/distance', '$2')
         out.add('administrative-$0?address="$4"&mask="$6"/acl', '$8')
-    match '(?:domain|area)-password' fs nonl nl:
+    match /(?:domain|area)-password/ fs nonl nl:
         out.add('$0', '$2')
     match 'external overload signalling' nl:
         out.add('$0')
@@ -1189,7 +1189,7 @@ grammar isis_statements(default):
         redistribute_statements()
     match 'set-overload-bit' nl:
         out.add('$0')
-    match '(?:prc|spf|lsp-gen)-interval' fs number fs number fs number nl:
+    match /(?:prc|spf|lsp-gen)-interval/ fs number fs number fs number nl:
         out.add('$0/interval', '$2')
         out.add('$0/initial-wait', '$4')
         out.add('$0/minimum-wait', '$6')
@@ -1293,9 +1293,9 @@ grammar policy_map_class_police_statements(default):
     match number fs number:
         out.add('bitrate', '$0')
         out.add('burst', '$2')
-    match /(?:rate|burst|peak-burst)/ fs number:
+    match /rate|burst|peak-burst/ fs number:
         out.add('$0', '$2')
-    match 'cir|bc|be' fs number:
+    match /cir|bc|be/ fs number:
         out.add('$0', '$2')
     match /[a-z]+-action/ fs nows:
         out.add('$0', '$2')
@@ -1398,12 +1398,12 @@ grammar snmp_statements(default):
     match 'file-transfer' fs 'access-group' fs name fs 'protocol' fs name nl:
         out.add('$0/$2', '$4')
         out.add('$0/$6', '$8')
-    match 'group' fs nows fs 'v2|v3' fs nonl nl:
+    match 'group' fs nows fs /v2|v3/ fs nonl nl:
         out.add('group?name="$2"/version', '$4')
         out.add('group?name="$2"/options', '$6')
-    match 'host' fs nows fs nows ' *' nl:
+    match 'host' fs nows fs nows / */ nl:
         out.add('$0?address="$2"/name', '$4')
-    match 'host' fs nows fs 'trap' fs nows ' *' nl:
+    match 'host' fs nows fs 'trap' fs nows / */ nl:
         out.add('$0?address="$2"/trap')
         out.add('$0?address="$2"/name', '$6')
     match 'ifindex persist' nl:
@@ -1442,7 +1442,7 @@ grammar users(default):
     do.return()
 
 grammar vc_class_statements(default):
-    match 'vbr-nrt|oam-pvc|encapsulation' fs nonl nl:
+    match /vbr-nrt|oam-pvc|encapsulation/ fs nonl nl:
         out.add('$0', '$2')
     do.return()
 
@@ -1469,9 +1469,9 @@ grammar pseudowire_statements(default):
 grammar input(default):
     match 'Building configuration...' nl
         | 'Current configuration:' nl
-        | 'Current configuration : \d+ bytes' nl
-        | 'Using \d+ out of \d+ bytes' nl
-        | 'Using \d+ out of \d+ bytes' nonl nl
+        | /Current configuration : \d+ bytes/ nl
+        | /Using \d+ out of \d+ bytes/ nl
+        | /Using \d+ out of \d+ bytes/ nonl nl
         | 'Uncompressed configuration' nonl nl
         | 'writeNet' nl:
         do.skip()
@@ -1505,7 +1505,7 @@ grammar input(default):
         out.add('$0')
     match 'errdisable' fs nonl nl:
         out.add('$0?option="$2"', '$2')
-    match 'exception' fs 'warmstart' fs number fs number ' *' nl:
+    match 'exception' fs 'warmstart' fs number fs number / */ nl:
         out.add('$0/$2/minutes', '$4')
         out.add('$0/$2/seconds', '$6')
     match 'exception' fs /(?:core-file|dump|protocol|region-size)/ fs nows nl:
@@ -1612,7 +1612,7 @@ grammar input(default):
         out.add('options/$0')
     match 'version' fs version_number nl:
         out.add('version', '$2')
-    match 'vlan' fs 'dot1q tag' fs nows ' *' nl:
+    match 'vlan' fs 'dot1q tag' fs nows / */ nl:
         out.add('$0/$2?name="$4"')
     match 'vlan' fs 'internal allocation policy' fs nows nl:
         out.add('$0/$2/$4')
