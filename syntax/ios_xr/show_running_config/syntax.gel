@@ -79,10 +79,14 @@ grammar async_line_statements(default):
         out.add('$0/seconds', '$4')
     match 'session-timeout' fs number fs /(?:in|out)put/ nl:
         out.add('$0/$4', '$2')
+    match 'length' fs number nl:
+        out.add('$0', '$2')
     match 'login authentication' fs nows nl:
         out.add('$0/$2', '$2')
     match 'password' fs number fs nows nl:
         out.add('$0?type="$2"', '$4')
+    match 'timeout login response' fs number nl:
+        out.add('$0', '$2')
     match 'transport' fs nows fs nows nl:
         out.add('$0/$2', '$4')
     do.return()
@@ -827,6 +831,15 @@ grammar router_static_af_route_statements:
     do.return()
 
 grammar router_static_af_statements(default):
+    match ipv4_ip '/' number fs 'vrf' fs nows fs ipv4_ip:
+        out.enter('static-route?ip="$0"&pfxlen="$2"&vrf="$6"/destination?ip="$8"')
+        router_static_af_route_statements()
+    match ipv4_ip '/' number fs 'vrf' fs nows fs nows fs ipv4_ip:
+        out.enter('static-route?ip="$0"&pfxlen="$2"&vrf="$6"/destination?interface="$8"&ip="$10"')
+        router_static_af_route_statements()
+    match ipv4_ip '/' number fs 'vrf' fs nows fs nows:
+        out.enter('static-route?ip="$0"&pfxlen="$2"&vrf="$6"/destination?interface="$8"')
+        router_static_af_route_statements()
     match ipv4_ip '/' number fs ipv4_ip:
         out.enter('static-route?ip="$0"&pfxlen="$2"/destination?ip="$4"')
         router_static_af_route_statements()
