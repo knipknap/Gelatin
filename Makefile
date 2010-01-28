@@ -49,6 +49,8 @@ tarbz:
 
 deb:
 	./version.sh
+	DEBVERSION=`head -1 debian/changelog | sed 's/^\(.*\) (\(.*\)-0ubuntu1).*/\1_\2/'`; \
+	    git archive HEAD | gzip >../$$DEBVERSION.orig.tar.gz
 	debuild -S -sa -tc -i -I
 	./version.sh --reset
 

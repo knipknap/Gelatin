@@ -1,11 +1,5 @@
-gelatin (0.1.7-gaa12c77) unstable; urgency=low
+gelatin (0.1.12~git20100128.gb1f8fdd-0ubuntu1) lucid; urgency=low
 
-  * Fix nonsensical Lintian messages.
+  * Initial release. (LP: #514024)
 
- -- Samuel Abels <knipknap@gmail.com>  Fri, 22 Jan 2010 23:15:08 +0100
-
-gelatin (0.1.6-gc898d6d) unstable; urgency=low
-
-  * Initial release.
-
- -- Samuel Abels <knipknap@gmail.com>  Fri, 22 Jan 2010 22:15:08 +0100
+ -- Samuel Abels <knipknap@gmail.com>  Thu, 28 Jan 2010 20:15:08 +0100

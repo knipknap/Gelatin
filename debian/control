@@ -1,7 +1,8 @@
 Source: gelatin
 Section: contrib/text
 Priority: optional
-Maintainer: Samuel Abels <knipknap@gmail.com>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Samuel Abels <knipknap@gmail.com>
 Build-Depends: debhelper (>= 7), python, python-central (>= 0.6.0), cdbs (>= 0.4.49)
 XS-Python-Version: >= 2.6
 Standards-Version: 3.8.3
