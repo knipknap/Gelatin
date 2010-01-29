@@ -32,10 +32,16 @@ class Parser(parser.Parser):
         )
         parser.Parser.__init__(self, _ebnf, 'root', prebuilts = offside)
 
-    def parse(self, input, compiler):
+    def parse_string(self, input, compiler):
         start, _, end = parser.Parser.parse(self, input, processor = compiler)
         if end < len(input):
             error(input, end)
         if not compiler.context.grammars.has_key('input'):
             error(input, end, 'Required grammar "input" not found.')
         return compiler.context
+
+    def parse(self, filename, compiler):
+        file  = open(filename, 'r')
+        input = file.read()
+        file.close()
+        return self.parse_string(input, compiler)

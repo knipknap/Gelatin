@@ -15,11 +15,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import sys, os
 sys.path.insert(0, 'src')
-from Gelatin             import __version__, generator
-from optparse            import OptionParser
-from Gelatin.parser      import Parser
-from Gelatin.parser.util import error
-from Gelatin.compiler    import SyntaxCompiler
+from optparse     import OptionParser
+from Gelatin      import __version__, generator
+from Gelatin.util import compile
 
 usage  = '''%prog [options] filename'''
 parser = OptionParser(usage = usage, version = __version__)
@@ -55,19 +53,11 @@ if __name__ == '__main__':
     except:
         parser.error('missing input file')
 
-    if options.format == 'xml' or options.format == 'none':
-        builder = generator.Xml()
-    elif options.format == 'json':
-        builder = generator.Json()
-    elif options.format == 'yaml':
-        builder = generator.Yaml()
-    else:
+    builder = generator.new(options.format)
+    if builder is None:
         parser.error('invalid output format: ' + options.format)
 
-    gel     = open(options.syntax).read()
-    input   = open(input_file).read()
-    parser  = Parser()
-    context = parser.parse(gel, SyntaxCompiler())
-    context.parse(input, builder)
+    converter = compile(options.syntax)
+    converter.parse(input_file, builder)
     if options.format != 'none':
         print builder.serialize()

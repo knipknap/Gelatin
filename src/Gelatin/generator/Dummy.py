@@ -12,18 +12,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-from Dummy import Dummy
-from Xml   import Xml
-from Json  import Json
-from Yaml  import Yaml
+from Builder import Builder
 
-generator_map = {'none': Dummy,
-                 'xml':  Xml,
-                 'json': Json,
-                 'yaml': Yaml}
+class Dummy(Builder):
+    def __init__(self):
+        pass
 
-def new(format):
-    cls = generator_map.get(format)
-    if not cls:
-        return None
-    return cls()
+    def serialize(self):
+        return ''
+
+    def dump(self):
+        print self.serialize()
+
+    def add(self, path, data = None):
+        pass
+
+    def enter(self, path):
+        pass
+
+    def leave(self):
+        pass
