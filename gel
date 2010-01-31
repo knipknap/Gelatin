@@ -27,14 +27,14 @@ parser.add_option('--syntax', '-s',
                   default = None,
                   help    = '''
 The file containing the syntax for parsing the input
-''')
+'''.strip())
 parser.add_option('--format', '-f',
                   dest    = 'format',
                   default = 'xml',
                   metavar = 'FORMAT',
                   help    = '''
 The output format. Valid values are: xml json yaml none. Default is xml.
-''')
+'''.strip())
 
 if __name__ == '__main__':
     # Parse options.
