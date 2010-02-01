@@ -33,6 +33,7 @@ class Parser(parser.Parser):
         parser.Parser.__init__(self, _ebnf, 'root', prebuilts = offside)
 
     def parse_string(self, input, compiler):
+        compiler.reset()
         start, _, end = parser.Parser.parse(self, input, processor = compiler)
         if end < len(input):
             error(input, end)

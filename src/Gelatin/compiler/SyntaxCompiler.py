@@ -40,6 +40,9 @@ class SyntaxCompiler(DispatchProcessor):
     Processor sub-class defining processing functions for the productions.
     """
     def __init__(self):
+        self.context = None
+
+    def reset(self):
         self.context = Context()
 
     def _regex(self, (tag, left, right, sublist), buffer):
