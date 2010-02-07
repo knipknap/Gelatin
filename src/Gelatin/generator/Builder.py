@@ -17,7 +17,6 @@ from urlparse import urlparse
 from cgi      import parse_qs
 
 value   = r'"(?:\\.|[^"])*"'
-varname = r'[\$\w\-]+'
 attrib  = r'(?:[\$\w\-]+=%s)' % value
 path_re = re.compile(r'^[^/"\?]+(?:\?%s?(?:&%s?)*)?' % (attrib, attrib))
 
@@ -75,6 +74,13 @@ class Builder(object):
         """
         Creates the given node if it does not exist.
         Returns the (new or existing) node.
+        """
+        raise NotImplementedError('abstract method')
+
+    def add_attribute(self, path, name, value):
+        """
+        Creates the given attribute and sets it to the given value.
+        Returns the (new or existing) node to which the attribute was added.
         """
         raise NotImplementedError('abstract method')
 

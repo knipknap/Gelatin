@@ -46,6 +46,14 @@ def out_add(context, path, data = None):
     context.builder.leave()
     return 0
 
+def out_add_attribute(context, path, name, value):
+    #print "out.add_attribute():", path, name, value
+    context.builder.add_attribute(path, name, value)
+    context.builder.enter(path)
+    context._trigger(context.on_add, context.re_stack[-1])
+    context.builder.leave()
+    return 0
+
 def out_open(context, path):
     #print "out.open():", path
     context.builder.open(path)
@@ -84,6 +92,7 @@ class Context(object):
                           'do.say':             do_say,
                           'out.create':         out_create,
                           'out.add':            out_add,
+                          'out.add_attribute':  out_add_attribute,
                           'out.open':           out_open,
                           'out.enter':          out_enter,
                           'out.enqueue_before': out_enqueue_before,

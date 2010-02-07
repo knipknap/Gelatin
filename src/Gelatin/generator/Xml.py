@@ -32,8 +32,7 @@ class Xml(Builder):
         tag, attribs = Builder._splittag(self, path)
         theattribs   = []
         for key, value in attribs:
-            value = urllib.quote(value.replace(r'\"', '"'))
-            theattribs.append((key, value))
+            theattribs.append((key, urllib.quote(value)))
         return tag, theattribs
 
     def _tag2xpath(self, tag, attribs):
@@ -65,6 +64,11 @@ class Xml(Builder):
         if data:
             node.text  = node.text is not None and node.text or ''
             node.text += data
+        return node
+
+    def add_attribute(self, path, name, value):
+        node = self.add(path)
+        node.attrib[name] = value
         return node
 
     def open(self, path):
