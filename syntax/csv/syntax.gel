@@ -1,0 +1,31 @@
+define nl /[\r\n]/
+define fs /[ \t]*,[ \t]*/
+define quote1 /"/
+define value1 /[^\r\n"]*/
+define quote2 /'/
+define value2 /[^\r\n']*/
+define value3 /[^\r\n,]*/
+
+grammar line:
+    match quote1 value1 quote1 fs:
+        out.create('column', '$1')
+    match quote1 value1 quote1 nl:
+        out.create('column', '$1')
+        do.return()
+    match quote2 value2 quote2 fs:
+        out.create('column', '$1')
+    match quote2 value2 quote2 nl:
+        out.create('column', '$1')
+        do.return()
+    match value3 fs:
+        out.create('column', '$0')
+    match value3 nl:
+        out.create('column', '$0')
+        do.return()
+
+# The grammar named "input" is the entry point for the converter.
+grammar input:
+    match / */:
+        out.open('line')
+        line()
+        out.leave()
