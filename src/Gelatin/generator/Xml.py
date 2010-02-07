@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import urllib
 from Builder import Builder
 from lxml    import etree
 
@@ -27,12 +28,20 @@ class Xml(Builder):
     def dump(self):
         print self.serialize()
 
+    def _splittag(self, path):
+        tag, attribs = Builder._splittag(self, path)
+        theattribs   = []
+        for key, value in attribs:
+            value = urllib.quote(value.replace(r'\"', '"'))
+            theattribs.append((key, value))
+        return tag, theattribs
+
     def _tag2xpath(self, tag, attribs):
         tag = tag.replace(' ', '-')
         if not attribs:
             return tag
-        attribs = ' and '.join('@' + k + '="' + v + '"' for k, v in attribs)
-        return './' + tag + '[' + attribs + ']'
+        attribs = ['@' + k + '="' + v + '"' for k, v in attribs]
+        return './' + tag + '[' + ' and '.join(attribs) + ']'
 
     def add(self, path, data = None):
         node = self.current[-1]

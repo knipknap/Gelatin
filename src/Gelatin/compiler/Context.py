@@ -62,11 +62,11 @@ def out_enqueue_on_add(context, regex, path, data = None):
 
 class Context(object):
     def __init__(self):
-        self.functions = {'do.fail':           do_fail,
-                          'do.return':         do_return,
-                          'do.next':           do_next,
-                          'do.skip':           do_skip,
-                          'do.say':            do_say,
+        self.functions = {'do.fail':            do_fail,
+                          'do.return':          do_return,
+                          'do.next':            do_next,
+                          'do.skip':            do_skip,
+                          'do.say':             do_say,
                           'out.add':            out_add,
                           'out.enter':          out_enter,
                           'out.enqueue_before': out_enqueue_before,

@@ -40,7 +40,7 @@ class String(Token):
             value = cmatch.group(int(fieldnum) + 1)
         except IndexError, e:
             raise Exception('invalid field number %s in %s' % (fieldnum, self.data))
-        return str(value)
+        return str(value).replace('"', r'\"')
 
     def value(self):
         return _string_re.sub(self._expand_string, self.data)

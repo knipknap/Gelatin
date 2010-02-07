@@ -16,7 +16,9 @@ import os, re, tempfile, shutil
 from urlparse import urlparse
 from cgi      import parse_qs
 
-attrib  = r'(?:[\$\w\-]+(?:=\"[^"]*\"|=[\$\w\-]*)?)'
+value   = r'"(?:\\.|[^"])*"'
+varname = r'[\$\w\-]+'
+attrib  = r'(?:[\$\w\-]+=%s)' % value
 path_re = re.compile(r'^[^/"\?]+(?:\?%s?(?:&%s?)*)?' % (attrib, attrib))
 
 class Builder(object):
@@ -47,8 +49,8 @@ class Builder(object):
         result = []
         while match is not None:
             result.append(match.group(0))
-            path = path[len(match.group(0)) + 1:]
-            match  = path_re.match(path)
+            path  = path[len(match.group(0)) + 1:]
+            match = path_re.match(path)
         return result
 
     def _splittag(self, tag):
