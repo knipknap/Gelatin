@@ -30,12 +30,27 @@ def do_return(context, levels = 1):
     #print "do.return():", -levels
     return -levels
 
+def out_create(context, path, data = None):
+    #print "out.create():", path, data
+    context.builder.create(path, data)
+    context.builder.enter(path)
+    context._trigger(context.on_add, context.re_stack[-1])
+    context.builder.leave()
+    return 0
+
 def out_add(context, path, data = None):
     #print "out.add():", path, data
     context.builder.add(path, data)
     context.builder.enter(path)
     context._trigger(context.on_add, context.re_stack[-1])
     context.builder.leave()
+    return 0
+
+def out_open(context, path):
+    #print "out.open():", path
+    context.builder.open(path)
+    context._trigger(context.on_add, context.re_stack[-1])
+    context.stack[-1].on_leave.append((context.builder.leave, ()))
     return 0
 
 def out_enter(context, path):
@@ -67,7 +82,9 @@ class Context(object):
                           'do.next':            do_next,
                           'do.skip':            do_skip,
                           'do.say':             do_say,
+                          'out.create':         out_create,
                           'out.add':            out_add,
+                          'out.open':           out_open,
                           'out.enter':          out_enter,
                           'out.enqueue_before': out_enqueue_before,
                           'out.enqueue_after':  out_enqueue_after,

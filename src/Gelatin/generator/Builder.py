@@ -63,10 +63,26 @@ class Builder(object):
             attribs.append((key.lower(), value))
         return url.path.replace(' ', '-').lower(), attribs
 
+    def create(self, path, data = None):
+        """
+        Creates the given node, regardless of whether or not it already
+        exists.
+        Returns the new node.
+        """
+        raise NotImplementedError('abstract method')
+
     def add(self, path, data = None):
         """
         Creates the given node if it does not exist.
         Returns the (new or existing) node.
+        """
+        raise NotImplementedError('abstract method')
+
+    def open(self, path):
+        """
+        Creates and enters the given node, regardless of whether it already
+        exists.
+        Returns the new node.
         """
         raise NotImplementedError('abstract method')
 

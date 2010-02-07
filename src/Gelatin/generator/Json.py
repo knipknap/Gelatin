@@ -65,6 +65,15 @@ class Json(Builder):
         #pp.pprint(self.tree.to_dict())
         self.tree.dump()
 
+    def create(self, path, data = None):
+        node = self.current[-1]
+        for item in self._splitpath(path):
+            tag, attribs = self._splittag(item)
+            node = node.add(Node(tag, attribs))
+        if data:
+            node.text = data
+        return node
+
     def add(self, path, data = None):
         node = self.current[-1]
         for item in self._splitpath(path):
@@ -77,6 +86,10 @@ class Json(Builder):
         if data:
             node.text = data
         return node
+
+    def open(self, path):
+        self.current.append(self.create(path))
+        return self.current[-1]
 
     def enter(self, path):
         self.current.append(self.add(path))

@@ -43,6 +43,15 @@ class Xml(Builder):
         attribs = ['@' + k + '="' + v + '"' for k, v in attribs]
         return './' + tag + '[' + ' and '.join(attribs) + ']'
 
+    def create(self, path, data = None):
+        node = self.current[-1]
+        for item in self._splitpath(path):
+            tag, attribs = self._splittag(item)
+            node = etree.SubElement(node, tag, **dict(attribs))
+        if data:
+            node.text = data
+        return node
+
     def add(self, path, data = None):
         node = self.current[-1]
         for item in self._splitpath(path):
@@ -56,6 +65,13 @@ class Xml(Builder):
         if data:
             node.text  = node.text is not None and node.text or ''
             node.text += data
+        return node
+
+    def open(self, path):
+        #print "OPEN", path
+        node = self.create(path)
+        self.stack.append(self.current[-1])
+        self.current.append(node)
         return node
 
     def enter(self, path):
