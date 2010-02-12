@@ -28,4 +28,3 @@ grammar input:
     match / */:
         out.open('line')
         line()
-        out.leave()
