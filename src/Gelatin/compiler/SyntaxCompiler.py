@@ -15,6 +15,7 @@
 from simpleparse.dispatchprocessor import DispatchProcessor, getString, singleMap
 from Function                      import Function
 from Grammar                       import Grammar
+from WhenStatement                 import WhenStatement
 from MatchStatement                import MatchStatement
 from MatchFieldList                import MatchFieldList
 from MatchList                     import MatchList
@@ -95,6 +96,12 @@ class SyntaxCompiler(DispatchProcessor):
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
+    def _when_stmt(self, (tag, left, right, sublist), buffer):
+        matcher            = WhenStatement()
+        matcher.matchlist  = self._match_list(sublist[0], buffer)
+        matcher.statements = self._suite(sublist[1], buffer)
+        return matcher
+
     def _function(self, (tag, left, right, sublist), buffer):
         function      = Function()
         function.name = getString(sublist[0], buffer)
@@ -114,6 +121,8 @@ class SyntaxCompiler(DispatchProcessor):
             tag = token[0]
             if tag == 'match_stmt':
                 statement = self._match_stmt(token, buffer)
+            elif tag == 'when_stmt':
+                statement = self._when_stmt(token, buffer)
             elif tag == 'function':
                 statement = self._function(token, buffer)
             else:

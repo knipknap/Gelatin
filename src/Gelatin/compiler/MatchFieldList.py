@@ -21,12 +21,15 @@ class MatchFieldList(Token):
         self.expressions = []
         self.regex       = None
 
-    def match(self, context):
+    def when(self, context):
         if not self.regex:
             regex      = ')('.join(e.re_value() for e in self.expressions)
             self.regex = re.compile('(' + regex + ')')
 
-        match = self.regex.match(context.input, context.start)
+        return self.regex.match(context.input, context.start)
+
+    def match(self, context):
+        match = self.when(context)
         if not match:
             return None
         context.start += len(match.group(0))

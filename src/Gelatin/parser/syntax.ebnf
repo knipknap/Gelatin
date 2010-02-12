@@ -28,17 +28,18 @@ function    := func_name, func_args
 # Expressions.
 >expression< := string / regex / number / varname
 
-# Match statement.
+# "match" and "when" statements.
 match_field_list := expression, (ws, expression)*
 match_list       := match_field_list, (ws, "|", ws, match_field_list)*
 match_stmt       := "match", ws, match_list, ':', suite
+when_stmt        := "when", ws, match_list, ':', suite
 
 # "define" statement.
 define_stmt := "define", ws, varname, ws, expression, NEWLINE
 
 # "grammar" statement.
 >simple_stmt<   := comment / function
->compound_stmt< := match_stmt
+>compound_stmt< := match_stmt / when_stmt
 >stmt<          := ((simple_stmt, NEWLINE) / compound_stmt)+
 inherit         := '(', varname, ')'
 suite           := NEWLINE, INDENT, stmt+, DEDENT

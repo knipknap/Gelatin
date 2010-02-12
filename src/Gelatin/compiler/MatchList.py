@@ -19,6 +19,13 @@ class MatchList(Token):
     def __init__(self):
         self.field_lists = []
 
+    def when(self, context):
+        for field_list in self.field_lists:
+            match = field_list.when(context)
+            if match:
+                return match
+        return None
+
     def match(self, context):
         for field_list in self.field_lists:
             match = field_list.match(context)
