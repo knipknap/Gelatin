@@ -32,14 +32,14 @@ class Xml(Builder):
         tag, attribs = Builder._splittag(self, path)
         theattribs   = []
         for key, value in attribs:
-            theattribs.append((key, urllib.quote(value)))
+            theattribs.append((key, value))
         return tag, theattribs
 
     def _tag2xpath(self, tag, attribs):
         tag = tag.replace(' ', '-')
         if not attribs:
             return tag
-        attribs = ['@' + k + '="' + v + '"' for k, v in attribs]
+        attribs = ['@' + k + '="' + v.replace('"', '%22') + '"' for k, v in attribs]
         return './' + tag + '[' + ' and '.join(attribs) + ']'
 
     def create(self, path, data = None):
