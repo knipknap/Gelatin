@@ -156,7 +156,7 @@ class Context(object):
         line        = self._get_line()
         offset      = self.start - start
         token_len   = 1
-        output      = line + '\n'
+        output      = unicode(line, 'latin-1') + '\n'
         if token_len <= 1:
             output += (' ' * offset) + '^\n'
         else:
