@@ -43,7 +43,8 @@ class String(Token):
         return str(value)
 
     def value(self):
-        return _string_re.sub(self._expand_string, self.data)
+        value = _string_re.sub(self._expand_string, self.data)
+        return unicode(value, 'latin-1')
 
     def re_value(self):
         return re.escape(self.data)
