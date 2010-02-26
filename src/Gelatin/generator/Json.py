@@ -87,6 +87,11 @@ class Json(Builder):
             node.text = data
         return node
 
+    def add_attribute(self, path, name, value):
+        node = self.add(path)
+        node.attribs.append((name, value))
+        return node
+
     def open(self, path):
         self.current.append(self.create(path))
         return self.current[-1]
