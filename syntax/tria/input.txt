@@ -1,0 +1,44 @@
+#tria2010.tri
+#-------------------------------------------------------------------------------
+Woche: 1
+Mo04Jan10
+Di05Jan10
+Mi06Jan10
+Do07Jan10 Run
+          Strecke: Unterführung
+          Kommentar: LS3AsicsTrabuco, 5mm Neuschnee, rutschig
+          Zeit: 15:34(15:34),31:20(15.45),
+          Swim
+          Ort: Hallenbad Markgröningen
+          Laenge: 400 ES
+          Laenge: 100 AS
+
+Fr08Jan10
+Sa09Jan10 Swim
+          Kommentar: 6. Einheit, Plan Dez09, Rückentechnik
+          Ort: Hallenbad Markgröningen
+          Länge: 400 ES
+          Laenge: 6*50 Technik
+          Laenge: 8*50 GA1(25 Kraul, 25 Rücken)
+          Laenge: 6*100 GA1(Kraul + Rücken + Kraul + Brust im Wechsel)
+          Laenge: 25 tauchen, 25 tauchen, 29 tauchen, 33 tauchen
+          Laenge: 100 AS
+
+So10Jan10
+#-------------------------------------------------------------------------------
+Woche: 2
+Mo11Jan10
+Mi13Jan10
+Do14Jan10 Bike
+          Kommentar: Feldwege + Straße
+          Material: Centurion
+          Strecke: Feldwege nach Eglosheim, Monrepos, Bietigheim, Bissingen, dann 
+          Strecke: Straße nach Untermberg, Sachsenheim (Industriegebiet), Fontanis-Lager, 
+          Strecke: Kreissel Oberriexingen, Unterriexingen.
+          Laenge: 44.2 km
+          Schnitt: 18.3 km/h
+
+Fr15Jan10
+
+So17Jan10
+#-------------------------------------------------------------------------------

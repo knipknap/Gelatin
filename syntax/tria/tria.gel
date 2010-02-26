@@ -1,0 +1,62 @@
+# Gelatin Grammar for Triathlon.
+define nl /[\r\n]+/
+define nonl /[^\r\n]/
+define ws /\s+/
+define fieldname /[\w ]+/
+define fieldvalue /[^\r\n]+/
+define date /[0-9][0-9]...[0-9][0-9]/
+define field_end /[\r\n,] */
+define comment /#[^\r\n]*/
+define weekday /Mo|Di|Mi|Do|Fr|Sa|So/
+define discipline /Swim|Bike|Run/
+define integer /[0-9]+/
+
+grammar unit:
+    match ws 'Strecke:' ws fieldvalue nl:
+        out.add('route', '$3')
+    match ws 'Länge:' ws fieldvalue nl
+        | ws 'Laenge:' ws fieldvalue nl:
+        out.open('distance')
+        out.add('.', '$3')
+    match ws 'Zeit:' ws fieldvalue nl:
+        out.add('time', '$3')
+    match ws 'Kommentar:' ws fieldvalue nl:
+        out.add('comment', '$3')
+    match ws 'Ort:' ws fieldvalue nl:
+        out.add('place', '$3')
+    match ws 'Schnitt:' ws fieldvalue nl:
+        out.add('average', '$3')
+    match ws 'Material:' ws fieldvalue nl:
+        out.add('material', '$3')
+    match nl:
+        do.return()
+    do.return()
+
+grammar day:
+    match ws discipline nl:
+        out.open('unit')
+        out.add('discipline', '$1')
+        unit()
+        do.return()
+    match nl:
+        do.return()
+    do.return()
+
+grammar week:
+    match weekday date:
+        out.open('day')
+        out.add('weekday', '$0')
+        out.add('date', '$1')
+        day()
+    match comment nl:
+        do.return()
+
+# The grammar named "input" is the entry point for the converter.
+grammar input:
+    match comment nl:
+        do.skip()
+    match 'Woche:' ws integer nl:
+        out.open('week')
+        out.add_attribute('.', 'number', '$2')
+        week()
+        out.leave()
