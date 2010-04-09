@@ -59,7 +59,7 @@ class Builder(object):
             value = value[0]
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
-            attribs.append((key.lower(), value))
+            attribs.append((str(key.lower()), value))
         return url.path.replace(' ', '-').lower(), attribs
 
     def create(self, path, data = None):
