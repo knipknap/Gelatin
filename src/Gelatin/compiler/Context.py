@@ -19,6 +19,10 @@ def do_next(context):
 def do_skip(context):
     return 1
 
+def do_flush_queue(context):
+    context._clear_triggers()
+    return 1
+
 def do_fail(context, message = 'No matching statement found'):
     context._error(message)
 
@@ -89,6 +93,7 @@ class Context(object):
                           'do.return':          do_return,
                           'do.next':            do_next,
                           'do.skip':            do_skip,
+                          'do.flush_queue':     do_flush_queue,
                           'do.say':             do_say,
                           'out.create':         out_create,
                           'out.add':            out_add,
@@ -109,6 +114,9 @@ class Context(object):
         self.start           = 0
         self.re_stack        = []
         self.stack           = []
+        self._clear_triggers()
+
+    def _clear_triggers(self):
         self.on_match_before = []
         self.on_match_after  = []
         self.on_add          = []
