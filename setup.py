@@ -14,9 +14,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import sys, os
 from setuptools import setup, find_packages
+pkg = 'Gelatin'
 
 # Import the file that contains the version number.
-gelatin_dir = os.path.join(os.path.dirname(__file__), 'src', 'Gelatin')
+gelatin_dir = os.path.join(os.path.dirname(__file__), 'src', pkg)
 sys.path.insert(0, gelatin_dir)
 from version import __version__
 
@@ -26,16 +27,19 @@ start  = readme.index('\n\n')
 end    = readme.index('\n\n=')
 descr  = readme[start:end].strip()
 
+print find_packages('src')
+
 # Run the setup.
-setup(name             = 'Gelatin',
+setup(name             = pkg,
       version          = __version__,
       description      = 'Transform text files to XML, JSON, or YAML',
       long_description = descr,
       author           = 'Samuel Abels',
       author_email     = 'knipknap@gmail.com',
       license          = 'GPLv2',
-      package_dir      = {'': 'src'},
-      packages         = [p for p in find_packages('src')],
+      package_dir      = {pkg: os.path.join('src', pkg)},
+      package_data     = {pkg: [os.path.join('parser', 'syntax.ebnf')]},
+      packages         = find_packages('src'),
       scripts          = ['gel'],
       install_requires = [],
       keywords         = ' '.join(['gelatin',
