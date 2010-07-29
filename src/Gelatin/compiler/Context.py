@@ -19,10 +19,6 @@ def do_next(context):
 def do_skip(context):
     return 1
 
-def do_flush_queue(context):
-    context._clear_triggers()
-    return 1
-
 def do_fail(context, message = 'No matching statement found'):
     context._error(message)
 
@@ -87,13 +83,16 @@ def out_enqueue_on_add(context, regex, path, data = None):
     context.on_add.append((regex, out_add, (context, path, data)))
     return 0
 
+def out_clear_queue(context):
+    context._clear_triggers()
+    return 1
+
 class Context(object):
     def __init__(self):
         self.functions = {'do.fail':            do_fail,
                           'do.return':          do_return,
                           'do.next':            do_next,
                           'do.skip':            do_skip,
-                          'do.flush_queue':     do_flush_queue,
                           'do.say':             do_say,
                           'out.create':         out_create,
                           'out.add':            out_add,
@@ -102,7 +101,8 @@ class Context(object):
                           'out.enter':          out_enter,
                           'out.enqueue_before': out_enqueue_before,
                           'out.enqueue_after':  out_enqueue_after,
-                          'out.enqueue_on_add': out_enqueue_on_add}
+                          'out.enqueue_on_add': out_enqueue_on_add,
+                          'out.clear_queue':    out_clear_queue}
         self.lexicon  = {}
         self.grammars = {}
         self.input    = None
