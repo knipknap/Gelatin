@@ -56,7 +56,11 @@ class Xml(Builder):
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
             xpath        = self._tag2xpath(tag, attribs)
-            next_node    = node.xpath(xpath)
+            try:
+                next_node = node.xpath(xpath)
+            except etree.XPathEvalError:
+                msg = 'Invalid path: %s (%s)' % (repr(path), repr(xpath))
+                raise Exception(msg)
             if next_node:
                 node = next_node[0]
             else:
