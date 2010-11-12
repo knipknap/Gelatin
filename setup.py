@@ -27,8 +27,6 @@ start  = readme.index('\n\n')
 end    = readme.index('\n\n=')
 descr  = readme[start:end].strip()
 
-print find_packages('src')
-
 # Run the setup.
 setup(name             = pkg,
       version          = __version__,

@@ -5,11 +5,7 @@ format such as XML, JSON or YAML.
 
 For documentation please refer to
 
-  [http://wiki.github.com/knipknap/Gelatin/]
-
-= Installation =
-
-    sudo python setup.py install --prefix /usr/local
+  [https://wiki.github.com/knipknap/Gelatin/]
 
 = Dependencies =
 
