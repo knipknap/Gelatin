@@ -51,7 +51,7 @@ setup(name             = pkg,
                                    'syntax',
                                    'text',
                                    'transform']),
-      url              = 'http://github.com/knipknap/Gelatin',
+      url              = 'https://github.com/knipknap/Gelatin',
       classifiers      = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
