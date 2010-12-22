@@ -1,0 +1,8 @@
+define nl   /[\r\n]/
+define line /[^\r\n]*/
+
+grammar input:
+    match line nl:
+        out.create('line', '$0')
+    match line:
+        out.create('line', '$0')
