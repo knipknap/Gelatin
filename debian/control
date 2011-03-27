@@ -10,7 +10,7 @@ Homepage: http://wiki.github.com/knipknap/Gelatin/
 
 Package: gelatin
 Architecture: all
-Depends: ${python:Depends}, python-json, python-lxml, python-yaml, ${misc:Depends}
+Depends: ${python:Depends}, python-lxml, python-yaml, ${misc:Depends}
 XB-Python-Version: ${python:Versions}
 Description: Transform text files to XML, JSON, or YAML
  Gelatin is a parser generator for converting text to a structured
