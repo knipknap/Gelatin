@@ -24,7 +24,7 @@ class Dummy(Builder):
     def dump(self):
         print self.serialize()
 
-    def add(self, path, data = None):
+    def add(self, path, data = None, replace = False):
         pass
 
     def enter(self, path):

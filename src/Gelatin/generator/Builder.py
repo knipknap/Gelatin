@@ -70,7 +70,7 @@ class Builder(object):
         """
         raise NotImplementedError('abstract method')
 
-    def add(self, path, data = None):
+    def add(self, path, data = None, replace = False):
         """
         Creates the given node if it does not exist.
         Returns the (new or existing) node.

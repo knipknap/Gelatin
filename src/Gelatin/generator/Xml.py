@@ -51,7 +51,7 @@ class Xml(Builder):
             node.text = data
         return node
 
-    def add(self, path, data = None):
+    def add(self, path, data = None, replace = False):
         node = self.current[-1]
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
@@ -65,6 +65,8 @@ class Xml(Builder):
                 node = next_node[0]
             else:
                 node = etree.SubElement(node, tag, **dict(attribs))
+        if replace:
+            node.text = ''
         if data:
             node.text  = node.text is not None and node.text or ''
             node.text += data

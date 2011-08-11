@@ -38,6 +38,14 @@ def out_create(context, path, data = None):
     context.builder.leave()
     return 0
 
+def out_replace(context, path, data = None):
+    #print "out.replace():", path, data
+    context.builder.add(path, data, replace = True)
+    context.builder.enter(path)
+    context._trigger(context.on_add, context.re_stack[-1])
+    context.builder.leave()
+    return 0
+
 def out_add(context, path, data = None):
     #print "out.add():", path, data
     context.builder.add(path, data)
@@ -95,6 +103,7 @@ class Context(object):
                           'do.skip':            do_skip,
                           'do.say':             do_say,
                           'out.create':         out_create,
+                          'out.replace':        out_replace,
                           'out.add':            out_add,
                           'out.add_attribute':  out_add_attribute,
                           'out.open':           out_open,

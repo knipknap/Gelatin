@@ -74,7 +74,7 @@ class Json(Builder):
             node.text = data
         return node
 
-    def add(self, path, data = None):
+    def add(self, path, data = None, replace = False):
         node = self.current[-1]
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
@@ -83,6 +83,8 @@ class Json(Builder):
                 node = next_node
             else:
                 node = node.add(Node(tag, attribs))
+        if replace:
+            node.text = ''
         if data:
             node.text = data
         return node
