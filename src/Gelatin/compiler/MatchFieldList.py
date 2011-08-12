@@ -17,14 +17,15 @@ from Gelatin import INDENT
 from Token   import Token
 
 class MatchFieldList(Token):
-    def __init__(self):
+    def __init__(self, modifiers = None):
         self.expressions = []
         self.regex       = None
+        self.modifiers   = modifiers
 
     def when(self, context):
         if not self.regex:
             regex      = ')('.join(e.re_value() for e in self.expressions)
-            self.regex = re.compile('(' + regex + ')')
+            self.regex = re.compile('(' + regex + ')', self.modifiers)
 
         return self.regex.match(context.input, context.start)
 

@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import re
 from simpleparse.dispatchprocessor import DispatchProcessor, getString, singleMap
 from Function                      import Function
 from Grammar                       import Grammar
@@ -76,29 +77,29 @@ class SyntaxCompiler(DispatchProcessor):
         else:
             raise Exception('BUG: invalid token %s' % tag)
 
-    def _match_field_list(self, (tag, left, right, sublist), buffer):
-        field_list = MatchFieldList()
+    def _match_field_list(self, (tag, left, right, sublist), buffer, flags):
+        field_list = MatchFieldList(flags)
         for field in sublist:
             expression = self._expression(field, buffer)
             field_list.expressions.append(expression)
         return field_list
 
-    def _match_list(self, (tag, left, right, sublist), buffer):
+    def _match_list(self, (tag, left, right, sublist), buffer, flags):
         matchlist = MatchList()
         for field_list in sublist:
-            field_list = self._match_field_list(field_list, buffer)
+            field_list = self._match_field_list(field_list, buffer, flags)
             matchlist.field_lists.append(field_list)
         return matchlist
 
-    def _match_stmt(self, (tag, left, right, sublist), buffer):
+    def _match_stmt(self, (tag, left, right, sublist), buffer, flags = 0):
         matcher            = MatchStatement()
-        matcher.matchlist  = self._match_list(sublist[0], buffer)
+        matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
     def _when_stmt(self, (tag, left, right, sublist), buffer):
         matcher            = WhenStatement()
-        matcher.matchlist  = self._match_list(sublist[0], buffer)
+        matcher.matchlist  = self._match_list(sublist[0], buffer, None)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
@@ -121,6 +122,8 @@ class SyntaxCompiler(DispatchProcessor):
             tag = token[0]
             if tag == 'match_stmt':
                 statement = self._match_stmt(token, buffer)
+            elif tag == 'imatch_stmt':
+                statement = self._match_stmt(token, buffer, re.I)
             elif tag == 'when_stmt':
                 statement = self._when_stmt(token, buffer)
             elif tag == 'function':
