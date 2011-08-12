@@ -97,9 +97,9 @@ class SyntaxCompiler(DispatchProcessor):
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
-    def _when_stmt(self, (tag, left, right, sublist), buffer):
+    def _when_stmt(self, (tag, left, right, sublist), buffer, flags = 0):
         matcher            = WhenStatement()
-        matcher.matchlist  = self._match_list(sublist[0], buffer, None)
+        matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
