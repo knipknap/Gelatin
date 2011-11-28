@@ -27,6 +27,9 @@ class Dummy(Builder):
     def add(self, path, data = None, replace = False):
         pass
 
+    def open(self, path):
+        pass
+
     def enter(self, path):
         pass
 
