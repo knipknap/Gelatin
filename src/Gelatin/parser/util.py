@@ -12,7 +12,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import re
+try:
+    import re2 as re
+except ImportError:
+    import re
 from Gelatin import INDENT_WIDTH
 
 whitespace_re = re.compile(' *')
@@ -36,7 +39,9 @@ def error(buffer, end, msg = 'Syntax error'):
 def eat_indent(buffer, start, end, expected_indent = None):
     result = whitespace_re.match(buffer, start, end)
     if result is None:
-        raise Exception('BUG: failed to parse indent')
+        # pyre2 returns None if the start parameter to match() is larger
+        # than the length of the buffer.
+        return start
     whitespace     = result.group(0)
     whitespace_len = len(whitespace)
     indent         = whitespace_len / INDENT_WIDTH

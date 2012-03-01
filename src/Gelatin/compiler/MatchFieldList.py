@@ -12,9 +12,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import re
+try:
+    import re2 as re
+except ImportError:
+    import re
 from Gelatin import INDENT
-from Token   import Token
+from Token import Token
 
 class MatchFieldList(Token):
     def __init__(self, modifiers = None):
