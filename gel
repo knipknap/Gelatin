@@ -13,13 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import sys, os
+import sys
+import os
+import datetime
 sys.path.insert(0, 'src')
-from optparse     import OptionParser
-from Gelatin      import __version__, generator
+from optparse import OptionParser
+from Gelatin import __version__, generator
 from Gelatin.util import compile
 
-usage  = '''%prog [options] filename'''
+usage  = '''%prog [options] filename [filename ...]'''
 parser = OptionParser(usage = usage, version = __version__)
 parser.add_option('--syntax', '-s',
                   dest    = 'syntax',
@@ -35,6 +37,12 @@ parser.add_option('--format', '-f',
                   help    = '''
 The output format. Valid values are: xml json yaml none. Default is xml.
 '''.strip())
+parser.add_option('--debug',
+                  dest    = 'debug',
+                  action  = 'store_true',
+                  help    = '''
+Print debug info.
+'''.strip())
 
 if __name__ == '__main__':
     # Parse options.
@@ -48,16 +56,26 @@ if __name__ == '__main__':
     if not os.path.isfile(options.syntax):
         parser.error('not a valid input file: ' + options.syntax)
 
-    try:
-        input_file = args[0]
-    except:
+    input_files = args
+    if not input_files:
         parser.error('missing input file')
 
     builder = generator.new(options.format)
     if builder is None:
         parser.error('invalid output format: ' + options.format)
 
+    def dbg(*msg):
+        if options.debug:
+            now = str(datetime.datetime.now())
+            sys.stderr.write(now + ' ' + ' '.join(msg) + '\n')
+
+    start = datetime.datetime.now()
+    dbg("Compiling", options.syntax + '...')
     converter = compile(options.syntax)
-    converter.parse(input_file, builder)
-    if options.format != 'none':
-        print builder.serialize()
+    for input_file in input_files:
+        dbg("Parsing", input_file + '...')
+        converter.parse(input_file, builder)
+        if options.format != 'none':
+            dbg("Generating output...")
+            print builder.serialize()
+    dbg('Total: ' + str(datetime.datetime.now() - start))
