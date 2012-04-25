@@ -41,7 +41,8 @@ def generate(converter, input_file, format = 'xml'):
     @rtype:  str
     @return: The resulting output.
     """
-    return generate_string(converter, open(input_file).read(), format = 'xml')
+    with open(input_file) as thefile:
+        return generate_string(converter, thefile.read(), format = format)
 
 def generate_to_file(converter, input_file, output_file, format = 'xml'):
     """
@@ -59,9 +60,9 @@ def generate_to_file(converter, input_file, output_file, format = 'xml'):
     @rtype:  str
     @return: The resulting output.
     """
-    input  = open(input_file).read()
-    result = generate_string(converter, input, format = 'xml')
-    open(output_file, 'w').write(result)
+    with open(output_file, 'w') as thefile:
+        result = generate(converter, input_file, format = format)
+        thefile.write(result)
 
 def generate_string(converter, input, format = 'xml'):
     """
@@ -99,5 +100,6 @@ def generate_string_to_file(converter, input, output_file, format = 'xml'):
     @rtype:  str
     @return: The resulting output.
     """
-    result = generate_string(converter, input, output_file, format)
-    open(output_file, 'w').write(result)
+    with open(output_file, 'w') as thefile:
+        result = generate_string(converter, input_file, format = format)
+        thefile.write(result)

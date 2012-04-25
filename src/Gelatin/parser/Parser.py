@@ -20,7 +20,8 @@ from Dedent      import Dedent
 from util        import error
 
 _ebnf_file = os.path.join(os.path.dirname(__file__), 'syntax.ebnf')
-_ebnf      = open(_ebnf_file).read()
+with open(_ebnf_file) as _thefile:
+    _ebnf = _thefile.read()
 
 class Parser(parser.Parser):
     def __init__(self):
@@ -42,7 +43,5 @@ class Parser(parser.Parser):
         return compiler.context
 
     def parse(self, filename, compiler):
-        file  = open(filename, 'r')
-        input = file.read()
-        file.close()
-        return self.parse_string(input, compiler)
+        with open(filename, 'r') as input_file:
+            return self.parse_string(input_file.read(), compiler)
