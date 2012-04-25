@@ -12,9 +12,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import os, re, tempfile, shutil
+import os
+import re
+import shutil
+from tempfile import NamedTemporaryFile
 from urlparse import urlparse
-from cgi      import parse_qs
+from cgi import parse_qs
 
 value   = r'"(?:\\.|[^"])*"'
 attrib  = r'(?:[\$\w\-]+=%s)' % value
@@ -31,14 +34,11 @@ class Builder(object):
         raise NotImplementedError('abstract method')
 
     def serialize_to_file(self, filename):
-        tmpfd, tmpname = tempfile.mkstemp()
-        tmpfile        = os.fdopen(tmpfd, 'w')
-        tmpfile.write(self.serialize())
-        tmpfile.flush()
-        tmpfile.close()
+        with NamedTemporaryFile(delete = False) as thefile:
+            thefile.write(self.serialize())
         if os.path.exists(filename):
             os.unlink(filename)
-        shutil.move(tmpname, filename)
+        shutil.move(thefile.name, filename)
 
     def dump(self):
         raise NotImplementedError('abstract method')

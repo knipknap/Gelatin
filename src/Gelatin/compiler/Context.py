@@ -199,10 +199,8 @@ class Context(object):
             self._error('parser returned, but did not complete')
 
     def parse(self, filename, builder):
-        file  = open(filename, 'r')
-        input = file.read()
-        file.close()
-        return self.parse_string(input, builder)
+        with open(filename, 'r') as input_file:
+            return self.parse_string(input_file.read(), builder)
 
     def dump(self):
         for grammar in self.grammars.itervalues():
