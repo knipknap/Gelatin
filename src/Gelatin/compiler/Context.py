@@ -178,7 +178,8 @@ class Context(object):
             output += (' ' * offset) + '^\n'
         else:
             output += (' ' * offset) + "'" + ('-' * (token_len - 2)) + "'\n"
-        return output + '%s in line %s' % (error, line_number)
+        output += '%s in line %s' % (error, line_number)
+        return output.encode('latin1', 'ignore')
 
     def _msg(self, error):
         print self._format(error)
