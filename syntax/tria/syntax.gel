@@ -59,4 +59,3 @@ grammar input:
         out.open('week')
         out.add_attribute('.', 'number', '$2')
         week()
-        out.leave()
