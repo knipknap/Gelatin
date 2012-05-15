@@ -43,10 +43,25 @@ class Xml(Builder):
         return './' + tag + '[' + ' and '.join(attribs) + ']'
 
     def create(self, path, data = None):
-        node = self.current[-1]
-        for item in self._splitpath(path):
+        node    = self.current[-1]
+        path    = self._splitpath(path)
+        n_items = len(path)
+        for n, item in enumerate(path, 1):
             tag, attribs = self._splittag(item)
-            node = etree.SubElement(node, tag, **dict(attribs))
+
+            # The leaf node is always newly created.
+            if n == n_items:
+                node = etree.SubElement(node, tag, **dict(attribs))
+                break
+
+            # Parent nodes are only created if the do not exist yet.
+            xp       = self._tag2xpath(tag, attribs)
+            existing = node.find(xp)
+            if existing is not None:
+                node = existing
+            else:
+                node = etree.SubElement(node, tag, **dict(attribs))
+
         if data:
             node.text = data
         return node

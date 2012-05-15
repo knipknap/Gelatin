@@ -66,12 +66,24 @@ class Json(Builder):
         self.tree.dump()
 
     def create(self, path, data = None):
-        node = self.current[-1]
-        for item in self._splitpath(path):
+        node    = self.current[-1]
+        path    = self._splitpath(path)
+        n_items = len(path)
+        for n, item in enumerate(path):
             tag, attribs = self._splittag(item)
-            node = node.add(Node(tag, attribs))
-        if data:
-            node.text = data
+            print tag, attribs, node
+
+            # The leaf node is always newly created.
+            if n == n_items:
+                node = node.add(Node(tag, attribs))
+                break
+
+            # Parent nodes are only created if the do not exist yet.
+            existing = node.get_child(tag, attribs)
+            if existing:
+                node = existing
+            else:
+                node = node.add(Node(tag, attribs))
         return node
 
     def add(self, path, data = None, replace = False):
