@@ -21,6 +21,7 @@ class Xml(Builder):
         self.etree   = etree.Element('xml')
         self.current = [self.etree]
         self.stack   = []
+        self.map     = dict.fromkeys(range(32))
 
     def serialize(self):
         return etree.tostring(self.etree, pretty_print = True)
@@ -63,7 +64,7 @@ class Xml(Builder):
                 node = etree.SubElement(node, tag, **dict(attribs))
 
         if data:
-            node.text = data
+            node.text = data.translate(self.map)
         return node
 
     def add(self, path, data = None, replace = False):
@@ -84,7 +85,7 @@ class Xml(Builder):
             node.text = ''
         if data:
             node.text  = node.text is not None and node.text or ''
-            node.text += data
+            node.text += data.translate(self.map)
         return node
 
     def add_attribute(self, path, name, value):
