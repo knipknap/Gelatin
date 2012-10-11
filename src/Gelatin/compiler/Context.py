@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+import sys
 
 def do_next(context):
     return 0
@@ -24,6 +25,10 @@ def do_fail(context, message = 'No matching statement found'):
 
 def do_say(context, message):
     context._msg(message)
+    return 0
+
+def do_warn(context, message):
+    context._warn(message)
     return 0
 
 def do_return(context, levels = 1):
@@ -102,6 +107,7 @@ class Context(object):
                           'do.next':            do_next,
                           'do.skip':            do_skip,
                           'do.say':             do_say,
+                          'do.warn':            do_warn,
                           'out.create':         out_create,
                           'out.replace':        out_replace,
                           'out.add':            out_add,
@@ -183,6 +189,9 @@ class Context(object):
 
     def _msg(self, error):
         print self._format(error)
+
+    def _warn(self, error):
+        sys.stderr.write(self._format(error) + '\n')
 
     def _error(self, error):
         raise Exception(self._format(error))
