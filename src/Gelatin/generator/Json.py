@@ -13,41 +13,53 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import json
+from collections import defaultdict
 from Builder import Builder
-from pprint  import PrettyPrinter
+from pprint import PrettyPrinter
 
 class Node:
     def __init__(self, name, attribs = None):
-        self.name     = name
-        self.attribs  = attribs and attribs or []
-        self.children = []
-        self.text     = None
+        self.name = name
+        self.attribs = attribs and attribs or []
+        self.children = defaultdict(list)
+        self.text = None
 
     def add(self, child):
-        self.children.append(child)
+        self.children[child.name].append(child)
         return child
 
-    def get_child(self, name, attribs):
-        if name == '.' and attribs == self.attribs:
-            return self
-        for child in self.children:
-            if child.name == name and child.attribs == attribs:
+    def get_child(self, name, attribs = None):
+        """
+        Returns the first child that matches the given name and
+        attributes.
+        """
+        if name == '.':
+            if attribs is None or len(attribs) == 0:
+                return self
+            if attribs == self.attribs:
+                return self
+        for child in self.children[name]:
+            if child.attribs == attribs:
                 return child
         return None
 
     def to_dict(self):
-        nodes    = dict(('@' + k, v) for (k, v) in self.attribs)
-        children = dict((c.name, c.to_dict()) for c in self.children)
-        nodes.update(children)
+        thedict = dict(('@' + k, v) for (k, v) in self.attribs)
+        children_dict = dict()
+        for name, child_list in self.children.iteritems():
+            if len(child_list) == 1:
+                children_dict[name] = child_list[0].to_dict()
+                continue
+            children_dict[name] = [child.to_dict() for child in child_list]
+        thedict.update(children_dict)
         if self.text is not None:
-            nodes['#text'] = self.text
-        return nodes
+            thedict['#text'] = self.text
+        return thedict
 
     def dump(self, indent = 0):
-        print '  ' * indent + self.name + str(self.attribs) + ':'
-        print '  ' * (indent + 1) + '#text: ' + str(self.text)
-        for child in self.children:
-            child.dump(indent + 1)
+        for name, children in self.children.iteritems():
+            for child in children:
+                child.dump(indent + 1)
 
 class Json(Builder):
     """
@@ -71,14 +83,13 @@ class Json(Builder):
         n_items = len(path)
         for n, item in enumerate(path):
             tag, attribs = self._splittag(item)
-            print tag, attribs, node
 
             # The leaf node is always newly created.
             if n == n_items:
                 node = node.add(Node(tag, attribs))
                 break
 
-            # Parent nodes are only created if the do not exist yet.
+            # Parent nodes are only created if they do not exist yet.
             existing = node.get_child(tag, attribs)
             if existing:
                 node = existing
@@ -91,7 +102,7 @@ class Json(Builder):
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
             next_node    = node.get_child(tag, attribs)
-            if next_node:
+            if next_node is not None:
                 node = next_node
             else:
                 node = node.add(Node(tag, attribs))
