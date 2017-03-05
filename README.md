@@ -7,13 +7,6 @@
 Gelatin is a parser generator for converting text to a structured
 format such as XML, JSON or YAML.
 
-## Dependencies
-
-* Python 2.6 or later, work on Python 3 support is in progress
-* python-lxml
-* python-yaml
-* SimpleParse
-
 ## Converting Text to XML, JSON, or YAML
 
 Gelatin is a combined lexer, parser, and output generator.

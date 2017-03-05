@@ -16,12 +16,10 @@ import sys, os
 from setuptools import setup, find_packages
 from Gelatin.version import __version__
 pkg = 'Gelatin'
-
-# Import the project description from the README.
-readme = open('README').read()
-start  = readme.index('\n\n')
-end    = readme.index('\n\n=')
-descr  = readme[start:end].strip()
+descr = '''
+Gelatin is a parser generator for converting text to a structured
+format such as XML, JSON or YAML.
+'''.strip()
 
 # Run the setup.
 setup(name             = pkg,
@@ -35,7 +33,9 @@ setup(name             = pkg,
       package_data     = {pkg: [os.path.join('parser', 'syntax.ebnf')]},
       packages         = find_packages('.'),
       scripts          = ['gel'],
-      install_requires = [],
+      install_requires = ['lxml',
+                          'pyyaml',
+                          'SimpleParse'],
       keywords         = ' '.join(['gelatin',
                                    'gel',
                                    'parser',
