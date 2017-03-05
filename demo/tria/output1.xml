@@ -1,0 +1,85 @@
+<xml>
+  <week number="1">
+    <day>
+      <weekday>Mo</weekday>
+      <date>04Jan10</date>
+    </day>
+    <day>
+      <weekday>Di</weekday>
+      <date>05Jan10</date>
+    </day>
+    <day>
+      <weekday>Mi</weekday>
+      <date>06Jan10</date>
+    </day>
+    <day>
+      <weekday>Do</weekday>
+      <date>07Jan10</date>
+      <unit>
+        <discipline>Run</discipline>
+        <route>Unterf&#252;hrung</route>
+        <comment>LS3AsicsTrabuco, 5mm Neuschnee, rutschig</comment>
+        <time>15:34(15:34),31:20(15.45),</time>
+      </unit>
+      <unit>
+        <discipline>Swim</discipline>
+        <place>Hallenbad Markgr&#246;ningen</place>
+        <distance>400 ES</distance>
+        <distance>100 AS</distance>
+      </unit>
+    </day>
+    <day>
+      <weekday>Fr</weekday>
+      <date>08Jan10</date>
+    </day>
+    <day>
+      <weekday>Sa</weekday>
+      <date>09Jan10</date>
+      <unit>
+        <discipline>Swim</discipline>
+        <comment>6. Einheit, Plan Dez09, R&#252;ckentechnik</comment>
+        <place>Hallenbad Markgr&#246;ningen</place>
+        <distance>400 ES</distance>
+        <distance>6*50 Technik</distance>
+        <distance>8*50 GA1(25 Kraul, 25 R&#252;cken)</distance>
+        <distance>6*100 GA1(Kraul + R&#252;cken + Kraul + Brust im Wechsel)</distance>
+        <distance>25 tauchen, 25 tauchen, 29 tauchen, 33 tauchen</distance>
+        <distance>100 AS</distance>
+      </unit>
+    </day>
+    <day>
+      <weekday>So</weekday>
+      <date>10Jan10</date>
+    </day>
+  </week>
+  <week number="2">
+    <day>
+      <weekday>Mo</weekday>
+      <date>11Jan10</date>
+    </day>
+    <day>
+      <weekday>Mi</weekday>
+      <date>13Jan10</date>
+    </day>
+    <day>
+      <weekday>Do</weekday>
+      <date>14Jan10</date>
+      <unit>
+        <discipline>Bike</discipline>
+        <comment>Feldwege + Stra&#223;e</comment>
+        <material>Centurion</material>
+        <route>Feldwege nach Eglosheim, Monrepos, Bietigheim, Bissingen, dann Stra&#223;e nach Untermberg, Sachsenheim (Industriegebiet), Fontanis-Lager, Kreissel Oberriexingen, Unterriexingen.</route>
+        <distance>44.2 km</distance>
+        <average>18.3 km/h</average>
+      </unit>
+    </day>
+    <day>
+      <weekday>Fr</weekday>
+      <date>15Jan10</date>
+    </day>
+    <day>
+      <weekday>So</weekday>
+      <date>17Jan10</date>
+    </day>
+  </week>
+</xml>

@@ -1,0 +1,66 @@
+{
+    "week": [
+        {
+            "@number": "1", 
+            "day": {
+                "date": {
+                    "#text": "10Jan10"
+                }, 
+                "weekday": {
+                    "#text": "So"
+                }, 
+                "unit": {
+                    "discipline": {
+                        "#text": "Swim"
+                    }, 
+                    "comment": {
+                        "#text": "6. Einheit, Plan Dez09, R\u00fcckentechnik"
+                    }, 
+                    "place": {
+                        "#text": "Hallenbad Markgr\u00f6ningen"
+                    }, 
+                    "distance": {
+                        "#text": "100 AS"
+                    }, 
+                    "route": {
+                        "#text": "Unterf\u00fchrung"
+                    }, 
+                    "time": {
+                        "#text": "15:34(15:34),31:20(15.45),"
+                    }
+                }
+            }
+        }, 
+        {
+            "@number": "2", 
+            "day": {
+                "date": {
+                    "#text": "17Jan10"
+                }, 
+                "weekday": {
+                    "#text": "So"
+                }, 
+                "unit": {
+                    "discipline": {
+                        "#text": "Bike"
+                    }, 
+                    "comment": {
+                        "#text": "Feldwege + Stra\u00dfe"
+                    }, 
+                    "distance": {
+                        "#text": "44.2 km"
+                    }, 
+                    "route": {
+                        "#text": "Kreissel Oberriexingen, Unterriexingen."
+                    }, 
+                    "material": {
+                        "#text": "Centurion"
+                    }, 
+                    "average": {
+                        "#text": "18.3 km/h"
+                    }
+                }
+            }
+        }
+    ]
+}

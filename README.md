@@ -1,5 +1,7 @@
 # Gelatin
 
+[![Build Status](https://travis-ci.org/knipknap/gelatin.svg?branch=master)](https://travis-ci.org/knipknap/gelatin)
+
 ## Summary
 
 Gelatin is a parser generator for converting text to a structured
@@ -9,7 +11,6 @@ format such as XML, JSON or YAML.
 
 * Python 2.6 or later, work on Python 3 support is in progress
 * python-lxml
-* python-json
 * python-yaml
 
 ## Converting Text to XML, JSON, or YAML

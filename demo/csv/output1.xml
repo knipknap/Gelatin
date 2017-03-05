@@ -1,0 +1,32 @@
+<xml>
+  <line>
+    <column>data1</column>
+    <column>data2  </column>
+    <column>data3'''</column>
+    <column>data4""</column>
+    <column/>
+    <column/>
+    <column>data5</column>
+    <column/>
+  </line>
+  <line>
+    <column>foo1</column>
+    <column>foo2</column>
+    <column>foo3'''</column>
+    <column>foo4""</column>
+    <column/>
+    <column/>
+    <column>foo5</column>
+    <column>foo6</column>
+  </line>
+  <line>
+    <column>bar1</column>
+    <column>bar2  </column>
+    <column>bar3'''</column>
+    <column>bar4""</column>
+    <column/>
+    <column/>
+    <column>bar5</column>
+    <column/>
+  </line>
+</xml>

@@ -54,7 +54,7 @@ uninstall:
 
 .PHONY : tests
 tests:
-	cd tests/$(NAME)/; ./run_suite.py 1
+	cd tests/; ./run_suite.py 1
 
 ###################################################################
 # Package builders.

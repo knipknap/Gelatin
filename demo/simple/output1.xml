@@ -1,0 +1,10 @@
+<xml>
+  <user firstname="John" lastname="Doe">
+    <office>1st Ave</office>
+    <birth-date>1978-01-01</birth-date>
+  </user>
+  <user firstname="Jane" lastname="Foo">
+    <office>2nd Ave</office>
+    <birth-date>1970-01-01</birth-date>
+  </user>
+</xml>

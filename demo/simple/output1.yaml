@@ -1,0 +1,9 @@
+!!python/unicode 'user':
+- !!python/unicode '@firstname': !!python/unicode 'John'
+  !!python/unicode '@lastname': !!python/unicode 'Doe'
+  !!python/unicode 'birth-date': {'#text': !!python/unicode '1978-01-01'}
+  !!python/unicode 'office': {'#text': !!python/unicode '1st Ave'}
+- !!python/unicode '@firstname': !!python/unicode 'Jane'
+  !!python/unicode '@lastname': !!python/unicode 'Foo'
+  !!python/unicode 'birth-date': {'#text': !!python/unicode '1970-01-01'}
+  !!python/unicode 'office': {'#text': !!python/unicode '2nd Ave'}
