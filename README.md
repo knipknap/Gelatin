@@ -69,9 +69,9 @@ grammar input:
 * **"grammar input:"** is the entry point for the converter.
 * **"match"** statements in each grammar are executed sequentially. If a match is found, the indented statements in the match block are executed. After reaching the end of a match block, the grammar restarts at the top of the grammar block.
 * If the end of a grammar is reached before the end of the input document was reached, an error is raised.
-* **out.add('$0', '$3')** creates a node in the XML (or JSON, or YAML) if it does not yet exist. The name of the node is the value of the first matched field (the fieldname, in this case). The data of the node is the value of the fourth matched field.
-* **out.open('user')** creates a "user" node in the output and selects it such that all following "add" statements generate output relative to the "user" node. Gelatin leaves the user node upon reaching the out.leave() statement.
-* *user()* calls the grammar named "user".
+* **"out.add('$0', '$3')"** creates a node in the XML (or JSON, or YAML) if it does not yet exist. The name of the node is the value of the first matched field (the fieldname, in this case). The data of the node is the value of the fourth matched field.
+* **"out.open('user')"** creates a "user" node in the output and selects it such that all following "add" statements generate output relative to the "user" node. Gelatin leaves the user node upon reaching the out.leave() statement.
+* **user()** calls the grammar named "user".
 
 This produces the following output:
 
@@ -108,7 +108,7 @@ gel -s mysyntax.gel -f yaml input.txt
 Gelatin also provides a Python API for transforming the text:
 
 ```python
-from Gelatin      import generator
+from Gelatin import generator
 from Gelatin.util import compile
 
 # Parse your .gel file.
@@ -122,7 +122,7 @@ print builder.serialize()
 
 ## Documentation
 
-For the full documentation please refer to
+For full documentation please refer to
 
   https://wiki.github.com/knipknap/Gelatin/
 
