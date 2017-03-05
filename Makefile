@@ -8,6 +8,21 @@ DISTDIR=/pub/code/releases/$(NAME)
 ###################################################################
 # Project-specific targets.
 ###################################################################
+apidocs:
+	./version.sh
+	epydoc --name $(NAME) \
+		--exclude ^Gelatin\.parser \
+		--exclude ^Gelatin\.compiler \
+		--html \
+		--no-private \
+		--introspect-only \
+		--no-source \
+		--no-frames \
+		--inheritance=included \
+		-v \
+		-o docs \
+		$(NAME)
+	./version.sh --reset
 
 ###################################################################
 # Standard targets.
