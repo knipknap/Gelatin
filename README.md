@@ -71,7 +71,7 @@ grammar input:
 * If the end of a grammar is reached before the end of the input document was reached, an error is raised.
 * **"out.add('$0', '$3')"** creates a node in the XML (or JSON, or YAML) if it does not yet exist. The name of the node is the value of the first matched field (the fieldname, in this case). The data of the node is the value of the fourth matched field.
 * **"out.open('user')"** creates a "user" node in the output and selects it such that all following "add" statements generate output relative to the "user" node. Gelatin leaves the user node upon reaching the out.leave() statement.
-* **user()** calls the grammar named "user".
+* **"user()"** calls the grammar named "user".
 
 This produces the following output:
 
