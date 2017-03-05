@@ -1,6 +1,6 @@
 # Gelatin
 
-[![Build Status](https://travis-ci.org/knipknap/gelatin.svg?branch=master)](https://travis-ci.org/knipknap/gelatin)
+[![Build Status](https://travis-ci.org/knipknap/Gelatin.svg?branch=master)](https://travis-ci.org/knipknap/Gelatin)
 
 ## Summary
 
