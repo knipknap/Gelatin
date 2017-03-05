@@ -16,7 +16,7 @@
 # Tag revisions like this:
 # $ git tag -a -m "v0.2" v0.2
 VERSION_IN=VERSION.in
-VERSION_FILE=src/Gelatin/version.py
+VERSION_FILE=Gelatin/version.py
 
 # Check that we are actually in a git managed project.
 if [ ! -e .git -a -z "$1" ]; then

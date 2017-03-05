@@ -14,12 +14,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import sys, os
 from setuptools import setup, find_packages
+from Gelatin.version import __version__
 pkg = 'Gelatin'
-
-# Import the file that contains the version number.
-gelatin_dir = os.path.join(os.path.dirname(__file__), 'src', pkg)
-sys.path.insert(0, gelatin_dir)
-from version import __version__
 
 # Import the project description from the README.
 readme = open('README').read()
@@ -35,9 +31,9 @@ setup(name             = pkg,
       author           = 'Samuel Abels',
       author_email     = 'knipknap@gmail.com',
       license          = 'GPLv2',
-      package_dir      = {pkg: os.path.join('src', pkg)},
+      package_dir      = {pkg: pkg},
       package_data     = {pkg: [os.path.join('parser', 'syntax.ebnf')]},
-      packages         = find_packages('src'),
+      packages         = find_packages('.'),
       scripts          = ['gel'],
       install_requires = [],
       keywords         = ' '.join(['gelatin',
