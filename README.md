@@ -1,6 +1,7 @@
 # Gelatin
 
 [![Build Status](https://travis-ci.org/knipknap/Gelatin.svg?branch=master)](https://travis-ci.org/knipknap/Gelatin)
+[![Coverage Status](https://coveralls.io/repos/github/knipknap/Gelatin/badge.svg?branch=master)](https://coveralls.io/github/knipknap/Gelatin?branch=master)
 
 ## Summary
 
