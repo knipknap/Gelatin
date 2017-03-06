@@ -17,8 +17,7 @@ from setuptools import setup, find_packages
 from Gelatin.version import __version__
 pkg = 'Gelatin'
 descr = '''
-Gelatin is a parser generator for converting text to a structured
-format such as XML, JSON or YAML.
+Gelatin converts text to a structured format, such as XML, JSON or YAML.
 '''.strip()
 
 # Run the setup.
