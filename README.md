@@ -121,8 +121,4 @@ print builder.serialize()
 
 For full documentation please refer to
 
-  https://wiki.github.com/knipknap/Gelatin/
-
-The Python API documentation is here:
-
-  http://knipknap.github.io/Gelatin/
+  http://gelatin.readthedocs.io/en/latest/
