@@ -21,7 +21,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   quick.rst
-   advanced.rst
-   syntax.rst
-   modules.rst
+   quick
+   advanced
+   syntax
+   API Documentation<modules>
