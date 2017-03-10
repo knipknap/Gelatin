@@ -1,8 +1,13 @@
 Gelatin.generator package
 =========================
 
-Submodules
-----------
+Module contents
+---------------
+
+.. automodule:: Gelatin.generator
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Gelatin.generator.Builder module
 --------------------------------
@@ -40,15 +45,6 @@ Gelatin.generator.Yaml module
 -----------------------------
 
 .. automodule:: Gelatin.generator.Yaml
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: Gelatin.generator
     :members:
     :undoc-members:
     :show-inheritance:

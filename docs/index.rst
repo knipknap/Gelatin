@@ -24,4 +24,4 @@ Contents
    quick
    advanced
    syntax
-   API Documentation<modules>
+   api
