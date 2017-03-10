@@ -12,7 +12,7 @@
     :target: https://github.com/knipknap/Gelatin/stargazers
 
 .. image:: https://img.shields.io/github/license/knipknap/Gelatin.svg
-    :target: 
+    :target: https://github.com/knipknap/Gelatin/blob/master/COPYING
 
 What is Gelatin?
 ================
