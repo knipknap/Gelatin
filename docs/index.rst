@@ -14,6 +14,8 @@
 .. image:: https://img.shields.io/github/license/knipknap/Gelatin.svg
     :target: https://github.com/knipknap/Gelatin/blob/master/COPYING
 
+
+
 What is Gelatin?
 ================
 
