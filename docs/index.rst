@@ -1,15 +1,28 @@
-.. Gelatin documentation master file, created by
-   sphinx-quickstart on Wed Mar  8 19:52:48 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. image:: https://travis-ci.org/knipknap/Gelatin.svg?branch=master
+    :target: https://travis-ci.org/knipknap/Gelatin
 
-Gelatin documentation
-=====================
+.. image:: https://coveralls.io/repos/github/knipknap/Gelatin/badge.svg?branch=master
+    :target: https://coveralls.io/github/knipknap/Gelatin?branch=master
+
+.. image:: https://lima.codeclimate.com/github/knipknap/Gelatin/badges/gpa.svg
+    :target: https://lima.codeclimate.com/github/knipknap/Gelatin
+    :alt: Code Climate
+
+.. image:: https://img.shields.io/github/stars/knipknap/Gelatin.svg   
+    :target: https://github.com/knipknap/Gelatin/stargazers
+
+What is Gelatin?
+================
 
 Gelatin turns your text soup into something solid. It is a combined
 lexer, parser, and output generator. It converts text files to XML, JSON,
 or YAML. It is a simple language for converting text into a structured
 formats.
+
+Development
+-----------
+
+Gelatin is on `GitHub <https://github.com/knipknap/Gelatin>`_.
 
 License
 -------
