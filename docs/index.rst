@@ -11,6 +11,9 @@
 .. image:: https://img.shields.io/github/stars/knipknap/Gelatin.svg   
     :target: https://github.com/knipknap/Gelatin/stargazers
 
+.. image:: https://img.shields.io/github/license/knipknap/Gelatin.svg
+    :target: 
+
 What is Gelatin?
 ================
 
@@ -26,7 +29,7 @@ Gelatin is on `GitHub <https://github.com/knipknap/Gelatin>`_.
 
 License
 -------
-Gelatin is published under the `GPLv2 <https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt>`_.
+Gelatin is published under the `MIT licence <https://opensource.org/licenses/MIT>`_.
 
 Contents
 --------
