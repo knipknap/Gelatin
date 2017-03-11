@@ -1,23 +1,23 @@
 {
     "user": [
         {
-            "@lastname": "Doe", 
-            "birth-date": {
-                "#text": "1978-01-01"
-            }, 
-            "@firstname": "John", 
+            "@firstname": "John",
+            "@lastname": "Doe",
             "office": {
                 "#text": "1st Ave"
-            }
-        }, 
-        {
-            "@lastname": "Foo", 
+            },
             "birth-date": {
-                "#text": "1970-01-01"
-            }, 
-            "@firstname": "Jane", 
+                "#text": "1978-01-01"
+            }
+        },
+        {
+            "@firstname": "Jane",
+            "@lastname": "Foo",
             "office": {
                 "#text": "2nd Ave"
+            },
+            "birth-date": {
+                "#text": "1970-01-01"
             }
         }
     ]

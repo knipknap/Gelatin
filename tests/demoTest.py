@@ -17,7 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import sys, unittest, re, os
+import sys, unittest, re, os, codecs
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from Gelatin.util import compile, generate
 
@@ -37,9 +37,15 @@ class DemoTest(unittest.TestCase):
         for filename in self.demos:
             for format in ('xml', 'yaml', 'json'):
                 output = convert(filename, format)
-                output_file = os.path.join(demo_dir, filename, 'output1.' + format)
-                with open(output_file) as fp:
-                    self.assertEqual(output, fp.read())
+                output_name = 'output1.' + format
+                output_file = os.path.join(demo_dir, filename, output_name)
+                #with codecs.open(output_file, 'w', encoding='utf-8') as fp:
+                #    fp.write(output)
+                with codecs.open(output_file, encoding='utf-8') as fp:
+                    expected = fp.read()
+                    #print(output_file, repr(output))
+                    #print(output_file, repr(expected))
+                    self.assertEqual(output, expected)
 
 def suite():
     return unittest.TestLoader().loadTestsFromTestCase(DemoTest)

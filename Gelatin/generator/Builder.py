@@ -21,7 +21,7 @@ import os
 import re
 import shutil
 from tempfile import NamedTemporaryFile
-from urlparse import urlparse
+from urllib.parse import urlparse
 from cgi import parse_qs
 
 value   = r'"(?:\\.|[^"])*"'
@@ -39,7 +39,7 @@ class Builder(object):
         raise NotImplementedError('abstract method')
 
     def serialize_to_file(self, filename):
-        with NamedTemporaryFile(delete = False) as thefile:
+        with NamedTemporaryFile(delete=False, encoding='utf-8') as thefile:
             thefile.write(self.serialize())
         if os.path.exists(filename):
             os.unlink(filename)
@@ -60,11 +60,11 @@ class Builder(object):
     def _splittag(self, tag):
         url     = urlparse(tag)
         attribs = []
-        for key, value in parse_qs(url.query).iteritems():
+        for key, value in parse_qs(url.query).items():
             value = value[0]
             if value.startswith('"') and value.endswith('"'):
                 value = value[1:-1]
-            attribs.append((str(key.lower()), value))
+            attribs.append((key.lower(), value))
         return url.path.replace(' ', '-').lower(), attribs
 
     def create(self, path, data = None):

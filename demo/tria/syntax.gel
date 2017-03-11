@@ -14,7 +14,7 @@ define integer /[0-9]+/
 grammar unit:
     match ws 'Strecke:' ws fieldvalue nl:
         out.add('route', '$3')
-    match ws 'Länge:' ws fieldvalue nl
+    match ws 'LÃ¤nge:' ws fieldvalue nl
         | ws 'Laenge:' ws fieldvalue nl:
         out.open('distance')
         out.add('.', '$3')

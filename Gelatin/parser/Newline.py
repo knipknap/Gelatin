@@ -19,8 +19,8 @@
 # SOFTWARE.
 from simpleparse.objectgenerator import Prebuilt
 from simpleparse.stt.TextTools   import Call, Skip
-from util                        import eat_indent
-from Token                       import Token
+from .util                        import eat_indent
+from .Token                       import Token
 
 class Newline(Token):
     def __call__(self, buffer, start, end):

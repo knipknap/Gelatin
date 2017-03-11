@@ -35,7 +35,7 @@ def _format(buffer, end, msg):
     return '%s in line %d:\n%s\n%s' % (msg, line_no, repr(line), mark)
 
 def say(buffer, end, msg):
-    print _format(buffer, end, msg)
+    print(_format(buffer, end, msg))
 
 def error(buffer, end, msg = 'Syntax error'):
     msg = _format(buffer, end, msg)

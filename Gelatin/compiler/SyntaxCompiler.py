@@ -19,16 +19,16 @@
 # SOFTWARE.
 import re
 from simpleparse.dispatchprocessor import DispatchProcessor, getString, singleMap
-from Function                      import Function
-from Grammar                       import Grammar
-from WhenStatement                 import WhenStatement
-from MatchStatement                import MatchStatement
-from MatchFieldList                import MatchFieldList
-from MatchList                     import MatchList
-from Number                        import Number
-from Regex                         import Regex
-from String                        import String
-from Context                       import Context
+from .Function                      import Function
+from .Grammar                       import Grammar
+from .WhenStatement                 import WhenStatement
+from .MatchStatement                import MatchStatement
+from .MatchFieldList                import MatchFieldList
+from .MatchList                     import MatchList
+from .Number                        import Number
+from .Regex                         import Regex
+from .String                        import String
+from .Context                       import Context
 
 """
 Indent handling:
@@ -52,12 +52,14 @@ class SyntaxCompiler(DispatchProcessor):
     def reset(self):
         self.context = Context()
 
-    def _regex(self, (tag, left, right, sublist), buffer):
+    def _regex(self, token, buffer):
+        tag, left, right, sublist = token
         regex      = Regex()
         regex.data = getString(sublist[0], buffer)
         return regex
 
-    def _string(self, (tag, left, right, sublist), buffer):
+    def _string(self, token, buffer):
+        tag, left, right, sublist = token
         string = getString(sublist[0], buffer)
         return String(self.context, string)
 
@@ -82,33 +84,38 @@ class SyntaxCompiler(DispatchProcessor):
         else:
             raise Exception('BUG: invalid token %s' % tag)
 
-    def _match_field_list(self, (tag, left, right, sublist), buffer, flags):
+    def _match_field_list(self, token, buffer, flags):
+        tag, left, right, sublist = token
         field_list = MatchFieldList(flags)
         for field in sublist:
             expression = self._expression(field, buffer)
             field_list.expressions.append(expression)
         return field_list
 
-    def _match_list(self, (tag, left, right, sublist), buffer, flags):
+    def _match_list(self, token, buffer, flags):
+        tag, left, right, sublist = token
         matchlist = MatchList()
         for field_list in sublist:
             field_list = self._match_field_list(field_list, buffer, flags)
             matchlist.field_lists.append(field_list)
         return matchlist
 
-    def _match_stmt(self, (tag, left, right, sublist), buffer, flags = 0):
+    def _match_stmt(self, token, buffer, flags = 0):
+        tag, left, right, sublist = token
         matcher            = MatchStatement()
         matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
-    def _when_stmt(self, (tag, left, right, sublist), buffer, flags = 0):
+    def _when_stmt(self, token, buffer, flags = 0):
+        tag, left, right, sublist = token
         matcher            = WhenStatement()
         matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
-    def _function(self, (tag, left, right, sublist), buffer):
+    def _function(self, token, buffer):
+        tag, left, right, sublist = token
         function      = Function()
         function.name = getString(sublist[0], buffer)
         if len(sublist) == 1:
@@ -118,10 +125,12 @@ class SyntaxCompiler(DispatchProcessor):
             function.args.append(expression)
         return function
 
-    def _inherit(self, (tag, left, right, sublist), buffer):
+    def _inherit(self, token, buffer):
+        tag, left, right, sublist = token
         return getString(sublist[0], buffer)
 
-    def _suite(self, (tag, left, right, sublist), buffer):
+    def _suite(self, token, buffer):
+        tag, left, right, sublist = token
         statements = []
         for token in sublist:
             tag = token[0]
@@ -138,7 +147,8 @@ class SyntaxCompiler(DispatchProcessor):
             statements.append(statement)
         return statements
 
-    def define_stmt(self, (tag, left, right, sublist), buffer):
+    def define_stmt(self, token, buffer):
+        tag, left, right, sublist = token
         name_tup, value_tup = sublist
         value_tag           = value_tup[0]
         name                = getString(name_tup,   buffer)
@@ -146,18 +156,19 @@ class SyntaxCompiler(DispatchProcessor):
         if value_tag == 'regex':
             value = self._regex(value_tup, buffer)
         elif value_tag == 'varname':
-            if not self.context.lexicon.has_key(value):
+            if value not in self.context.lexicon:
                 _error(buffer, value_tup[1], 'no such variable')
             value = self.context.lexicon[value]
         else:
             raise Exception('BUG: invalid token %s' % value_tag)
         self.context.lexicon[name] = value
 
-    def grammar_stmt(self, (tag, left, right, sublist), buffer):
+    def grammar_stmt(self, token, buffer):
+        tag, left, right, sublist = token
         map                = singleMap(sublist)
         grammar            = Grammar()
         grammar.name       = getString(map['varname'], buffer)
         grammar.statements = self._suite(map['suite'], buffer)
-        if map.has_key('inherit'):
+        if 'inherit' in map:
             grammar.inherit = self._inherit(map['inherit'], buffer)
         self.context.grammars[grammar.name] = grammar

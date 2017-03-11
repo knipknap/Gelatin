@@ -22,7 +22,7 @@ try:
 except ImportError:
     import re
 from Gelatin import INDENT
-from Token import Token
+from .Token import Token
 
 class Regex(Token):
     data   = None

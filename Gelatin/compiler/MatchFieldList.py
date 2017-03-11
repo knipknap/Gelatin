@@ -22,7 +22,7 @@ try:
 except ImportError:
     import re
 from Gelatin import INDENT
-from Token import Token
+from .Token import Token
 
 class MatchFieldList(Token):
     def __init__(self, modifiers = None):
@@ -32,9 +32,8 @@ class MatchFieldList(Token):
 
     def when(self, context):
         if not self.regex:
-            regex      = ')('.join(e.re_value() for e in self.expressions)
-            unire      = unicode(regex, 'latin1')
-            self.regex = re.compile('(' + unire + ')', self.modifiers)
+            regex = ')('.join(e.re_value() for e in self.expressions)
+            self.regex = re.compile('(' + regex + ')', self.modifiers)
 
         return self.regex.match(context.input, context.start)
 

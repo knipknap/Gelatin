@@ -20,7 +20,7 @@
 """
 The core module.
 """
-from version import __version__
+from .version import __version__
 
 INDENT_WIDTH = 4
 INDENT       = ' ' * INDENT_WIDTH

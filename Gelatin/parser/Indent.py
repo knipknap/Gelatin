@@ -17,8 +17,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from util  import eat_indent, count_indent, error
-from Token import Token
+from .util  import eat_indent, count_indent, error
+from .Token import Token
 
 class Indent(Token):
     def __call__(self, buffer, start, end):

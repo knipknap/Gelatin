@@ -1,24 +1,39 @@
-!!python/unicode 'week':
-- !!python/unicode '@number': !!python/unicode '1'
-  !!python/unicode 'day':
-    !!python/unicode 'date': {'#text': !!python/unicode '10Jan10'}
-    !!python/unicode 'unit':
-      !!python/unicode 'comment': {'#text': "6. Einheit, Plan Dez09, R\xFCckentechnik"}
-      !!python/unicode 'discipline': {'#text': !!python/unicode 'Swim'}
-      !!python/unicode 'distance': {'#text': !!python/unicode '100 AS'}
-      !!python/unicode 'place': {'#text': "Hallenbad Markgr\xF6ningen"}
-      !!python/unicode 'route': {'#text': "Unterf\xFChrung"}
-      !!python/unicode 'time': {'#text': !!python/unicode '15:34(15:34),31:20(15.45),'}
-    !!python/unicode 'weekday': {'#text': !!python/unicode 'So'}
-- !!python/unicode '@number': !!python/unicode '2'
-  !!python/unicode 'day':
-    !!python/unicode 'date': {'#text': !!python/unicode '17Jan10'}
-    !!python/unicode 'unit':
-      !!python/unicode 'average': {'#text': !!python/unicode '18.3 km/h'}
-      !!python/unicode 'comment': {'#text': "Feldwege + Stra\xDFe"}
-      !!python/unicode 'discipline': {'#text': !!python/unicode 'Bike'}
-      !!python/unicode 'distance': {'#text': !!python/unicode '44.2 km'}
-      !!python/unicode 'material': {'#text': !!python/unicode 'Centurion'}
-      !!python/unicode 'route': {'#text': !!python/unicode 'Kreissel Oberriexingen,
-          Unterriexingen.'}
-    !!python/unicode 'weekday': {'#text': !!python/unicode 'So'}
+week:
+- '@number': '1'
+  day:
+    weekday:
+      '#text': So
+    date:
+      '#text': 10Jan10
+    unit:
+      discipline:
+        '#text': Swim
+      route:
+        '#text': "Unterf\xFChrung"
+      comment:
+        '#text': "6. Einheit, Plan Dez09, R\xFCckentechnik"
+      time:
+        '#text': 15:34(15:34),31:20(15.45),
+      place:
+        '#text': "Hallenbad Markgr\xF6ningen"
+      distance:
+        '#text': 100 AS
+- '@number': '2'
+  day:
+    weekday:
+      '#text': So
+    date:
+      '#text': 17Jan10
+    unit:
+      discipline:
+        '#text': Bike
+      comment:
+        '#text': "Feldwege + Stra\xDFe"
+      material:
+        '#text': Centurion
+      route:
+        '#text': Kreissel Oberriexingen, Unterriexingen.
+      distance:
+        '#text': 44.2 km
+      average:
+        '#text': 18.3 km/h

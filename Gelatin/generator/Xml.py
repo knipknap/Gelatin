@@ -17,22 +17,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import urllib
-from Builder import Builder
-from lxml    import etree
+import sys
+from lxml import etree
+from .Builder import Builder
 
 class Xml(Builder):
     def __init__(self):
         self.etree   = etree.Element('xml')
         self.current = [self.etree]
         self.stack   = []
-        self.map     = dict.fromkeys(range(32))
 
     def serialize(self):
-        return etree.tostring(self.etree, pretty_print = True)
+        return etree.tostring(self.etree, encoding='unicode', pretty_print=True)
 
     def dump(self):
-        print self.serialize()
+        print(self.serialize())
 
     def _splittag(self, path):
         tag, attribs = Builder._splittag(self, path)
@@ -61,7 +60,7 @@ class Xml(Builder):
                 break
 
             # Parent nodes are only created if the do not exist yet.
-            xp       = self._tag2xpath(tag, attribs)
+            xp = self._tag2xpath(tag, attribs)
             existing = node.find(xp)
             if existing is not None:
                 node = existing
@@ -69,7 +68,7 @@ class Xml(Builder):
                 node = etree.SubElement(node, tag, **dict(attribs))
 
         if data:
-            node.text = data.translate(self.map)
+            node.text = data
         return node
 
     def add(self, path, data = None, replace = False):
@@ -89,8 +88,8 @@ class Xml(Builder):
         if replace:
             node.text = ''
         if data:
-            node.text  = node.text is not None and node.text or ''
-            node.text += data.translate(self.map)
+            node.text = node.text is not None and node.text or ''
+            node.text += data
         return node
 
     def add_attribute(self, path, name, value):

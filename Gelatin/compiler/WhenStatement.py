@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from Gelatin import INDENT
-from Token   import Token
+from .Token   import Token
 
 class WhenStatement(Token):
     def __init__(self):

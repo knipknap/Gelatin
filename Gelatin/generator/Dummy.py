@@ -17,7 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from Builder import Builder
+from .Builder import Builder
 
 class Dummy(Builder):
     def __init__(self):
@@ -27,7 +27,7 @@ class Dummy(Builder):
         return ''
 
     def dump(self):
-        print self.serialize()
+        print(self.serialize())
 
     def add(self, path, data = None, replace = False):
         pass

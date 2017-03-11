@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Copyright (c) 2010-2017 Samuel Abels
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,7 +34,7 @@ def correlate_class(theclass):
         return
 
     # Collect all functions in the class or module.
-    for name, value in theclass.CORRELATE.__dict__.iteritems():
+    for name, value in theclass.CORRELATE.__dict__.items():
         if not isfunction(value):
             continue
         elif name == '__init__':
@@ -68,7 +68,7 @@ def correlate_module(module):
     """
     Checks all testcases in the module for missing test methods.
     """
-    for name, item in module.__dict__.iteritems():
+    for name, item in module.__dict__.items():
         if isclass(item):
             correlate_class(item)
 
@@ -108,8 +108,8 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         verbosity = int(sys.argv[1])
     else:
-        print 'Syntax:', sys.argv[0], '[verbosity]'
-        print 'Default verbosity is 2'
+        print('Syntax:', sys.argv[0], '[verbosity]')
+        print('Default verbosity is 2')
         sys.exit(1)
 
     # Run.

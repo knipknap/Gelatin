@@ -17,10 +17,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from Dummy import Dummy
-from Xml   import Xml
-from Json  import Json
-from Yaml  import Yaml
+from .Dummy import Dummy
+from .Xml   import Xml
+from .Json  import Json
+from .Yaml  import Yaml
 
 generator_map = {'none': Dummy,
                  'xml':  Xml,

@@ -18,11 +18,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import os
+import codecs
 from simpleparse import parser
-from Newline     import Newline
-from Indent      import Indent
-from Dedent      import Dedent
-from util        import error
+from .Newline     import Newline
+from .Indent      import Indent
+from .Dedent      import Dedent
+from .util        import error
 
 _ebnf_file = os.path.join(os.path.dirname(__file__), 'syntax.ebnf')
 with open(_ebnf_file) as _thefile:
@@ -43,10 +44,11 @@ class Parser(parser.Parser):
         start, _, end = parser.Parser.parse(self, input, processor = compiler)
         if end < len(input):
             error(input, end)
-        if not compiler.context.grammars.has_key('input'):
+        if 'input' not in compiler.context.grammars:
             error(input, end, 'Required grammar "input" not found.')
         return compiler.context
 
     def parse(self, filename, compiler):
-        with open(filename, 'r') as input_file:
-            return self.parse_string(input_file.read(), compiler)
+        with codecs.open(filename, 'r') as input_file:
+            string = input_file.read()
+            return self.parse_string(string, compiler)

@@ -19,7 +19,7 @@
 # SOFTWARE.
 import re
 from Gelatin import INDENT
-from Token   import Token
+from .Token import Token
 
 _string_re = re.compile(r'(\\?)\$(\d*)')
 
@@ -42,14 +42,12 @@ class String(Token):
         # Check the variable value.
         cmatch = self.context.re_stack[-1]
         try:
-            value = cmatch.group(int(fieldnum) + 1)
-        except IndexError, e:
+            return cmatch.group(int(fieldnum) + 1)
+        except IndexError as e:
             raise Exception('invalid field number %s in %s' % (fieldnum, self.data))
-        return str(value)
 
     def value(self):
-        value = _string_re.sub(self._expand_string, self.data)
-        return unicode(value, 'latin-1')
+        return _string_re.sub(self._expand_string, self.data)
 
     def re_value(self):
         return re.escape(self.data)

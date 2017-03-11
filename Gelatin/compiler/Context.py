@@ -179,21 +179,21 @@ class Context(object):
         return line_start, line_end
 
     def _format(self, error):
-        start, end  = self._get_line_position_from_char(self.start)
+        start, end = self._get_line_position_from_char(self.start)
         line_number = self._get_lineno()
-        line        = self._get_line()
-        offset      = self.start - start
-        token_len   = 1
-        output      = unicode(line, 'latin-1') + '\n'
+        line = self._get_line()
+        offset = self.start - start
+        token_len = 1
+        output = line + '\n'
         if token_len <= 1:
             output += (' ' * offset) + '^\n'
         else:
             output += (' ' * offset) + "'" + ('-' * (token_len - 2)) + "'\n"
         output += '%s in line %s' % (error, line_number)
-        return output.encode('latin1', 'ignore')
+        return output
 
     def _msg(self, error):
-        print self._format(error)
+        print(self._format(error))
 
     def _warn(self, error):
         sys.stderr.write(self._format(error) + '\n')
@@ -218,5 +218,5 @@ class Context(object):
             return self.parse_string(input_file.read(), builder)
 
     def dump(self):
-        for grammar in self.grammars.itervalues():
-            print str(grammar)
+        for grammar in self.grammars.values():
+            print(grammar)
