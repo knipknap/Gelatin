@@ -1,3 +1,6 @@
+.. image:: _static/logo.png
+    :target: http://gelatin.readthedocs.io
+
 .. image:: https://travis-ci.org/knipknap/Gelatin.svg?branch=master
     :target: https://travis-ci.org/knipknap/Gelatin
 
