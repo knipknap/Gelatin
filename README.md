@@ -122,4 +122,4 @@ print builder.serialize()
 
 For full documentation please refer to
 
-  http://gelatin.readthedocs.io/en/latest/
+  http://gelatin.readthedocs.io
