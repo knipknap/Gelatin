@@ -1,15 +1,15 @@
 # Copyright (c) 2010-2017 Samuel Abels
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,7 +22,9 @@ from collections import OrderedDict, Callable, defaultdict
 from .Builder import Builder
 from pprint import PrettyPrinter
 
+
 class OrderedDefaultDict(OrderedDict):
+
     def __init__(self, default_factory=None, *a, **kw):
         if (default_factory is not None and
            not isinstance(default_factory, Callable)):
@@ -64,8 +66,10 @@ class OrderedDefaultDict(OrderedDict):
         return 'OrderedDefaultDict(%s, %s)' % (self.default_factory,
                                                OrderedDict.__repr__(self))
 
+
 class Node(object):
-    def __init__(self, name, attribs = None):
+
+    def __init__(self, name, attribs=None):
         self.name = name
         self.attribs = attribs and attribs or []
         self.children = OrderedDefaultDict(list)
@@ -75,7 +79,7 @@ class Node(object):
         self.children[child.name].append(child)
         return child
 
-    def get_child(self, name, attribs = None):
+    def get_child(self, name, attribs=None):
         """
         Returns the first child that matches the given name and
         attributes.
@@ -103,30 +107,33 @@ class Node(object):
             thedict['#text'] = self.text
         return thedict
 
-    def dump(self, indent = 0):
+    def dump(self, indent=0):
         for name, children in self.children.items():
             for child in children:
                 child.dump(indent + 1)
 
+
 class Json(Builder):
+
     """
     Abstract base class for all generators.
     """
+
     def __init__(self):
-        self.tree    = Node('root')
+        self.tree = Node('root')
         self.current = [self.tree]
 
     def serialize(self):
         return json.dumps(self.tree.to_dict(), indent=4, ensure_ascii=False)
 
     def dump(self):
-        #pp = PrettyPrinter(indent = 4)
-        #pp.pprint(self.tree.to_dict())
+        # pp = PrettyPrinter(indent = 4)
+        # pp.pprint(self.tree.to_dict())
         self.tree.dump()
 
-    def create(self, path, data = None):
-        node    = self.current[-1]
-        path    = self._splitpath(path)
+    def create(self, path, data=None):
+        node = self.current[-1]
+        path = self._splitpath(path)
         n_items = len(path)
         for n, item in enumerate(path):
             tag, attribs = self._splittag(item)
@@ -144,11 +151,11 @@ class Json(Builder):
                 node = node.add(Node(tag, attribs))
         return node
 
-    def add(self, path, data = None, replace = False):
+    def add(self, path, data=None, replace=False):
         node = self.current[-1]
         for item in self._splitpath(path):
             tag, attribs = self._splittag(item)
-            next_node    = node.get_child(tag, attribs)
+            next_node = node.get_child(tag, attribs)
             if next_node is not None:
                 node = next_node
             else:

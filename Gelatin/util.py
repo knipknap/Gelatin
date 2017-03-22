@@ -1,15 +1,15 @@
 # Copyright (c) 2010-2017 Samuel Abels
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -18,8 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from . import generator
-from .parser   import Parser
+from .parser import Parser
 from .compiler import SyntaxCompiler
+
 
 def compile_string(syntax):
     """
@@ -31,6 +32,7 @@ def compile_string(syntax):
     :return: The compiled converter.
     """
     return Parser().parse_string(syntax, SyntaxCompiler())
+
 
 def compile(syntax_file):
     """
@@ -44,7 +46,8 @@ def compile(syntax_file):
     """
     return Parser().parse(syntax_file, SyntaxCompiler())
 
-def generate(converter, input_file, format = 'xml'):
+
+def generate(converter, input_file, format='xml'):
     """
     Given a converter (as returned by compile()), this function reads
     the given input file and converts it to the requested output format.
@@ -61,9 +64,10 @@ def generate(converter, input_file, format = 'xml'):
     :return: The resulting output.
     """
     with open(input_file) as thefile:
-        return generate_string(converter, thefile.read(), format = format)
+        return generate_string(converter, thefile.read(), format=format)
 
-def generate_to_file(converter, input_file, output_file, format = 'xml'):
+
+def generate_to_file(converter, input_file, output_file, format='xml'):
     """
     Like generate(), but writes the output to the given output file
     instead.
@@ -80,10 +84,11 @@ def generate_to_file(converter, input_file, output_file, format = 'xml'):
     :return: The resulting output.
     """
     with open(output_file, 'w') as thefile:
-        result = generate(converter, input_file, format = format)
+        result = generate(converter, input_file, format=format)
         thefile.write(result)
 
-def generate_string(converter, input, format = 'xml'):
+
+def generate_string(converter, input, format='xml'):
     """
     Like generate(), but reads the input from a string instead of
     from a file.
@@ -103,7 +108,8 @@ def generate_string(converter, input, format = 'xml'):
     converter.parse_string(input, builder)
     return builder.serialize()
 
-def generate_string_to_file(converter, input, output_file, format = 'xml'):
+
+def generate_string_to_file(converter, input, output_file, format='xml'):
     """
     Like generate(), but reads the input from a string instead of
     from a file, and writes the output to the given output file.
@@ -120,5 +126,5 @@ def generate_string_to_file(converter, input, output_file, format = 'xml'):
     :return: The resulting output.
     """
     with open(output_file, 'w') as thefile:
-        result = generate_string(converter, input_file, format = format)
+        result = generate_string(converter, input_file, format=format)
         thefile.write(result)

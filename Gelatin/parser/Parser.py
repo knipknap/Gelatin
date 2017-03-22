@@ -1,15 +1,15 @@
 # Copyright (c) 2010-2017 Samuel Abels
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,28 +20,30 @@
 import os
 import codecs
 from simpleparse import parser
-from .Newline     import Newline
-from .Indent      import Indent
-from .Dedent      import Dedent
-from .util        import error
+from .Newline import Newline
+from .Indent import Indent
+from .Dedent import Dedent
+from .util import error
 
 _ebnf_file = os.path.join(os.path.dirname(__file__), 'syntax.ebnf')
 with open(_ebnf_file) as _thefile:
     _ebnf = _thefile.read()
 
+
 class Parser(parser.Parser):
+
     def __init__(self):
         self.indent = 0
-        offside     = (
+        offside = (
             ("NEWLINE", Newline(self).table()),
             ("INDENT",  Indent(self).table()),
             ("DEDENT",  Dedent(self).table()),
         )
-        parser.Parser.__init__(self, _ebnf, 'root', prebuilts = offside)
+        parser.Parser.__init__(self, _ebnf, 'root', prebuilts=offside)
 
     def parse_string(self, input, compiler):
         compiler.reset()
-        start, _, end = parser.Parser.parse(self, input, processor = compiler)
+        start, _, end = parser.Parser.parse(self, input, processor=compiler)
         if end < len(input):
             error(input, end)
         if 'input' not in compiler.context.grammars:

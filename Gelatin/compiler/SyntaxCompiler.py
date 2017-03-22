@@ -1,15 +1,15 @@
 # Copyright (c) 2010-2017 Samuel Abels
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,16 +19,16 @@
 # SOFTWARE.
 import re
 from simpleparse.dispatchprocessor import DispatchProcessor, getString, singleMap
-from .Function                      import Function
-from .Grammar                       import Grammar
-from .WhenStatement                 import WhenStatement
-from .MatchStatement                import MatchStatement
-from .MatchFieldList                import MatchFieldList
-from .MatchList                     import MatchList
-from .Number                        import Number
-from .Regex                         import Regex
-from .String                        import String
-from .Context                       import Context
+from .Function import Function
+from .Grammar import Grammar
+from .WhenStatement import WhenStatement
+from .MatchStatement import MatchStatement
+from .MatchFieldList import MatchFieldList
+from .MatchList import MatchList
+from .Number import Number
+from .Regex import Regex
+from .String import String
+from .Context import Context
 
 """
 Indent handling:
@@ -42,10 +42,14 @@ Indent handling:
       count. Checks to make sure that the indent was increased.
     o DEDENT: Like INDENT, except it does not check for errors.
 """
+
+
 class SyntaxCompiler(DispatchProcessor):
+
     """
     Processor sub-class defining processing functions for the productions.
     """
+
     def __init__(self):
         self.context = None
 
@@ -54,7 +58,7 @@ class SyntaxCompiler(DispatchProcessor):
 
     def _regex(self, token, buffer):
         tag, left, right, sublist = token
-        regex      = Regex()
+        regex = Regex()
         regex.data = getString(sublist[0], buffer)
         return regex
 
@@ -100,23 +104,23 @@ class SyntaxCompiler(DispatchProcessor):
             matchlist.field_lists.append(field_list)
         return matchlist
 
-    def _match_stmt(self, token, buffer, flags = 0):
+    def _match_stmt(self, token, buffer, flags=0):
         tag, left, right, sublist = token
-        matcher            = MatchStatement()
-        matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
+        matcher = MatchStatement()
+        matcher.matchlist = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
-    def _when_stmt(self, token, buffer, flags = 0):
+    def _when_stmt(self, token, buffer, flags=0):
         tag, left, right, sublist = token
-        matcher            = WhenStatement()
-        matcher.matchlist  = self._match_list(sublist[0], buffer, flags)
+        matcher = WhenStatement()
+        matcher.matchlist = self._match_list(sublist[0], buffer, flags)
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
     def _function(self, token, buffer):
         tag, left, right, sublist = token
-        function      = Function()
+        function = Function()
         function.name = getString(sublist[0], buffer)
         if len(sublist) == 1:
             return function
@@ -150,9 +154,9 @@ class SyntaxCompiler(DispatchProcessor):
     def define_stmt(self, token, buffer):
         tag, left, right, sublist = token
         name_tup, value_tup = sublist
-        value_tag           = value_tup[0]
-        name                = getString(name_tup,   buffer)
-        value               = getString(value_tup,  buffer)
+        value_tag = value_tup[0]
+        name = getString(name_tup,   buffer)
+        value = getString(value_tup,  buffer)
         if value_tag == 'regex':
             value = self._regex(value_tup, buffer)
         elif value_tag == 'varname':
@@ -165,9 +169,9 @@ class SyntaxCompiler(DispatchProcessor):
 
     def grammar_stmt(self, token, buffer):
         tag, left, right, sublist = token
-        map                = singleMap(sublist)
-        grammar            = Grammar()
-        grammar.name       = getString(map['varname'], buffer)
+        map = singleMap(sublist)
+        grammar = Grammar()
+        grammar.name = getString(map['varname'], buffer)
         grammar.statements = self._suite(map['suite'], buffer)
         if 'inherit' in map:
             grammar.inherit = self._inherit(map['inherit'], buffer)
