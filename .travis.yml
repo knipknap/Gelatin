@@ -9,6 +9,6 @@ install:
   - "pip install -r requirements.txt"
   - "pip install coveralls"
 # command to run tests
-script: cd tests/; coverage run --source=Gelatin ./run_suite.py 1
+script: coverage run --source=Gelatin -m unittest discover -v tests "*Test.py"
 after_success:
   coveralls
