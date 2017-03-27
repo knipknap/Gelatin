@@ -39,6 +39,7 @@ class DemoTest(unittest.TestCase):
 
     def setUp(self):
         self.demos = os.listdir(demo_dir)
+        self.maxDiff = None
 
     def testDemos(self):
         for filename in self.demos:
@@ -46,7 +47,7 @@ class DemoTest(unittest.TestCase):
                 output = convert(filename, format)
                 output_name = 'output1.' + format
                 output_file = os.path.join(demo_dir, filename, output_name)
-                # with codecs.open(output_file, 'w', encoding='utf-8') as fp:
+                #with codecs.open(output_file, 'w', encoding='utf-8') as fp:
                 #    fp.write(output)
                 with codecs.open(output_file, encoding='utf-8') as fp:
                     expected = fp.read()
