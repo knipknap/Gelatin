@@ -21,8 +21,7 @@ import os
 import re
 import shutil
 from tempfile import NamedTemporaryFile
-from urllib.parse import urlparse
-from cgi import parse_qs
+from urllib.parse import urlparse, parse_qs
 
 value = r'"(?:\\.|[^"])*"'
 attrib = r'(?:[\$\w\-]+=%s)' % value
