@@ -45,6 +45,9 @@ class DemoTest(unittest.TestCase):
         for filename in self.demos:
             for format in ('xml', 'yaml', 'json'):
                 output = convert(filename, format)
+                # In Python 3.3, json.dumps() would output trailing whitespace
+                # in the generated JSON. As a workaround, we remove this here...
+                output = output.replace(' \n', '\n')
                 output_name = 'output1.' + format
                 output_file = os.path.join(demo_dir, filename, output_name)
                 #with codecs.open(output_file, 'w', encoding='utf-8') as fp:
