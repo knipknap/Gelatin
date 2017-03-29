@@ -74,6 +74,11 @@ wheel:
 	python3 setup.py bdist_wheel
 	./version.sh --reset
 
+wheel:
+	./version.sh
+	python setup.py bdist_wheel --universal
+	./version.sh --reset
+
 deb:
 	./version.sh
 	DEBVERSION=`head -1 debian/changelog | sed 's/^\(.*\) (\(.*\)-0ubuntu1).*/\1_\2/'`; \
