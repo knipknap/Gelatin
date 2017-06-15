@@ -10,6 +10,10 @@
 Gelatin is a parser generator for converting text to a structured
 format such as XML, JSON or YAML.
 
+## Do you need commercial support?
+
+Gelatin is supported by [Procedure 8](https://procedure8.com). Get in touch if you need anything!
+
 ## Converting Text to XML, JSON, or YAML
 
 Gelatin is a combined lexer, parser, and output generator.
