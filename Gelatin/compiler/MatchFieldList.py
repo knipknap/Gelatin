@@ -37,7 +37,10 @@ class MatchFieldList(Token):
             regex = ')('.join(e.re_value() for e in self.expressions)
             self.regex = re.compile('(' + regex + ')', self.modifiers)
 
-        return self.regex.match(context.input, context.start)
+        # Change to
+        # return self.regex.match(context.input, context.start)
+        # once Py2 support is gone.
+        return self.regex.match(context.input[context.start:])
 
     def match(self, context):
         match = self.when(context)

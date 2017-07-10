@@ -17,6 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import codecs
 from . import generator
 from .parser import Parser
 from .compiler import SyntaxCompiler
@@ -51,7 +52,7 @@ def compile(syntax_file, encoding='utf8'):
                           encoding=encoding)
 
 
-def generate(converter, input_file, format='xml'):
+def generate(converter, input_file, format='xml', encoding='utf8'):
     """
     Given a converter (as returned by compile()), this function reads
     the given input file and converts it to the requested output format.
@@ -64,14 +65,21 @@ def generate(converter, input_file, format='xml'):
     :param input_file: Name of a file to convert.
     :type  format: str
     :param format: The output format.
+    :type  encoding: str
+    :param encoding: Character encoding of the input file.
     :rtype:  str
     :return: The resulting output.
     """
-    with open(input_file) as thefile:
+    with codecs.open(input_file, encoding=encoding) as thefile:
         return generate_string(converter, thefile.read(), format=format)
 
 
-def generate_to_file(converter, input_file, output_file, format='xml'):
+def generate_to_file(converter,
+                     input_file,
+                     output_file,
+                     format='xml',
+                     in_encoding='utf8',
+                     out_encoding='utf8'):
     """
     Like generate(), but writes the output to the given output file
     instead.
@@ -84,11 +92,15 @@ def generate_to_file(converter, input_file, output_file, format='xml'):
     :param output_file: The output filename.
     :type  format: str
     :param format: The output format.
+    :type  in_encoding: str
+    :param in_encoding: Character encoding of the input file.
+    :type  out_encoding: str
+    :param out_encoding: Character encoding of the output file.
     :rtype:  str
     :return: The resulting output.
     """
-    with open(output_file, 'w') as thefile:
-        result = generate(converter, input_file, format=format)
+    with codecs.open(output_file, 'w', encoding=out_encoding) as thefile:
+        result = generate(converter, input_file, format=format, encoding=in_encoding)
         thefile.write(result)
 
 
@@ -113,7 +125,11 @@ def generate_string(converter, input, format='xml'):
     return builder.serialize()
 
 
-def generate_string_to_file(converter, input, output_file, format='xml'):
+def generate_string_to_file(converter,
+                            input,
+                            output_file,
+                            format='xml',
+                            out_encoding='utf8'):
     """
     Like generate(), but reads the input from a string instead of
     from a file, and writes the output to the given output file.
@@ -126,9 +142,11 @@ def generate_string_to_file(converter, input, output_file, format='xml'):
     :param output_file: The output filename.
     :type  format: str
     :param format: The output format.
+    :type  out_encoding: str
+    :param out_encoding: Character encoding of the output file.
     :rtype:  str
     :return: The resulting output.
     """
-    with open(output_file, 'w') as thefile:
-        result = generate_string(converter, input_file, format=format)
+    with codecs.open(output_file, 'w', encoding=out_encoding) as thefile:
+        result = generate_string(converter, input, format=format)
         thefile.write(result)

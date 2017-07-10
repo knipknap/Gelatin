@@ -18,6 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import sys
+import codecs
 
 
 def do_next(context):
@@ -231,8 +232,8 @@ class Context(object):
         if self.start < self.end:
             self._error('parser returned, but did not complete')
 
-    def parse(self, filename, builder, debug=0):
-        with open(filename, 'r') as input_file:
+    def parse(self, filename, builder, encoding='utf8', debug=0):
+        with codecs.open(filename, 'r', encoding=encoding) as input_file:
             return self.parse_string(input_file.read(), builder, debug)
 
     def dump(self):
