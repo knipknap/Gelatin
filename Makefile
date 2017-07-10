@@ -81,13 +81,7 @@ dist: targz tarbz deb
 ###################################################################
 # Publishers.
 ###################################################################
-dist-publish: dist
-	python setup.py sdist register upload
-	mkdir -p $(DISTDIR)/
-	for i in dist/*; do \
-		mv $$i $(DISTDIR)/`basename $$i | tr '[:upper:]' '[:lower:]'`; \
-	done
-
-.PHONY : doc-publish
-doc-publish:
-	cd doc; make publish
+dist-publish:
+	./version.sh
+	python setup.py bdist_wheel --universal register upload
+	./version.sh --reset
