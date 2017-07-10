@@ -33,7 +33,11 @@ def convert(filename, format):
     syntax_file = os.path.join(demo_dir, filename, 'syntax.gel')
     input_file = os.path.join(demo_dir, filename, 'input1.txt')
     syntax = compile(syntax_file)
-    return generate(syntax, input_file, format)
+    try:
+        return generate(syntax, input_file, format)
+    except Exception as e:
+        print("ERROR parsing", input_file)
+        raise
 
 
 class DemoTest(unittest.TestCase):
