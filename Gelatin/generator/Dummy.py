@@ -34,6 +34,9 @@ class Dummy(Builder):
     def add(self, path, data=None, replace=False):
         pass
 
+    def add_attribute(self, path, name, value):
+        pass
+
     def open(self, path):
         pass
 
