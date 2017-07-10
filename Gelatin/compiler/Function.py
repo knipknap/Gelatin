@@ -27,7 +27,7 @@ class Function(Token):
         self.name = None
         self.args = []
 
-    def parse(self, context):
+    def parse(self, context, debug=0):
         # Function names that have NO dot in them are references to another
         # grammar.
         if '.' not in self.name:
@@ -35,7 +35,7 @@ class Function(Token):
             grammar = context.grammars.get(self.name)
             if not grammar:
                 raise Exception('call to undefined grammar ' + self.name)
-            grammar.parse(context)
+            grammar.parse(context, debug)
             if context.start != start:
                 return 1
             return 0

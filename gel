@@ -39,7 +39,9 @@ The output format. Valid values are: xml json yaml none. Default is xml.
 '''.strip())
 parser.add_option('--debug',
                   dest    = 'debug',
-                  action  = 'store_true',
+                  type    = 'int',
+                  metavar = 'NUM',
+                  default = 0,
                   help    = '''
 Print debug info.
 '''.strip())
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     converter = compile(options.syntax)
     for input_file in input_files:
         dbg("Parsing", input_file + '...')
-        converter.parse(input_file, builder)
+        converter.parse(input_file, builder, debug=options.debug)
         if options.format != 'none':
             dbg("Generating output...")
             print(builder.serialize())

@@ -17,6 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import print_function
 from Gelatin import INDENT
 from .Token import Token
 
@@ -28,35 +29,45 @@ class WhenStatement(Token):
         self.statements = None
         self.on_leave = []
 
-    def _enter(self, context):
+    def _enter(self, context, debug):
         context.stack.append(self)
+        if debug > 2:
+            print("ENTER",
+                  self.__class__.__name__,
+                  self.matchlist.dump(),
+                  end='')
 
-    def _leave(self, context):
+    def _leave(self, context, debug):
         for func, args in self.on_leave:
             func(*args)
         self.on_leave = []
         context.stack.pop()
+        if debug > 2:
+            print("LEAVE",
+                  self.__class__.__name__,
+                  self.matchlist.dump(),
+                  end='')
 
-    def _handle_match(self, context, match):
+    def _handle_match(self, context, match, debug):
         if not match:
             return 0
-        self._enter(context)
+        self._enter(context, debug)
         context._match_before_notify(match)
         for statement in self.statements:
-            result = statement.parse(context)
+            result = statement.parse(context, debug)
             if result == 1:
                 break
             elif result < 0:
                 context._match_after_notify(match)
-                self._leave(context)
+                self._leave(context, debug)
                 return result
         context._match_after_notify(match)
-        self._leave(context)
+        self._leave(context, debug)
         return 1
 
-    def parse(self, context):
+    def parse(self, context, debug=0):
         match = self.matchlist.when(context)
-        return self._handle_match(context, match)
+        return self._handle_match(context, match, debug)
 
     def dump(self, indent=0):
         res = INDENT * indent + 'match:\n'

@@ -22,6 +22,6 @@ from .WhenStatement import WhenStatement
 
 class MatchStatement(WhenStatement):
 
-    def parse(self, context):
+    def parse(self, context, debug=0):
         match = self.matchlist.match(context)
-        return self._handle_match(context, match)
+        return self._handle_match(context, match, debug)

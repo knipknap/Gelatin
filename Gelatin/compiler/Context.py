@@ -222,18 +222,18 @@ class Context(object):
     def _eof(self):
         return self.start >= self.end
 
-    def parse_string(self, input, builder):
+    def parse_string(self, input, builder, debug=0):
         self._init()
         self.input = input
         self.builder = builder
         self.end = len(input)
-        self.grammars['input'].parse(self)
+        self.grammars['input'].parse(self, debug)
         if self.start < self.end:
             self._error('parser returned, but did not complete')
 
-    def parse(self, filename, builder):
+    def parse(self, filename, builder, debug=0):
         with open(filename, 'r') as input_file:
-            return self.parse_string(input_file.read(), builder)
+            return self.parse_string(input_file.read(), builder, debug)
 
     def dump(self):
         for grammar in self.grammars.values():
