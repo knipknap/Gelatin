@@ -34,17 +34,21 @@ def compile_string(syntax):
     return Parser().parse_string(syntax, SyntaxCompiler())
 
 
-def compile(syntax_file):
+def compile(syntax_file, encoding='utf8'):
     """
     Like compile_string(), but reads the syntax from the file with the
     given name.
 
     :type  syntax_file: str
     :param syntax_file: Name of a file containing Gelatin syntax.
+    :type  encoding: str
+    :param encoding: Character encoding of the syntax file.
     :rtype:  compiler.Context
     :return: The compiled converter.
     """
-    return Parser().parse(syntax_file, SyntaxCompiler())
+    return Parser().parse(syntax_file,
+                          SyntaxCompiler(),
+                          encoding=encoding)
 
 
 def generate(converter, input_file, format='xml'):

@@ -46,7 +46,11 @@ def error(buffer, end, msg='Syntax error'):
 
 
 def eat_indent(buffer, start, end, expected_indent=None):
-    result = whitespace_re.match(buffer, start, end)
+    # In Py3, using this may be more efficient:
+    # result = whitespace_re.match(buffer, start, end)
+    # In Py2/PyRe2, the character count differs from len(str),
+    # or str.rfind() if the buffer contains unicode chars.
+    result = whitespace_re.match(buffer[start:end])
     if result is None:
         # pyre2 returns None if the start parameter to match() is larger
         # than the length of the buffer.

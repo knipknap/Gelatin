@@ -50,7 +50,7 @@ class Parser(parser.Parser):
             error(input, end, 'Required grammar "input" not found.')
         return compiler.context
 
-    def parse(self, filename, compiler):
-        with codecs.open(filename, 'r') as input_file:
+    def parse(self, filename, compiler, encoding='utf8'):
+        with codecs.open(filename, 'r', encoding=encoding) as input_file:
             string = input_file.read()
             return self.parse_string(string, compiler)
