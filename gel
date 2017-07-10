@@ -77,5 +77,5 @@ if __name__ == '__main__':
         converter.parse(input_file, builder)
         if options.format != 'none':
             dbg("Generating output...")
-            print builder.serialize()
+            print(builder.serialize())
     dbg('Total: ' + str(datetime.datetime.now() - start))
