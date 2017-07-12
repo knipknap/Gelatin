@@ -10,9 +10,7 @@ STRING
 ^^^^^^
 
 A string is any series of characters, delimited by the :code:`'` character.
-Escaping is done using the backslash character. Examples:
-
-::
+Escaping is done using the backslash character. Examples::
 
     'test me'
     'test \'escaped\' strings'
@@ -107,9 +105,7 @@ Examples::
         match 'foobar' digit /\s+/ number /[\r\n]/:
             do.say('Matches: $1 and $3')
 
-You may also use multiple matches resulting in a logical OR:
-
-::
+You may also use multiple matches resulting in a logical OR::
 
     match 'foo' '[0-9]' /[\r\n]/
         | 'bar' /[a-z]/ /[\r\n]/
@@ -144,6 +140,22 @@ Example::
         match 'User:' /\s+/ /\S+/ /\n/:
             out.enter('user/name', '$2')
             user()
+
+skip STRING|REGEX|VARNAME
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`skip` statements are like `match` statements without any actions.
+They also do not support lists of tokens, but only one single
+expression.
+
+Example::
+
+    grammar user:
+        skip /#.*?[\r\n]+/
+        match 'Name: ' /\s+/ /\n/:
+            do.say('Name was: $2!')
+        when 'User:':
+            do.return()
 
 Output Generating Functions
 ---------------------------

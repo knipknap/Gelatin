@@ -21,6 +21,7 @@ import re
 from simpleparse.dispatchprocessor import DispatchProcessor, getString, singleMap
 from .Function import Function
 from .Grammar import Grammar
+from .SkipStatement import SkipStatement
 from .WhenStatement import WhenStatement
 from .MatchStatement import MatchStatement
 from .MatchFieldList import MatchFieldList
@@ -118,6 +119,12 @@ class SyntaxCompiler(DispatchProcessor):
         matcher.statements = self._suite(sublist[1], buffer)
         return matcher
 
+    def _skip_stmt(self, token, buffer):
+        tag, left, right, sublist = token
+        matcher = SkipStatement()
+        matcher.match = self._expression(sublist[0], buffer)
+        return matcher
+
     def _function(self, token, buffer):
         tag, left, right, sublist = token
         function = Function()
@@ -144,6 +151,8 @@ class SyntaxCompiler(DispatchProcessor):
                 statement = self._match_stmt(token, buffer, re.I)
             elif tag == 'when_stmt':
                 statement = self._when_stmt(token, buffer)
+            elif tag == 'skip_stmt':
+                statement = self._skip_stmt(token, buffer)
             elif tag == 'function':
                 statement = self._function(token, buffer)
             else:

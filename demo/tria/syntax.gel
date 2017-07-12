@@ -6,7 +6,7 @@ define fieldname /[\w ]+/
 define fieldvalue /[^\r\n]+/
 define date /[0-9][0-9]...[0-9][0-9]/
 define field_end /[\r\n,] */
-define comment /#[^\r\n]*/
+define comment /#[^\r\n]*[\r\n]+/
 define weekday /Mo|Di|Mi|Do|Fr|Sa|So/
 define discipline /Swim|Bike|Run/
 define integer /[0-9]+/
@@ -53,8 +53,7 @@ grammar week:
 
 # The grammar named "input" is the entry point for the converter.
 grammar input:
-    match comment nl:
-        do.skip()
+    skip comment
     match 'Woche:' ws integer nl:
         out.open('week')
         out.add_attribute('.', 'number', '$2')
