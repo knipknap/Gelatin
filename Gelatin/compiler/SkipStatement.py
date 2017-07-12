@@ -19,7 +19,7 @@
 # SOFTWARE.
 from __future__ import print_function
 import re
-from Gelatin import INDENT
+from Gelatin import INDENT, SEARCH_WINDOW
 from .Token import Token
 
 
@@ -33,12 +33,11 @@ class SkipStatement(Token):
         if not self.regex:
             self.regex = re.compile(self.match.re_value())
 
-        # Change to
-        # return self.regex.match(context.input, context.start)
-        # once Py2 support is gone.
-        match = self.regex.match(context.input[context.start:])
+        end = context.start+SEARCH_WINDOW
+        match = self.regex.match(context.input[context.start:end])
         if match is not None:
-            context.start += len(match.group(0))
+            start, end = match.span(0)
+            context.start += end - start
             return 1
         return 0
 

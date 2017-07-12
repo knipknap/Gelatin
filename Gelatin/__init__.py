@@ -24,3 +24,4 @@ from .version import __version__
 
 INDENT_WIDTH = 4
 INDENT = ' ' * INDENT_WIDTH
+SEARCH_WINDOW = 1000

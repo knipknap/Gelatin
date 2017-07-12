@@ -21,7 +21,7 @@ try:
     import re2 as re
 except ImportError:
     import re
-from Gelatin import INDENT
+from Gelatin import INDENT, SEARCH_WINDOW
 from .Token import Token
 
 
@@ -37,16 +37,15 @@ class MatchFieldList(Token):
             regex = ')('.join(e.re_value() for e in self.expressions)
             self.regex = re.compile('(' + regex + ')', self.modifiers)
 
-        # Change to
-        # return self.regex.match(context.input, context.start)
-        # once Py2 support is gone.
-        return self.regex.match(context.input[context.start:])
+        end = context.start+SEARCH_WINDOW
+        return self.regex.match(context.input[context.start:end])
 
     def match(self, context):
         match = self.when(context)
         if not match:
             return None
-        context.start += len(match.group(0))
+        start, end = match.span(0)
+        context.start += end - start
         return match
 
     def dump(self, indent=0):
