@@ -69,7 +69,7 @@ def eat_indent(buffer, start, end, expected_indent=None):
 def count_indent(buffer, start):
     indent = start - buffer.rfind('\n', 0, start) - 1
     if indent % INDENT_WIDTH != 0:
-        msg = 'indent must be a multiple of %d' % INDENT_WIDTH
+        msg = 'indent must be a multiple of %d, is %d' % (INDENT_WIDTH, indent)
         error(buffer, start, msg)
     if indent / INDENT_WIDTH > 2:
         msg = 'maximum indent (2 levels) exceeded.'
