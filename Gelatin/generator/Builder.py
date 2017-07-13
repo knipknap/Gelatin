@@ -76,6 +76,8 @@ class OrderedDefaultDict(OrderedDict):
         return 'OrderedDefaultDict(%s, %s)' % (self.default_factory,
                                                OrderedDict.__repr__(self))
 
+def nodehash(name, attribs):
+    return name + '/' + str(hash(frozenset(attribs)))
 
 class Node(object):
 
@@ -88,7 +90,7 @@ class Node(object):
 
     def add(self, child):
         self.children[child.name].append(child)
-        self.child_index[child.name + str(id(child.attribs))] = child
+        self.child_index[nodehash(child.name, child.attribs)] = child
         return child
 
     def get_child(self, name, attribs=None):
@@ -101,7 +103,7 @@ class Node(object):
                 return self
             if attribs == self.attribs:
                 return self
-        return self.child_index.get(name + str(id(attribs)))
+        return self.child_index.get(nodehash(name, attribs))
 
     def to_dict(self):
         thedict = OrderedDict(('@' + k, v) for (k, v) in self.attribs)
@@ -179,16 +181,18 @@ class Builder(object):
             tag, attribs = self._splittag(item)
 
             # The leaf node is always newly created.
-            if n == n_items:
+            if n == n_items-1:
                 node = node.add(Node(tag, attribs))
                 break
 
             # Parent nodes are only created if they do not exist yet.
             existing = node.get_child(tag, attribs)
-            if existing:
+            if existing is not None:
                 node = existing
             else:
                 node = node.add(Node(tag, attribs))
+        if data:
+            node.text = data
         return node
 
     def add(self, path, data=None, replace=False):
