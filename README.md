@@ -110,16 +110,15 @@ gel -s mysyntax.gel -f yaml input.txt
 Gelatin also provides a Python API for transforming the text:
 
 ```python
-from Gelatin import generator
-from Gelatin.util import compile
+from Gelatin.util import compile, generate
 
 # Parse your .gel file.
 syntax = compile('syntax.gel')
 
-# Convert your input file to XML.
-builder = generator.Xml()
-syntax.parse('input.txt', builder)
-print builder.serialize()
+# Convert your input file to XML, YAML, and JSON.
+print(generate(syntax, 'input.txt'))
+print(generate(syntax, 'input.txt', format='yaml'))
+print(generate(syntax, 'input.txt', format='json'))
 ```
 
 ## Documentation
