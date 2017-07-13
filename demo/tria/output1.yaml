@@ -1,29 +1,78 @@
 week:
 - '@number': '1'
   day:
-    weekday:
-      '#text': So
+  - weekday:
+      '#text': Mo
     date:
-      '#text': 10Jan10
+      '#text': 04Jan10
+  - weekday:
+      '#text': Di
+    date:
+      '#text': 05Jan10
+  - weekday:
+      '#text': Mi
+    date:
+      '#text': 06Jan10
+  - weekday:
+      '#text': Do
+    date:
+      '#text': 07Jan10
     unit:
-      discipline:
-        '#text': Swim
+    - discipline:
+        '#text': Run
       route:
         '#text': "Unterf\xFChrung"
       comment:
-        '#text': "6. Einheit, Plan Dez09, R\xFCckentechnik"
+        '#text': LS3AsicsTrabuco, 5mm Neuschnee, rutschig
       time:
         '#text': 15:34(15:34),31:20(15.45),
+    - discipline:
+        '#text': Swim
       place:
         '#text': "Hallenbad Markgr\xF6ningen"
       distance:
-        '#text': 100 AS
-- '@number': '2'
-  day:
-    weekday:
+      - '#text': 400 ES
+      - '#text': 100 AS
+  - weekday:
+      '#text': Fr
+    date:
+      '#text': 08Jan10
+  - weekday:
+      '#text': Sa
+    date:
+      '#text': 09Jan10
+    unit:
+      discipline:
+        '#text': Swim
+      comment:
+        '#text': "6. Einheit, Plan Dez09, R\xFCckentechnik"
+      place:
+        '#text': "Hallenbad Markgr\xF6ningen"
+      distance:
+      - '#text': 400 ES
+      - '#text': 6*50 Technik
+      - '#text': "8*50 GA1(25 Kraul, 25 R\xFCcken)"
+      - '#text': "6*100 GA1(Kraul + R\xFCcken + Kraul + Brust im Wechsel)"
+      - '#text': 25 tauchen, 25 tauchen, 29 tauchen, 33 tauchen
+      - '#text': 100 AS
+  - weekday:
       '#text': So
     date:
-      '#text': 17Jan10
+      '#text': 10Jan10
+- '@number': '2'
+  day:
+  - weekday:
+      '#text': Mo
+    date:
+      '#text': 11Jan10
+  - weekday:
+      '#text': Mi
+    date:
+      '#text': 13Jan10
+  - weekday:
+      '#text': Do
+    date:
+      '#text': 14Jan10
     unit:
       discipline:
         '#text': Bike
@@ -32,8 +81,18 @@ week:
       material:
         '#text': Centurion
       route:
-        '#text': Kreissel Oberriexingen, Unterriexingen.
+        '#text': "Feldwege nach Eglosheim, Monrepos, Bietigheim, Bissingen, dann Stra\xDF\
+          e nach Untermberg, Sachsenheim (Industriegebiet), Fontanis-Lager, Kreissel\
+          \ Oberriexingen, Unterriexingen."
       distance:
         '#text': 44.2 km
       average:
         '#text': 18.3 km/h
+  - weekday:
+      '#text': Fr
+    date:
+      '#text': 15Jan10
+  - weekday:
+      '#text': So
+    date:
+      '#text': 17Jan10

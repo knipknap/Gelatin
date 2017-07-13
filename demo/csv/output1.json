@@ -1,5 +1,72 @@
 {
-    "line": {
-        "column": {}
-    }
+    "line": [
+        {
+            "column": [
+                {
+                    "#text": "data1"
+                },
+                {
+                    "#text": "data2  "
+                },
+                {
+                    "#text": "data3'''"
+                },
+                {
+                    "#text": "data4\"\""
+                },
+                {},
+                {},
+                {
+                    "#text": "data5"
+                },
+                {}
+            ]
+        },
+        {
+            "column": [
+                {
+                    "#text": "foo1"
+                },
+                {
+                    "#text": "foo2"
+                },
+                {
+                    "#text": "foo3'''"
+                },
+                {
+                    "#text": "foo4\"\""
+                },
+                {},
+                {},
+                {
+                    "#text": "foo5"
+                },
+                {
+                    "#text": "foo6"
+                }
+            ]
+        },
+        {
+            "column": [
+                {
+                    "#text": "bar1"
+                },
+                {
+                    "#text": "bar2  "
+                },
+                {
+                    "#text": "bar3'''"
+                },
+                {
+                    "#text": "bar4\"\""
+                },
+                {},
+                {},
+                {
+                    "#text": "bar5"
+                },
+                {}
+            ]
+        }
+    ]
 }

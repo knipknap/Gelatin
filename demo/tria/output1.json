@@ -2,65 +2,192 @@
     "week": [
         {
             "@number": "1",
-            "day": {
-                "weekday": {
-                    "#text": "So"
+            "day": [
+                {
+                    "weekday": {
+                        "#text": "Mo"
+                    },
+                    "date": {
+                        "#text": "04Jan10"
+                    }
                 },
-                "date": {
-                    "#text": "10Jan10"
+                {
+                    "weekday": {
+                        "#text": "Di"
+                    },
+                    "date": {
+                        "#text": "05Jan10"
+                    }
                 },
-                "unit": {
-                    "discipline": {
-                        "#text": "Swim"
+                {
+                    "weekday": {
+                        "#text": "Mi"
                     },
-                    "route": {
-                        "#text": "Unterführung"
+                    "date": {
+                        "#text": "06Jan10"
+                    }
+                },
+                {
+                    "weekday": {
+                        "#text": "Do"
                     },
-                    "comment": {
-                        "#text": "6. Einheit, Plan Dez09, Rückentechnik"
+                    "date": {
+                        "#text": "07Jan10"
                     },
-                    "time": {
-                        "#text": "15:34(15:34),31:20(15.45),"
+                    "unit": [
+                        {
+                            "discipline": {
+                                "#text": "Run"
+                            },
+                            "route": {
+                                "#text": "Unterführung"
+                            },
+                            "comment": {
+                                "#text": "LS3AsicsTrabuco, 5mm Neuschnee, rutschig"
+                            },
+                            "time": {
+                                "#text": "15:34(15:34),31:20(15.45),"
+                            }
+                        },
+                        {
+                            "discipline": {
+                                "#text": "Swim"
+                            },
+                            "place": {
+                                "#text": "Hallenbad Markgröningen"
+                            },
+                            "distance": [
+                                {
+                                    "#text": "400 ES"
+                                },
+                                {
+                                    "#text": "100 AS"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "weekday": {
+                        "#text": "Fr"
                     },
-                    "place": {
-                        "#text": "Hallenbad Markgröningen"
+                    "date": {
+                        "#text": "08Jan10"
+                    }
+                },
+                {
+                    "weekday": {
+                        "#text": "Sa"
                     },
-                    "distance": {
-                        "#text": "100 AS"
+                    "date": {
+                        "#text": "09Jan10"
+                    },
+                    "unit": {
+                        "discipline": {
+                            "#text": "Swim"
+                        },
+                        "comment": {
+                            "#text": "6. Einheit, Plan Dez09, Rückentechnik"
+                        },
+                        "place": {
+                            "#text": "Hallenbad Markgröningen"
+                        },
+                        "distance": [
+                            {
+                                "#text": "400 ES"
+                            },
+                            {
+                                "#text": "6*50 Technik"
+                            },
+                            {
+                                "#text": "8*50 GA1(25 Kraul, 25 Rücken)"
+                            },
+                            {
+                                "#text": "6*100 GA1(Kraul + Rücken + Kraul + Brust im Wechsel)"
+                            },
+                            {
+                                "#text": "25 tauchen, 25 tauchen, 29 tauchen, 33 tauchen"
+                            },
+                            {
+                                "#text": "100 AS"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "weekday": {
+                        "#text": "So"
+                    },
+                    "date": {
+                        "#text": "10Jan10"
                     }
                 }
-            }
+            ]
         },
         {
             "@number": "2",
-            "day": {
-                "weekday": {
-                    "#text": "So"
+            "day": [
+                {
+                    "weekday": {
+                        "#text": "Mo"
+                    },
+                    "date": {
+                        "#text": "11Jan10"
+                    }
                 },
-                "date": {
-                    "#text": "17Jan10"
+                {
+                    "weekday": {
+                        "#text": "Mi"
+                    },
+                    "date": {
+                        "#text": "13Jan10"
+                    }
                 },
-                "unit": {
-                    "discipline": {
-                        "#text": "Bike"
+                {
+                    "weekday": {
+                        "#text": "Do"
                     },
-                    "comment": {
-                        "#text": "Feldwege + Straße"
+                    "date": {
+                        "#text": "14Jan10"
                     },
-                    "material": {
-                        "#text": "Centurion"
+                    "unit": {
+                        "discipline": {
+                            "#text": "Bike"
+                        },
+                        "comment": {
+                            "#text": "Feldwege + Straße"
+                        },
+                        "material": {
+                            "#text": "Centurion"
+                        },
+                        "route": {
+                            "#text": "Feldwege nach Eglosheim, Monrepos, Bietigheim, Bissingen, dann Straße nach Untermberg, Sachsenheim (Industriegebiet), Fontanis-Lager, Kreissel Oberriexingen, Unterriexingen."
+                        },
+                        "distance": {
+                            "#text": "44.2 km"
+                        },
+                        "average": {
+                            "#text": "18.3 km/h"
+                        }
+                    }
+                },
+                {
+                    "weekday": {
+                        "#text": "Fr"
                     },
-                    "route": {
-                        "#text": "Kreissel Oberriexingen, Unterriexingen."
+                    "date": {
+                        "#text": "15Jan10"
+                    }
+                },
+                {
+                    "weekday": {
+                        "#text": "So"
                     },
-                    "distance": {
-                        "#text": "44.2 km"
-                    },
-                    "average": {
-                        "#text": "18.3 km/h"
+                    "date": {
+                        "#text": "17Jan10"
                     }
                 }
-            }
+            ]
         }
     ]
 }

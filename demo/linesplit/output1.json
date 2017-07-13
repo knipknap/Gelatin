@@ -1,3 +1,30 @@
 {
-    "line": {}
+    "line": [
+        {
+            "#text": "a nice line"
+        },
+        {
+            "#text": "another line"
+        },
+        {
+            "#text": "something else"
+        },
+        {},
+        {
+            "#text": "my name is foo"
+        },
+        {
+            "#text": "your name is bar"
+        },
+        {},
+        {
+            "#text": "yet a nice line"
+        },
+        {
+            "#text": "yet another line"
+        },
+        {
+            "#text": "yet something else"
+        }
+    ]
 }
