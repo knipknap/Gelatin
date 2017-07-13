@@ -211,7 +211,10 @@ class Builder(object):
         if replace:
             node.text = ''
         if data:
-            node.text = data
+            if node.text is None:
+                node.text = data
+            else:
+                node.text += data
         return node
 
     def add_attribute(self, path, name, value):
