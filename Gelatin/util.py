@@ -19,6 +19,7 @@
 # SOFTWARE.
 import codecs
 from . import generator
+from .generator import Builder
 from .parser import Parser
 from .compiler import SyntaxCompiler
 
@@ -118,11 +119,12 @@ def generate_string(converter, input, format='xml'):
     :rtype:  str
     :return: The resulting output.
     """
-    builder = generator.new(format)
-    if builder is None:
+    serializer = generator.new(format)
+    if serializer is None:
         raise TypeError('invalid output format ' + repr(format))
+    builder = Builder()
     converter.parse_string(input, builder)
-    return builder.serialize()
+    return builder.serialize(serializer)
 
 
 def generate_string_to_file(converter,

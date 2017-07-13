@@ -19,6 +19,7 @@ import datetime
 sys.path.insert(0, 'src')
 from optparse import OptionParser
 from Gelatin import __version__, generator
+from Gelatin.generator import Builder
 from Gelatin.util import compile
 
 usage  = '''%prog [options] filename [filename ...]'''
@@ -62,8 +63,8 @@ if __name__ == '__main__':
     if not input_files:
         parser.error('missing input file')
 
-    builder = generator.new(options.format)
-    if builder is None:
+    serializer = generator.new(options.format)
+    if serializer is None:
         parser.error('invalid output format: ' + options.format)
 
     def dbg(*msg):
@@ -76,8 +77,9 @@ if __name__ == '__main__':
     converter = compile(options.syntax)
     for input_file in input_files:
         dbg("Parsing", input_file + '...')
+        builder = Builder()
         converter.parse(input_file, builder, debug=options.debug)
         if options.format != 'none':
             dbg("Generating output...")
-            print(builder.serialize())
+            print(builder.serialize(serializer))
     dbg('Total: ' + str(datetime.datetime.now() - start))

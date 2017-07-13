@@ -19,8 +19,6 @@
 # SOFTWARE.
 import yaml
 from collections import OrderedDict
-from .Json import Json
-
 
 def represent_ordereddict(dumper, data):
     value = []
@@ -33,11 +31,7 @@ def represent_ordereddict(dumper, data):
 yaml.add_representer(OrderedDict, represent_ordereddict)
 
 
-class Yaml(Json):  # Steal most of the implementation from JSON
+class Yaml(object):
 
-    """
-    Abstract base class for all generators.
-    """
-
-    def serialize(self):
-        return yaml.dump(self.tree.to_dict())
+    def serialize_doc(self, node):
+        return yaml.dump(node.to_dict())
