@@ -1,18 +1,4 @@
 #!/bin/sh
-# Copyright (C) 2010 Samuel Abels.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2, as
-# published by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 # Tag revisions like this:
 # $ git tag -a -m "v0.2" v0.2
 VERSION_IN=VERSION.in
@@ -52,10 +38,11 @@ echo Version is $VERSION
 # Check whether the version file already contains this number,
 # and only touch it if there is a change to avoid changing
 # the timestamp.
-VERSION_FILE_TMP=`tempfile`
+VERSION_FILE_TMP=`mktemp`
 cat $VERSION_IN | sed "s/@VERSION@/$VERSION/g" > $VERSION_FILE_TMP
 if diff -q $VERSION_FILE_TMP $VERSION_FILE; then
   echo Version file unchanged.
+  rm $VERSION_FILE_TMP
   exit 0
 fi
 

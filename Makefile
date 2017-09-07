@@ -1,28 +1,5 @@
 NAME=Gelatin
 VERSION=`python3 setup.py --version | sed s/^v//`
-PREFIX=/usr/local/
-BIN_DIR=$(PREFIX)/bin
-SITE_DIR=$(PREFIX)`python -c "import sys; from distutils.sysconfig import get_python_lib; print get_python_lib()[len(sys.prefix):]"`
-DISTDIR=/pub/code/releases/$(NAME)
-
-###################################################################
-# Project-specific targets.
-###################################################################
-apidocs:
-	./version.sh
-	epydoc --name $(NAME) \
-		--exclude ^Gelatin\.parser \
-		--exclude ^Gelatin\.compiler \
-		--html \
-		--no-private \
-		--introspect-only \
-		--no-source \
-		--no-frames \
-		--inheritance=included \
-		-v \
-		-o docs \
-		$(NAME)
-	./version.sh --reset
 
 ###################################################################
 # Standard targets.
@@ -40,21 +17,12 @@ dist-clean: clean
 doc:
 	cd doc; make
 
-install:
-	mkdir -p $(SITE_DIR)
-	./version.sh
-	export PYTHONPATH=$(SITE_DIR):$(PYTHONPATH); \
-	python3 setup.py install --prefix $(PREFIX) \
-	                         --install-scripts $(BIN_DIR) \
-	                         --install-lib $(SITE_DIR)
-	./version.sh --reset
-
 uninstall:
 	# Sorry, Python's distutils support no such action yet.
 
 .PHONY : tests
 tests:
-	cd tests/; ./run_suite.py 1
+	python setup.py test
 
 ###################################################################
 # Package builders.
@@ -67,11 +35,6 @@ targz:
 tarbz:
 	./version.sh
 	python3 setup.py sdist --formats bztar
-	./version.sh --reset
-
-wheel:
-	./version.sh
-	python3 setup.py bdist_wheel
 	./version.sh --reset
 
 wheel:
