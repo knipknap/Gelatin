@@ -22,7 +22,7 @@ uninstall:
 
 .PHONY : tests
 tests:
-	python setup.py test
+	python3 setup.py test
 
 ###################################################################
 # Package builders.
@@ -39,7 +39,7 @@ tarbz:
 
 wheel:
 	./version.sh
-	python setup.py bdist_wheel --universal
+	python3 setup.py bdist_wheel --universal
 	./version.sh --reset
 
 deb:
@@ -56,5 +56,5 @@ dist: targz tarbz wheel
 ###################################################################
 dist-publish:
 	./version.sh
-	python setup.py bdist_wheel --universal register upload
+	python3 setup.py bdist_wheel --universal register upload
 	./version.sh --reset
