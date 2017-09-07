@@ -18,6 +18,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import re
+try:
+    from urllib.parse import quote
+except ImportError: # Python 2
+    from urllib import quote
 from Gelatin import INDENT
 from .Token import Token
 
@@ -44,7 +48,7 @@ class String(Token):
         # Check the variable value.
         cmatch = self.context.re_stack[-1]
         try:
-            return cmatch.group(int(fieldnum) + 1)
+            return quote(cmatch.group(int(fieldnum) + 1), safe=' ')
         except IndexError as e:
             raise Exception(
                 'invalid field number %s in %s' % (fieldnum, self.data))

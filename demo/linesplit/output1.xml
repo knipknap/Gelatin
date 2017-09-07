@@ -1,7 +1,7 @@
 <xml>
   <line>a nice line</line>
-  <line>another line</line>
-  <line>something else</line>
+  <line>another &amp; line</line>
+  <line>"something else"</line>
   <line/>
   <line>my name is foo</line>
   <line>your name is bar</line>

@@ -1,6 +1,6 @@
 a nice line
-another line
-something else
+another & line
+"something else"
 
 my name is foo
 your name is bar

@@ -1,7 +1,7 @@
 line:
 - '#text': a nice line
-- '#text': another line
-- '#text': something else
+- '#text': another & line
+- '#text': '"something else"'
 - {}
 - '#text': my name is foo
 - '#text': your name is bar

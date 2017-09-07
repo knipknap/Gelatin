@@ -23,9 +23,9 @@ import shutil
 from tempfile import NamedTemporaryFile
 from collections import OrderedDict, Callable, defaultdict
 try:
-    from urllib.parse import urlparse, parse_qs
+    from urllib.parse import urlparse, parse_qs, unquote
 except ImportError:
-    from urlparse import urlparse
+    from urlparse import urlparse, unquote
     from cgi import parse_qs
 
 value = r'"(?:\\.|[^"])*"'
@@ -192,7 +192,7 @@ class Builder(object):
             else:
                 node = node.add(Node(tag, attribs))
         if data:
-            node.text = data
+            node.text = unquote(data)
         return node
 
     def add(self, path, data=None, replace=False):
@@ -212,9 +212,9 @@ class Builder(object):
             node.text = ''
         if data:
             if node.text is None:
-                node.text = data
+                node.text = unquote(data)
             else:
-                node.text += data
+                node.text += unquote(data)
         return node
 
     def add_attribute(self, path, name, value):
