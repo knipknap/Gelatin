@@ -39,7 +39,7 @@ tarbz:
 
 wheel:
 	./version.sh
-	python3 setup.py bdist_wheel --universal
+	python3 setup.py bdist
 	./version.sh --reset
 
 deb:
