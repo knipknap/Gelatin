@@ -56,5 +56,5 @@ dist: targz tarbz wheel
 ###################################################################
 dist-publish:
 	./version.sh
-	python3 setup.py bdist_wheel --universal register upload
+	python3 setup.py bdist_wheel --universal upload
 	./version.sh --reset
