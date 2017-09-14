@@ -28,6 +28,9 @@ class Dummy(Builder):
     def serialize(self):
         return ''
 
+    def set_root_name(self, name):
+        pass
+
     def dump(self):
         print(self.serialize())
 

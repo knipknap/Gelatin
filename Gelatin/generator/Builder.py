@@ -131,7 +131,7 @@ class Builder(object):
     """
 
     def __init__(self):
-        self.tree = Node('root')
+        self.tree = Node(None)
         self.current = [self.tree]
 
     def serialize(self, serializer):
@@ -143,6 +143,9 @@ class Builder(object):
         if os.path.exists(filename):
             os.unlink(filename)
         shutil.move(thefile.name, filename)
+
+    def set_root_name(self, name):
+        self.tree.name = name
 
     def dump(self):
         # pp = PrettyPrinter(indent = 4)

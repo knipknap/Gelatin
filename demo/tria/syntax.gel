@@ -53,6 +53,7 @@ grammar week:
 
 # The grammar named "input" is the entry point for the converter.
 grammar input:
+    out.set_root_name('tria')
     skip comment
     match 'Woche:' ws integer nl:
         out.open('week')

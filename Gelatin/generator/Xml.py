@@ -17,9 +17,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+from __future__ import absolute_import
 import sys
 from lxml import etree
-
+from .Builder import Builder
 
 class Xml(object):
 
@@ -33,7 +34,7 @@ class Xml(object):
         return elem
 
     def serialize_doc(self, node):
-        doc = etree.Element('xml')
+        doc = etree.Element(node.name if node.name else 'xml')
         for child_list in node.children.values():
             for child in child_list:
                 subelem = self.serialize_node(child)

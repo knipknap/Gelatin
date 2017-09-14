@@ -247,6 +247,12 @@ out.clear_queue()
 Removes any items from the queue that were previously queued using the
 out.enqueue_*() functions.
 
+out.set_root_name(STRING)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Specifies the name of the root tag, if the output is XML.
+Has no effect on JSON and YAML output.
+
 Control Functions
 -----------------
 

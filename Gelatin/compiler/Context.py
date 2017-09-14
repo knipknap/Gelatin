@@ -123,6 +123,11 @@ def out_clear_queue(context):
     return 1
 
 
+def out_set_root_name(context, name):
+    context.builder.set_root_name(name)
+    return 0
+
+
 class Context(object):
 
     def __init__(self):
@@ -141,7 +146,8 @@ class Context(object):
                           'out.enqueue_before': out_enqueue_before,
                           'out.enqueue_after':  out_enqueue_after,
                           'out.enqueue_on_add': out_enqueue_on_add,
-                          'out.clear_queue':    out_clear_queue}
+                          'out.clear_queue':    out_clear_queue,
+                          'out.set_root_name':  out_set_root_name}
         self.lexicon = {}
         self.grammars = {}
         self.input = None
