@@ -19,9 +19,14 @@
 # SOFTWARE.
 import os
 import re
+import sys
 import shutil
 from tempfile import NamedTemporaryFile
-from collections import OrderedDict, Callable, defaultdict
+if sys.version_info[1] >= 10:
+    from collections.abc import Callable
+    from collections import OrderedDict, defaultdict
+else:
+    from collections import OrderedDict, Callable, defaultdict
 try:
     from urllib.parse import urlparse, parse_qs, unquote
 except ImportError:
