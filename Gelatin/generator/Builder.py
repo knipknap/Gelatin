@@ -22,11 +22,11 @@ import re
 import sys
 import shutil
 from tempfile import NamedTemporaryFile
-if sys.version_info[1] >= 10:
+if sys.version_info[0] > 3 or sys.version_info[0] == 3 and sys.version_info[1] >= 10:
     from collections.abc import Callable
-    from collections import OrderedDict, defaultdict
 else:
-    from collections import OrderedDict, Callable, defaultdict
+    from collections import Callable
+from collections import OrderedDict, defaultdict
 try:
     from urllib.parse import urlparse, parse_qs, unquote
 except ImportError:
