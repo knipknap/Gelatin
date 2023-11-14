@@ -1,0 +1,110 @@
+[project]
+name = "Gelatin"
+version = "2.3.0"
+description = "Gelatin converts text to a structured format, such as XML, JSON or YAML."
+authors = [
+    {name = "Samuel Abels", email = "knipknap@gmail.com"},
+]
+dependencies = [
+    "argparse",
+    "pyyaml",
+    "lxml",
+    "simpleparse"
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.dev-dependencies]
+format = [
+    "black>=23.7.0",
+    "isort>=5.0.0",
+]
+lint = [
+    "flake8>=4.0.1",
+    "flake8-docstrings>=1.6.0",
+    "Flake8-pyproject>=1.2.3",
+    "mypy>=1.4.1",
+    "types-requests>=2.31.0",
+]
+refactor = [
+    "rope>=1.2.0",
+]
+test = [
+    "pytest>=7.1.2",
+    "pytest-env>=0.8.2",
+    "testfixtures>=7.1.0",
+]
+tool = [
+    "tox>=4.6.4",
+    "tox-pdm>=0.6.1",
+    "pre-commit>=3.3.3",
+]
+
+[tool.pdm.scripts]
+# Better use these unspecific commands, especially in pipelines!
+format = "black {args} ."
+isort = "isort --skip-gitignore {args} ."
+lint = "flake8 {args}"
+test = "pytest {args}"
+typing = "mypy {args} ."
+all = {composite = ["isort", "format", "typing", "lint", "test"]}
+# Specific commands for convinience.
+black = "black {args} ."
+flake8 = "flake8 {args}"
+pytest = "pytest {args}"
+mypy = "mypy {args} ."
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    env_list = py3{11}
+    isolated_build = True
+
+    [testenv]
+    groups = dev
+    commands =
+        test
+        lint
+        typing
+"""
+
+[tool.pytest.ini_options]
+env = [
+    "SCRIPTS_LOG=/tmp/pytest",
+    "SCRIPTS_GROUP=developers",
+    "TACACS_USER_FILE=/tmp/pytest_tempfile.txt",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+extend-ignore = [
+    # See https://github.com/PyCQA/pycodestyle/issues/373
+    "E203",
+]
+extend-exclude = [
+    ".git",
+    ".gitignore",
+    ".pytest_cache",
+    ".tox",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+docstring-convention = "google"
+max-line-length = 88
+count = true
+
+[tool.mypy]
+disallow_untyped_decorators = "false"
+ignore_missing_imports = "true"
+strict = "true"

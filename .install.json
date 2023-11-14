@@ -1,0 +1,15 @@
+{
+    "deployments": [
+        {
+            "name": "Gelatin",
+            "source": "gelatin/",
+            "excludes": [],
+            "includes": [],
+            "configs": [],
+            "inputs": [],
+            "symlinks": {
+                "gel": "scripts/gel"
+            }
+        }
+    ]
+}
