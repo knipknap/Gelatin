@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,30 +22,40 @@ from .Builder import Builder
 
 
 class Dummy(Builder):
+    """TODO: Create docstring."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         pass
 
     def serialize(self):
-        return ''
+        """TODO: Create docstring."""
+        return ""
 
     def set_root_name(self, name):
+        """TODO: Create docstring."""
         pass
 
     def dump(self):
+        """TODO: Create docstring."""
         print(self.serialize())
 
     def add(self, path, data=None, replace=False):
+        """TODO: Create docstring."""
         pass
 
     def add_attribute(self, path, name, value):
+        """TODO: Create docstring."""
         pass
 
     def open(self, path):
+        """TODO: Create docstring."""
         pass
 
     def enter(self, path):
+        """TODO: Create docstring."""
         pass
 
     def leave(self):
+        """TODO: Create docstring."""
         pass

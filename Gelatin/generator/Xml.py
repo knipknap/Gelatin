@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,14 +18,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from __future__ import absolute_import
-import sys
 from lxml import etree
-from .Builder import Builder
+
 
 class Xml(object):
+    """TODO: Create docstring."""
 
     def serialize_node(self, node):
+        """TODO: Create docstring."""
         elem = etree.Element(node.name, **dict(node.attribs))
         elem.text = node.text
         for child_list in node.children.values():
@@ -34,9 +35,10 @@ class Xml(object):
         return elem
 
     def serialize_doc(self, node):
-        doc = etree.Element(node.name if node.name else 'xml')
+        """TODO: Create docstring."""
+        doc = etree.Element(node.name if node.name else "xml")
         for child_list in node.children.values():
             for child in child_list:
                 subelem = self.serialize_node(child)
                 doc.append(subelem)
-        return etree.tostring(doc, encoding='unicode', pretty_print=True)
+        return etree.tostring(doc, encoding="unicode", pretty_print=True)

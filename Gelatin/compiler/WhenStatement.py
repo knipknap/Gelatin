@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,37 +19,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from __future__ import print_function
+
 from Gelatin import INDENT
+
 from .Token import Token
 
 
 class WhenStatement(Token):
+    """TODO: Create docstring."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         self.matchlist = None
         self.statements = None
         self.on_leave = []
 
     def _enter(self, context, debug):
+        """TODO: Create docstring."""
         context.stack.append(self)
         if debug > 2:
-            print("ENTER",
-                  self.__class__.__name__,
-                  self.matchlist.dump(),
-                  end='')
+            print(f"ENTER{self.__class__.__name__}{self.matchlist.dump()}", end="")
 
     def _leave(self, context, debug):
+        """TODO: Create docstring."""
         for func, args in self.on_leave:
             func(*args)
         self.on_leave = []
         context.stack.pop()
         if debug > 2:
-            print("LEAVE",
-                  self.__class__.__name__,
-                  self.matchlist.dump(),
-                  end='')
+            print(f"LEAVE{self.__class__.__name__}{self.matchlist.dump()}", end="")
 
     def _handle_match(self, context, match, debug):
+        """TODO: Create docstring."""
         if not match:
             return 0
         self._enter(context, debug)
@@ -66,12 +68,14 @@ class WhenStatement(Token):
         return 1
 
     def parse(self, context, debug=0):
+        """TODO: Create docstring."""
         match = self.matchlist.when(context)
         return self._handle_match(context, match, debug)
 
     def dump(self, indent=0):
-        res = INDENT * indent + 'match:\n'
+        """TODO: Create docstring."""
+        res = f"{INDENT * indent}match:\n"
         res += self.matchlist.dump(indent + 1)
         for statement in self.statements:
-            res += statement.dump(indent + 2) + '\n'
+            res += f"{statement.dump(indent + 2)}\n"
         return res

@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,23 +19,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from __future__ import print_function
+
 import re
+
 from Gelatin import INDENT, SEARCH_WINDOW
+
 from .Token import Token
 
 
 class SkipStatement(Token):
+    """TODO: Create docstring."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         self.match = None
         self.regex = None
 
     def parse(self, context, debug=0):
+        """TODO: Create docstring."""
         if not self.regex:
             self.regex = re.compile(self.match.re_value())
 
-        end = context.start+SEARCH_WINDOW
-        match = self.regex.match(context.input[context.start:end])
+        end = context.start + SEARCH_WINDOW
+        match = self.regex.match(context.input[context.start : end])
         if match is not None:
             start, end = match.span(0)
             context.start += end - start
@@ -42,5 +49,6 @@ class SkipStatement(Token):
         return 0
 
     def dump(self, indent=0):
-        res = INDENT * indent + 'match:\n'
+        """TODO: Create docstring."""
+        res = f"{INDENT * indent}match:\n"
         return res + self.matchlist.dump(indent + 1)

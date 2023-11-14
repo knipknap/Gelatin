@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,19 +19,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from Gelatin import INDENT
+
 from .Token import Token
 
 
 class Number(Token):
+    """TODO: Create docstring."""
 
     def __init__(self, number):
+        """TODO: Create docstring."""
         self.data = number
 
     def value(self):
+        """TODO: Create docstring."""
         return self.data
 
     def re_value(self):
+        """TODO: Create docstring."""
         return str(self.data)
 
     def dump(self, indent=0):
-        return INDENT * indent + str(self.data)
+        """TODO: Create docstring."""
+        return f"{INDENT * indent}{self.data}"

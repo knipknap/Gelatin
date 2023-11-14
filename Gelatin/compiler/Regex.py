@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,25 +18,29 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-try:
-    import re2 as re
-except ImportError:
-    import re
+import re
+
 from Gelatin import INDENT
+
 from .Token import Token
 
 
 class Regex(Token):
+    """TODO: Create docstring."""
+
     data = None
     re_obj = None
 
     def re_value(self):
+        """TODO: Create docstring."""
         return self.data
 
     def value(self):
+        """TODO: Create docstring."""
         if not self.re_obj:
             self.re_obj = re.compile(self.data)
         return self.re_obj
 
     def dump(self, indent=0):
-        return INDENT * indent + '/' + self.data + '/'
+        """TODO: Create docstring."""
+        return f"{INDENT * indent}/{self.data}/"

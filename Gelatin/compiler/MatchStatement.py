@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +22,9 @@ from .WhenStatement import WhenStatement
 
 
 class MatchStatement(WhenStatement):
+    """TODO: Create docstring."""
 
     def parse(self, context, debug=0):
+        """TODO: Create docstring."""
         match = self.matchlist.match(context)
         return self._handle_match(context, match, debug)

@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,23 +19,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from Gelatin import INDENT
+
 from .Token import Token
 
 
 class Function(Token):
+    """Class for the function token."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         self.name = None
         self.args = []
 
     def parse(self, context, debug=0):
+        """TODO: Create docstring."""
         # Function names that have NO dot in them are references to another
         # grammar.
-        if '.' not in self.name:
+        if "." not in self.name:
             start = context.start
             grammar = context.grammars.get(self.name)
             if not grammar:
-                raise Exception('call to undefined grammar ' + self.name)
+                raise Exception(f"call to undefined grammar {self.name}")
             grammar.parse(context, debug)
             if context.start != start:
                 return 1
@@ -43,9 +48,10 @@ class Function(Token):
         # Other functions are utilities.
         func = context.functions.get(self.name)
         if not func:
-            raise Exception('unknown function ' + self.name)
+            raise Exception(f"unknown function {self.name}")
         return func(context, *[a.value() for a in self.args])
 
     def dump(self, indent=0):
-        args = ', '.join(a.dump() for a in self.args)
-        return INDENT * indent + self.name + '(' + args + ')'
+        """Print name and all arguments of the function."""
+        args = ", ".join(a.dump() for a in self.args)
+        return f"{INDENT * indent}{self.name}({args})"

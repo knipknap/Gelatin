@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3.11
 # Copyright (C) 2010 Samuel Abels.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -13,73 +13,74 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import sys
-import os
+import argparse
 import datetime
+import os
+import sys
+
 sys.path.insert(0, 'src')
-from optparse import OptionParser
-from Gelatin import __version__, generator
-from Gelatin.generator import Builder
+from Gelatin.generator import Json, Xml, Yaml
+from Gelatin.generator.Builder import Builder
 from Gelatin.util import compile
 
-usage  = '''%prog [options] filename [filename ...]'''
-parser = OptionParser(usage = usage, version = __version__)
-parser.add_option('--syntax', '-s',
-                  dest    = 'syntax',
-                  metavar = 'FILE',
-                  default = None,
-                  help    = '''
-The file containing the syntax for parsing the input
-'''.strip())
-parser.add_option('--format', '-f',
-                  dest    = 'format',
-                  default = 'xml',
-                  metavar = 'FORMAT',
-                  help    = '''
-The output format. Valid values are: xml json yaml none. Default is xml.
-'''.strip())
-parser.add_option('--debug',
-                  dest    = 'debug',
-                  type    = 'int',
-                  metavar = 'NUM',
-                  default = 0,
-                  help    = '''
-Print debug info.
-'''.strip())
+parser = argparse.ArgumentParser(
+    description = "Gelatin converts text to a structured format, such as XML, JSON or YAML."
+)
+parser.add_argument('filename', help="Path to the gelatin file.", nargs='+')
+parser.add_argument(
+    '-s',
+    '--syntax',
+    default = None,
+    help = "The file containing the syntax for parsing the input.",
+    metavar = 'FILE',
+    required = True
+)
+parser.add_argument(
+    '-f',
+    '--format',
+    choices = ["xml", "json", "yaml", "none"],
+    default = 'xml',
+    help = "The output format.",
+    metavar = 'FORMAT'
+)
+parser.add_argument(
+    '--debug',
+    default = 0,
+    help = "Print debug info.",
+    metavar = 'NUM',
+    type = int     
+)
 
 if __name__ == '__main__':
-    # Parse options.
-    options, args = parser.parse_args(sys.argv)
-    args.pop(0)
+    args = parser.parse_args()
 
-    if not options.syntax:
-        parser.error('missing switch -s')
-    if not os.path.exists(options.syntax):
-        parser.error('no such file or directory: ' + options.syntax)
-    if not os.path.isfile(options.syntax):
-        parser.error('not a valid input file: ' + options.syntax)
+    if not os.path.exists(args.syntax):
+        raise argparse.ArgumentError(f'no such file or directory: {args.syntax}')
+    if not os.path.isfile(args.syntax):
+        raise argparse.ArgumentError(f'not a valid input file: {args.syntax}')
 
-    input_files = args
-    if not input_files:
-        parser.error('missing input file')
+    match args.format:
+        case "json":
+            serializer = Json.Json()
+        case "xml":
+            serializer = Xml.Xml()
+        case "yaml":
+            serializer = Yaml.Yaml()
 
-    serializer = generator.new(options.format)
-    if serializer is None:
-        parser.error('invalid output format: ' + options.format)
 
-    def dbg(*msg):
-        if options.debug:
+    def dbg(message):
+        if args.debug:
             now = str(datetime.datetime.now())
-            sys.stderr.write(now + ' ' + ' '.join(msg) + '\n')
+            sys.stderr.write(f"{now} {message}\n")
 
     start = datetime.datetime.now()
-    dbg("Compiling", options.syntax + '...')
-    converter = compile(options.syntax)
-    for input_file in input_files:
-        dbg("Parsing", input_file + '...')
+    dbg(f"Compiling {args.syntax}...")
+    converter = compile(args.syntax)
+    for input_file in args.filename:
+        dbg(f"Parsing {input_file}...")
         builder = Builder()
-        converter.parse(input_file, builder, debug=options.debug)
-        if options.format != 'none':
+        converter.parse(input_file, builder, debug=args.debug)
+        if args.format != 'none':
             dbg("Generating output...")
             print(builder.serialize(serializer))
-    dbg('Total: ' + str(datetime.datetime.now() - start))
+    dbg(f'Total: {str(datetime.datetime.now() - start)}')

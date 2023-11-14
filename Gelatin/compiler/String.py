@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,46 +19,53 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import re
+
 try:
     from urllib.parse import quote
-except ImportError: # Python 2
+except ImportError:  # Python 2
     from urllib import quote
+
 from Gelatin import INDENT
+
 from .Token import Token
 
-_string_re = re.compile(r'(\\?)\$(\d*)')
+_string_re = re.compile(r"(\\?)\$(\d*)")
 
 
 class String(Token):
+    """TODO: Create docstring."""
 
     def __init__(self, context, data):
+        """TODO: Create docstring."""
         self.context = context
         self.data = data
 
     def _expand_string(self, match):
-        field = match.group(0)
+        """TODO: Create docstring."""
         escape = match.group(1)
         fieldnum = match.group(2)
 
         # Check the variable name syntax.
         if escape:
-            return '$' + fieldnum
-        elif fieldnum == '':
-            return '$'
+            return f"${fieldnum}"
+        elif fieldnum == "":
+            return "$"
 
         # Check the variable value.
         cmatch = self.context.re_stack[-1]
         try:
-            return quote(cmatch.group(int(fieldnum) + 1), safe=' ')
-        except IndexError as e:
-            raise Exception(
-                'invalid field number %s in %s' % (fieldnum, self.data))
+            return quote(cmatch.group(int(fieldnum) + 1), safe=" ")
+        except IndexError:
+            raise Exception(f"invalid field number {fieldnum} in {self.data}")
 
     def value(self):
+        """TODO: Create docstring."""
         return _string_re.sub(self._expand_string, self.data)
 
     def re_value(self):
+        """TODO: Create docstring."""
         return re.escape(self.data)
 
     def dump(self, indent=0):
-        return INDENT * indent + '\'' + self.data + '\''
+        """TODO: Create docstring."""
+        return f"{INDENT * indent}'{self.data}'"

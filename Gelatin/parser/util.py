@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,40 +18,38 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-try:
-    import re2 as re
-except ImportError:
-    import re
+import re
+
 from Gelatin import INDENT_WIDTH
 
-whitespace_re = re.compile(' *')
+whitespace_re = re.compile(r" *")
 
 
 def _format(buffer, end, msg):
-    line_start = buffer.rfind('\n', 0, end) + 1
-    line_end = buffer.find('\n', line_start)
-    line_no = buffer.count('\n', 0, end) + 1
+    """TODO: Create docstring."""
+    line_start = buffer.rfind("\n", 0, end) + 1
+    line_end = buffer.find("\n", line_start)
+    line_no = buffer.count("\n", 0, end) + 1
     line = buffer[line_start:line_end]
     offset = end - line_start
-    mark = ' ' + ' ' * offset + '^'
-    return '%s in line %d:\n%s\n%s' % (msg, line_no, repr(line), mark)
+    mark = f" {' ' * offset}^"
+    return f"{msg} in line {line_no}:\n{repr(line)}\n{mark}"
 
 
 def say(buffer, end, msg):
+    """TODO: Create docstring."""
     print(_format(buffer, end, msg))
 
 
-def error(buffer, end, msg='Syntax error'):
+def error(buffer, end, msg="Syntax error"):
+    """TODO: Create docstring."""
     msg = _format(buffer, end, msg)
     raise Exception(msg)
 
 
 def eat_indent(buffer, start, end, expected_indent=None):
-    # In Py3, using this may be more efficient:
-    # result = whitespace_re.match(buffer, start, end)
-    # In Py2/PyRe2, the character count differs from len(str),
-    # or str.rfind() if the buffer contains unicode chars.
-    result = whitespace_re.match(buffer[start:end])
+    """TODO: Create docstring."""
+    result = whitespace_re.match(buffer, start, end)
     if result is None:
         # pyre2 returns None if the start parameter to match() is larger
         # than the length of the buffer.
@@ -59,7 +58,7 @@ def eat_indent(buffer, start, end, expected_indent=None):
     whitespace_len = len(whitespace)
     indent = whitespace_len / INDENT_WIDTH
     if whitespace_len % INDENT_WIDTH != 0:
-        msg = 'indent must be a multiple of %d' % INDENT_WIDTH
+        msg = f"indent must be a multiple of {INDENT_WIDTH}"
         error(buffer, start, msg)
     if expected_indent is None or expected_indent == indent:
         return start + whitespace_len
@@ -67,11 +66,12 @@ def eat_indent(buffer, start, end, expected_indent=None):
 
 
 def count_indent(buffer, start):
-    indent = start - buffer.rfind('\n', 0, start) - 1
+    """TODO: Create docstring."""
+    indent = start - buffer.rfind("\n", 0, start) - 1
     if indent % INDENT_WIDTH != 0:
-        msg = 'indent must be a multiple of %d, is %d' % (INDENT_WIDTH, indent)
+        msg = f"indent must be a multiple of {INDENT_WIDTH}, is {indent}"
         error(buffer, start, msg)
     if indent / INDENT_WIDTH > 2:
-        msg = 'maximum indent (2 levels) exceeded.'
+        msg = "maximum indent (2 levels) exceeded."
         error(buffer, start, msg)
     return indent / INDENT_WIDTH

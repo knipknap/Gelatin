@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,9 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import json
-from pprint import PrettyPrinter
+
 
 class Json(object):
+    """TODO: Create docstring."""
 
     def serialize_doc(self, node):
+        """TODO: Create docstring."""
         return json.dumps(node.to_dict(), indent=4, ensure_ascii=False)

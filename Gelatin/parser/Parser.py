@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,40 +18,46 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-import os
 import codecs
+import os
+
 from simpleparse import parser
-from .Newline import Newline
-from .Indent import Indent
+
 from .Dedent import Dedent
+from .Indent import Indent
+from .Newline import Newline
 from .util import error
 
-_ebnf_file = os.path.join(os.path.dirname(__file__), 'syntax.ebnf')
+_ebnf_file = os.path.join(os.path.dirname(__file__), "syntax.ebnf")
 with open(_ebnf_file) as _thefile:
     _ebnf = _thefile.read()
 
 
 class Parser(parser.Parser):
+    """TODO: Create docstring."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         self.indent = 0
         offside = (
             ("NEWLINE", Newline(self).table()),
-            ("INDENT",  Indent(self).table()),
-            ("DEDENT",  Dedent(self).table()),
+            ("INDENT", Indent(self).table()),
+            ("DEDENT", Dedent(self).table()),
         )
-        parser.Parser.__init__(self, _ebnf, 'root', prebuilts=offside)
+        parser.Parser.__init__(self, _ebnf, "root", prebuilts=offside)
 
     def parse_string(self, input, compiler):
+        """TODO: Create docstring."""
         compiler.reset()
         start, _, end = parser.Parser.parse(self, input, processor=compiler)
         if end < len(input):
             error(input, end)
-        if 'input' not in compiler.context.grammars:
+        if "input" not in compiler.context.grammars:
             error(input, end, 'Required grammar "input" not found.')
         return compiler.context
 
-    def parse(self, filename, compiler, encoding='utf8'):
-        with codecs.open(filename, 'r', encoding=encoding) as input_file:
+    def parse(self, filename, compiler, encoding="utf8"):
+        """TODO: Create docstring."""
+        with codecs.open(filename, "r", encoding=encoding) as input_file:
             string = input_file.read()
             return self.parse_string(string, compiler)

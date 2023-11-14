@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,13 +20,16 @@
 # SOFTWARE.
 from simpleparse.objectgenerator import Prebuilt
 from simpleparse.stt.TextTools import Call, Skip
-from .util import eat_indent, count_indent
+
 from .Token import Token
+from .util import count_indent, eat_indent
 
 
 class Dedent(Token):
+    """TODO: Create docstring."""
 
     def __call__(self, buffer, start, end):
+        """TODO: Create docstring."""
         if start > end:
             return start + 1
         after_indent = eat_indent(buffer, start, end)
@@ -33,5 +37,6 @@ class Dedent(Token):
         return after_indent + 1  # +1/-1 hack
 
     def table(self):
+        """TODO: Create docstring."""
         table = (None, Call, self), (None, Skip, -1)  # +1/-1 hack
         return Prebuilt(value=table, report=False)

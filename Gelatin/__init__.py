@@ -1,3 +1,4 @@
+"""The core module."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,11 +18,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""
-The core module.
-"""
-from .version import __version__
 
 INDENT_WIDTH = 4
-INDENT = ' ' * INDENT_WIDTH
+INDENT = " " * INDENT_WIDTH
 SEARCH_WINDOW = 1000

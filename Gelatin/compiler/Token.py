@@ -1,3 +1,4 @@
+"""Base class for a token."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,6 +22,8 @@ from Gelatin import INDENT
 
 
 class Token(object):
+    """Class for a token."""
 
     def dump(self, indent=0):
+        """TODO: Create docstring."""
         return INDENT * indent, self.__class__.__name__

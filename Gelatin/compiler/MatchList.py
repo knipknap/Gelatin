@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,16 +18,18 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from Gelatin import INDENT
 from .Token import Token
 
 
 class MatchList(Token):
+    """TODO: Create docstring."""
 
     def __init__(self):
+        """TODO: Create docstring."""
         self.field_lists = []
 
     def when(self, context):
+        """TODO: Create docstring."""
         for field_list in self.field_lists:
             match = field_list.when(context)
             if match:
@@ -34,6 +37,7 @@ class MatchList(Token):
         return None
 
     def match(self, context):
+        """TODO: Create docstring."""
         for field_list in self.field_lists:
             match = field_list.match(context)
             if match:
@@ -41,7 +45,8 @@ class MatchList(Token):
         return None
 
     def dump(self, indent=0):
-        res = ''
+        """TODO: Create docstring."""
+        res = ""
         for field_list in self.field_lists:
-            res += field_list.dump(indent) + '\n'
-        return res.rstrip() + ':\n'
+            res += f"{field_list.dump(indent)}\n"
+        return f"{res.rstrip()}:\n"

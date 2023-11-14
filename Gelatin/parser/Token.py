@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,13 +23,17 @@ from simpleparse.stt.TextTools import Call
 
 
 class Token(object):
+    """TODO: Create docstring."""
 
     def __init__(self, processor):
+        """TODO: Create docstring."""
         self.processor = processor
 
     def __call__(self, buffer, start, end):
-        raise NotImplementedError('Token is abstract')
+        """TODO: Create docstring."""
+        raise NotImplementedError("Token is abstract")
 
     def table(self):
-        table = (None, Call, self),
+        """TODO: Create docstring."""
+        table = ((None, Call, self),)
         return Prebuilt(value=table, report=False)

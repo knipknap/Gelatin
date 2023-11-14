@@ -1,3 +1,4 @@
+"""TODO: Create docstring."""
 # Copyright (c) 2010-2017 Samuel Abels
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,15 +19,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import codecs
+
 from . import generator
-from .generator import Builder
-from .parser import Parser
-from .compiler import SyntaxCompiler
+from .generator import Json, Xml, Yaml
+from .compiler.SyntaxCompiler import SyntaxCompiler
+from .generator.Builder import Builder
+from .parser.Parser import Parser
 
 
 def compile_string(syntax):
-    """
-    Builds a converter from the given syntax and returns it.
+    """Builds a converter from the given syntax and returns it.
 
     :type  syntax: str
     :param syntax: A Gelatin syntax.
@@ -36,10 +38,8 @@ def compile_string(syntax):
     return Parser().parse_string(syntax, SyntaxCompiler())
 
 
-def compile(syntax_file, encoding='utf8'):
-    """
-    Like compile_string(), but reads the syntax from the file with the
-    given name.
+def compile(syntax_file, encoding="utf8"):
+    """Like compile_string(), but reads the syntax from the file with the given name.
 
     :type  syntax_file: str
     :param syntax_file: Name of a file containing Gelatin syntax.
@@ -48,20 +48,16 @@ def compile(syntax_file, encoding='utf8'):
     :rtype:  compiler.Context
     :return: The compiled converter.
     """
-    return Parser().parse(syntax_file,
-                          SyntaxCompiler(),
-                          encoding=encoding)
+    return Parser().parse(syntax_file, SyntaxCompiler(), encoding=encoding)
 
 
-def generate(converter, input_file, format='xml', encoding='utf8'):
-    """
-    Given a converter (as returned by compile()), this function reads
-    the given input file and converts it to the requested output format.
+def generate(converter, input_file, format="xml", encoding="utf8"):
+    """Converts the input file with the converter into the requested format.
 
     Supported output formats are 'xml', 'yaml', 'json', or 'none'.
 
     :type  converter: compiler.Context
-    :param converter: The compiled converter.
+    :param converter: The compiled converter (as returned by compile()).
     :type  input_file: str
     :param input_file: Name of a file to convert.
     :type  format: str
@@ -75,15 +71,15 @@ def generate(converter, input_file, format='xml', encoding='utf8'):
         return generate_string(converter, thefile.read(), format=format)
 
 
-def generate_to_file(converter,
-                     input_file,
-                     output_file,
-                     format='xml',
-                     in_encoding='utf8',
-                     out_encoding='utf8'):
-    """
-    Like generate(), but writes the output to the given output file
-    instead.
+def generate_to_file(
+    converter,
+    input_file,
+    output_file,
+    format="xml",
+    in_encoding="utf8",
+    out_encoding="utf8",
+):
+    """Like generate(), but writes the output to the given output file instead.
 
     :type  converter: compiler.Context
     :param converter: The compiled converter.
@@ -100,15 +96,13 @@ def generate_to_file(converter,
     :rtype:  str
     :return: The resulting output.
     """
-    with codecs.open(output_file, 'w', encoding=out_encoding) as thefile:
+    with codecs.open(output_file, "w", encoding=out_encoding) as thefile:
         result = generate(converter, input_file, format=format, encoding=in_encoding)
         thefile.write(result)
 
 
-def generate_string(converter, input, format='xml'):
-    """
-    Like generate(), but reads the input from a string instead of
-    from a file.
+def generate_string(converter, input, format="xml"):
+    """Like generate(), but reads the input from a string instead of from a file.
 
     :type  converter: compiler.Context
     :param converter: The compiled converter.
@@ -119,22 +113,24 @@ def generate_string(converter, input, format='xml'):
     :rtype:  str
     :return: The resulting output.
     """
-    serializer = generator.new(format)
+    match format:
+        case "json":
+            serializer = Json.Json()
+        case "xml":
+            serializer = Xml.Xml()
+        case "yaml":
+            serializer = Yaml.Yaml()
     if serializer is None:
-        raise TypeError('invalid output format ' + repr(format))
+        raise TypeError("invalid output format " + repr(format))
     builder = Builder()
     converter.parse_string(input, builder)
     return builder.serialize(serializer)
 
 
-def generate_string_to_file(converter,
-                            input,
-                            output_file,
-                            format='xml',
-                            out_encoding='utf8'):
-    """
-    Like generate(), but reads the input from a string instead of
-    from a file, and writes the output to the given output file.
+def generate_string_to_file(
+    converter, input, output_file, format="xml", out_encoding="utf8"
+):
+    """Like generate(), but takes a string as input and writes the output to a file.
 
     :type  converter: compiler.Context
     :param converter: The compiled converter.
@@ -149,6 +145,6 @@ def generate_string_to_file(converter,
     :rtype:  str
     :return: The resulting output.
     """
-    with codecs.open(output_file, 'w', encoding=out_encoding) as thefile:
+    with codecs.open(output_file, "w", encoding=out_encoding) as thefile:
         result = generate_string(converter, input, format=format)
         thefile.write(result)
