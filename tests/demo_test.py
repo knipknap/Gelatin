@@ -23,11 +23,11 @@ import unittest
 import re
 import os
 import codecs
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from Gelatin.util import compile, generate
 
 dirname = os.path.dirname(__file__)
-demo_dir = os.path.join(os.path.dirname(dirname), 'demo')
+demo_dir = os.path.join(dirname, 'demo')
 
 def convert(filename, format):
     syntax_file = os.path.join(demo_dir, filename, 'syntax.gel')
