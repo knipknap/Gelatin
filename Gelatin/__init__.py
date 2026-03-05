@@ -20,7 +20,10 @@
 """
 The core module.
 """
-from .version import __version__
+try:
+    from ._version import __version__
+except ImportError:  # editable install without build or plain checkout
+    __version__ = "0.0.0.dev0"
 
 INDENT_WIDTH = 4
 INDENT = ' ' * INDENT_WIDTH

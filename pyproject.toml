@@ -1,0 +1,86 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Gelatin"
+dynamic = ["version"]
+description = "Transform text files to XML, JSON, or YAML"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8,<3.12"
+authors = [
+    { name = "Samuel Abels", email = "knipknap@gmail.com" },
+]
+keywords = [
+    "gelatin",
+    "gel",
+    "parser",
+    "lexer",
+    "xml",
+    "json",
+    "yaml",
+    "generator",
+    "syntax",
+    "text",
+    "transform",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup :: XML",
+]
+dependencies = [
+    "lxml",
+    "pyyaml",
+    "SimpleParse",
+]
+
+[project.scripts]
+gel = "Gelatin.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/knipknap/Gelatin"
+Repository = "https://github.com/knipknap/Gelatin"
+Issues = "https://github.com/knipknap/Gelatin/issues"
+
+# ---------------------------------------------------------------------------
+# Dynamic versioning via git tags  (e.g.  git tag v1.2.0)
+# ---------------------------------------------------------------------------
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "Gelatin/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["Gelatin"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "Gelatin/",
+    "README.md",
+    "COPYING",
+    "pyproject.toml",
+]
+
+# ---------------------------------------------------------------------------
+# uv
+# ---------------------------------------------------------------------------
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
