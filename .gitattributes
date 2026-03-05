@@ -1,0 +1,6 @@
+# Ensure demo fixtures always use LF line endings (even on Windows)
+demo/**/*.gel  text eol=lf
+demo/**/*.txt  text eol=lf
+demo/**/*.xml  text eol=lf
+demo/**/*.yaml text eol=lf
+demo/**/*.json text eol=lf

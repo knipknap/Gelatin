@@ -48,7 +48,7 @@ grammar week:
         out.add('weekday', '$0')
         out.add('date', '$1')
         day()
-    match comment nl:
+    match comment:
         do.return()
 
 # The grammar named "input" is the entry point for the converter.
