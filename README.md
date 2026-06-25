@@ -1,5 +1,36 @@
 # Gelatin
 
+> **This project has been discontinued** in favor of
+> [**Rustine**](https://github.com/bigmars86/rustine), a complete Rust rewrite
+> that serves as a drop-in replacement.
+>
+> **Why?** Gelatin's core dependency — [SimpleParse](https://pypi.org/project/SimpleParse/) —
+> has not been updated since 2020 and does not compile on Python 3.12+. This
+> makes Gelatin unusable on modern Python versions. Rather than maintaining a
+> fragile C extension, the entire engine was rewritten in Rust and exposed to
+> Python via PyO3.
+>
+> **Rustine provides:**
+> - Same Gel grammar language — all `.gel` files work unchanged
+> - Same output formats (JSON, XML, YAML)
+> - 11–19× faster execution
+> - 3–4× less memory usage
+> - Works on Python 3.9–3.13+
+> - A backward-compatible `Gelatin` Python shim for easy migration
+>
+> ```bash
+> pip install rustine
+> ```
+>
+> See the [Rustine migration guide](https://github.com/bigmars86/rustine/blob/main/docs/migration.md)
+> for details.
+
+---
+
+*The original README follows for historical reference.*
+
+---
+
 [![Build Status](https://travis-ci.org/knipknap/Gelatin.svg?branch=master)](https://travis-ci.org/knipknap/Gelatin)
 [![Coverage Status](https://coveralls.io/repos/github/knipknap/Gelatin/badge.svg?branch=master)](https://coveralls.io/github/knipknap/Gelatin?branch=master)
 [![Code Climate](https://lima.codeclimate.com/github/knipknap/Gelatin/badges/gpa.svg)](https://lima.codeclimate.com/github/knipknap/Gelatin)
